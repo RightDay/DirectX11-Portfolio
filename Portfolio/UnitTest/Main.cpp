@@ -2,8 +2,11 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
+#include "GameScene.h"
+
 void Main::Initialize()
 {
+	Push(new GameScene());
 }
 
 void Main::Ready()
