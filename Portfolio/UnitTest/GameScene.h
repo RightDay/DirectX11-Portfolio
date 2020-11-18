@@ -18,4 +18,6 @@ private:
 
 	Shader* shader;
 	TerrainLod* terrain;
+	
+	class Player* player;
 };

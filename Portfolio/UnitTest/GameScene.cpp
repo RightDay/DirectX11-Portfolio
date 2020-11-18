@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "Player.h"
 #include "GameScene.h"
 
 void GameScene::Initialize()
@@ -27,6 +28,8 @@ void GameScene::Initialize()
 		terrain->Pass(0);
 		//terrain->Pass(1);
 	}
+	
+	player = new Player();
 }
 void GameScene::Destroy()
 {
@@ -37,10 +40,12 @@ void GameScene::Update()
 {
 	sky->Update();
 	terrain->Update();
+	player->Update();
 }
 
 void GameScene::Render()
 {
 	sky->Render();
 	terrain->Render();
+	player->Render();
 }
