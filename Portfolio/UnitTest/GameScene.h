@@ -14,10 +14,17 @@ public:
 	virtual void ResizeScreen() override {}
 
 private:
+	void Pass(UINT mesh, UINT model, UINT anim);
+
+private:
 	CubeSky* sky;
 
 	Shader* shader;
 	TerrainLod* terrain;
 	
 	class Player* player;
+
+	vector<MeshRender*> meshes;
+	vector<ModelRender*> models;
+	vector<ModelAnimator*> animators;
 };

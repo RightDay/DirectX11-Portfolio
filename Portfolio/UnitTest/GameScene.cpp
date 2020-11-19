@@ -46,6 +46,21 @@ void GameScene::Update()
 void GameScene::Render()
 {
 	sky->Render();
+	//Pass(0, 1, 2);
 	terrain->Render();
 	player->Render();
 }
+
+//Player Class에 있는 Pass를 가져와 구현 예정
+//Player에 있는 Animators를 옮기는 작업 필요
+//void GameScene::Pass(UINT mesh, UINT model, UINT anim)
+//{
+//	for (MeshRender* temp : meshes)
+//		temp->Pass(mesh);
+//
+//	for (ModelRender* temp : models)
+//		temp->Pass(model);
+//
+//	for (ModelAnimator* temp : animators)	//TODO: pass
+//		temp->Pass(anim);
+//}
