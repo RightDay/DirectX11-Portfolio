@@ -26,8 +26,7 @@ void Player::Update()
 void Player::Render()
 {
 	//Insert Shader Pass
-	for (ModelAnimator* temp : animators)	//TODO: pass
-		temp->Pass(2);
+	
 
 	model->Render();
 }
@@ -38,10 +37,10 @@ void Player::CreateArcherModel()
 	modelShader = new Shader(L"27_Animation.fxo");
 	archer = new ModelAnimator(modelShader);
 
-	archer->ReadMaterial(L"Kachujin/Mesh");
-	archer->ReadMesh(L"Kachujin/Mesh");
+	archer->ReadMaterial(L"Archer/Archer");
+	archer->ReadMesh(L"Archer/Archer");
 
-	archer->ReadClip(L"Kachujin/Idle");
+	archer->ReadClip(L"Archer/Idle");
 	archer->PlayClip(0, 0, 1.0f);
 
 	Transform* transform = NULL;
@@ -53,4 +52,7 @@ void Player::CreateArcherModel()
 	archer->UpdateTransforms();
 
 	animators.push_back(archer);
+
+	for (ModelAnimator* temp : animators)
+		temp->Pass(2);
 }

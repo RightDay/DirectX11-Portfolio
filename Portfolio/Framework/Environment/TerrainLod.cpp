@@ -43,7 +43,6 @@ TerrainLod::TerrainLod(InitializeDesc & desc)
 	bufferDesc.TexelCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
 	bufferDesc.HeightRatio = initDesc.HeightRatio;
 
-	
 	camera = new Fixity();
 	perspective = new Perspective(D3D::Width(), D3D::Height(), 0.1f, 1000.0f, Math::PI * 0.35f);
 

@@ -24,7 +24,7 @@ private:
 	
 	class Player* player;
 
-	vector<MeshRender*> meshes;
-	vector<ModelRender*> models;
-	vector<ModelAnimator*> animators;
+	//vector<MeshRender*> meshes;
+	//vector<ModelRender*> models;
+	//vector<ModelAnimator*> animators;
 };

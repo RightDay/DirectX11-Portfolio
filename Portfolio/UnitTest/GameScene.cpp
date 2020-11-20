@@ -22,7 +22,7 @@ void GameScene::Initialize()
 		};
 
 		terrain = new TerrainLod(desc);
-		terrain->BaseMap(L"Terrain/Dirt.png");
+		terrain->BaseMap(L"Terrain/Dirt2.png");
 		terrain->LayerMap(L"Terrain/Forest Floor.jpg", L"Terrain/Gray512.png");
 		terrain->NormalMap(L"Terrain/Dirt_Normal.png");
 		terrain->Pass(0);
