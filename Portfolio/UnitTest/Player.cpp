@@ -41,7 +41,11 @@ void Player::CreateArcherModel()
 	archer->ReadMesh(L"Archer/Archer");
 
 	archer->ReadClip(L"Archer/Idle");
-	archer->PlayClip(0, 0, 1.0f);
+	archer->ReadClip(L"Archer/Hip_Hop_Dancing");
+	archer->ReadClip(L"Archer/Jump");
+	archer->ReadClip(L"Archer/Running");
+
+	archer->PlayClip(0, 3, 1.0f);
 
 	Transform* transform = NULL;
 
