@@ -12,6 +12,7 @@ public:
 
 private:
 	void CreateArcherModel();
+	void Move();
 
 private:
 	ModelAnimator* model = NULL;
@@ -20,4 +21,8 @@ private:
 	vector<ModelAnimator*> animators;
 
 	Shader* modelShader = NULL;
+
+private:
+	Vector3 playerForward = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 playerPos = Vector3(0.0f, 0.0f, 0.0f);
 };

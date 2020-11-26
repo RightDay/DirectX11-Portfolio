@@ -21,6 +21,7 @@ Player::~Player()
 void Player::Update()
 {
 	model->Update();
+	Move();
 }
 
 void Player::Render()
@@ -59,4 +60,15 @@ void Player::CreateArcherModel()
 
 	for (ModelAnimator* temp : animators)
 		temp->Pass(2);
+}
+
+void Player::Move()
+{
+	playerForward = model->GetTransform(0)->Forward();
+	if (Keyboard::Get()->Press('W'))
+	{
+		playerPos -= playerForward * 200.0f * Time::Delta();
+		model->GetTransform(0)->Position(playerPos);
+	}
+	model->UpdateTransforms();
 }
