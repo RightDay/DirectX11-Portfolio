@@ -27,7 +27,6 @@ void Player::Update()
 void Player::Render()
 {
 	//Insert Shader Pass
-	
 
 	model->Render();
 }
@@ -65,10 +64,32 @@ void Player::CreateArcherModel()
 void Player::Move()
 {
 	playerForward = model->GetTransform(0)->Forward();
+	playerRight = model->GetTransform(0)->Right();
+
+	//Player move forward
 	if (Keyboard::Get()->Press('W'))
 	{
 		playerPos -= playerForward * 200.0f * Time::Delta();
-		model->GetTransform(0)->Position(playerPos);
 	}
+
+	//Player move backward
+	if (Keyboard::Get()->Press('S'))
+	{
+		playerPos -= -playerForward * 200.0f * Time::Delta();
+	}
+
+	//Player move right
+	if (Keyboard::Get()->Press('D'))
+	{
+		playerPos -= playerRight * 200.0f * Time::Delta();
+	}
+
+	//Player move left
+	if (Keyboard::Get()->Press('A'))
+	{
+		playerPos -= -playerRight * 200.0f * Time::Delta();
+	}
+
+	model->GetTransform(0)->Position(playerPos);
 	model->UpdateTransforms();
 }
