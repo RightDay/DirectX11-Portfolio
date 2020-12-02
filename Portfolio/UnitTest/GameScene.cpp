@@ -4,7 +4,7 @@
 
 void GameScene::Initialize()
 {
-	Context::Get()->GetCamera()->RotationDegree(0, 0, 0);
+	Context::Get()->GetCamera()->RotationDegree(32, 0, 0);
 	Context::Get()->GetCamera()->Position(0, 10, -30);
 	((Freedom*)Context::Get()->GetCamera())->Speed(100, 2);
 
@@ -38,6 +38,9 @@ void GameScene::Destroy()
 
 void GameScene::Update()
 {
+	playerPos = player->GetPlayerPos();
+	Context::Get()->GetCamera()->Position(playerPos.x, playerPos.y + 50.0f, playerPos.z - 50.0f);
+
 	sky->Update();
 	terrain->Update();
 	player->Update();

@@ -51,6 +51,7 @@ void Player::CreateArcherModel()
 
 	transform = archer->AddTransform();
 	transform->Position(0.0f, 0.0f, 0.0f);
+	transform->RotationDegree(0.0f, 180.0f, 0.0f);
 	transform->Scale(0.075f, 0.075f, 0.075f);
 
 	archer->UpdateTransforms();

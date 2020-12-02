@@ -24,6 +24,7 @@ private:
 	
 	class Player* player;
 
+	Vector3 playerPos = Vector3(0.0f, 0.0f, 0.0f);
 	//vector<MeshRender*> meshes;
 	//vector<ModelRender*> models;
 	//vector<ModelAnimator*> animators;

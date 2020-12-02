@@ -14,6 +14,9 @@ private:
 	void CreateArcherModel();
 	void Move();
 
+public:
+	Vector3 GetPlayerPos() { return playerPos; }
+
 private:
 	ModelAnimator* model = NULL;
 	ModelAnimator* archer = NULL;
