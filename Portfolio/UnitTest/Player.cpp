@@ -21,6 +21,7 @@ Player::~Player()
 void Player::Update()
 {
 	model->Update();
+
 	Move();
 }
 
@@ -45,7 +46,7 @@ void Player::CreateArcherModel()
 	archer->ReadClip(L"Archer/Jump");
 	archer->ReadClip(L"Archer/Running");
 
-	archer->PlayClip(0, 3, 1.0f);
+	archer->PlayClip(0, IDLE, 1.0f);
 
 	Transform* transform = NULL;
 
@@ -67,30 +68,34 @@ void Player::Move()
 	playerForward = model->GetTransform(0)->Forward();
 	playerRight = model->GetTransform(0)->Right();
 
-	//Player move forward
-	if (Keyboard::Get()->Press('W'))
+	if (isMove == false)
 	{
-		playerPos -= playerForward * 200.0f * Time::Delta();
-	}
+		//Player move forward
+		if (Keyboard::Get()->Press('W'))
+		{
+			playerPos -= playerForward * 200.0f * Time::Delta();
+		}
 
-	//Player move backward
-	if (Keyboard::Get()->Press('S'))
-	{
-		playerPos -= -playerForward * 200.0f * Time::Delta();
-	}
+		//Player move backward
+		if (Keyboard::Get()->Press('S'))
+		{
+			playerPos -= -playerForward * 200.0f * Time::Delta();
+		}
 
-	//Player move right
-	if (Keyboard::Get()->Press('D'))
-	{
-		playerPos -= playerRight * 200.0f * Time::Delta();
-	}
+		//Player move right
+		if (Keyboard::Get()->Press('D'))
+		{
+			playerPos -= playerRight * 200.0f * Time::Delta();
+		}
 
-	//Player move left
-	if (Keyboard::Get()->Press('A'))
-	{
-		playerPos -= -playerRight * 200.0f * Time::Delta();
+		//Player move left
+		if (Keyboard::Get()->Press('A'))
+		{
+			playerPos -= -playerRight * 200.0f * Time::Delta();
+		}
 	}
 
 	model->GetTransform(0)->Position(playerPos);
 	model->UpdateTransforms();
+
 }

@@ -2,6 +2,9 @@
 
 class Player
 {
+private:
+	enum PlayerState {IDLE, DANCE, JUMP, RUNNING};
+
 public:
 	Player();
 	Player(ModelAnimator* model);
@@ -29,4 +32,6 @@ private:
 	Vector3 playerForward = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 playerRight = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 playerPos = Vector3(0.0f, 0.0f, 0.0f);
+
+	bool isMove = false;
 };
