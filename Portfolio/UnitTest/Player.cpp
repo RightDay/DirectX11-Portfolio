@@ -68,30 +68,33 @@ void Player::Move()
 	playerForward = model->GetTransform(0)->Forward();
 	playerRight = model->GetTransform(0)->Right();
 
+	moveVertical = playerForward * 200.0f * Time::Delta();
+	moveHorizontal = playerRight * 200.0f * Time::Delta();
+
 	if (isMove == false)
 	{
 		//Player move forward
 		if (Keyboard::Get()->Press('W'))
 		{
-			playerPos -= playerForward * 200.0f * Time::Delta();
+			playerPos += -moveVertical;
 		}
 
 		//Player move backward
 		if (Keyboard::Get()->Press('S'))
 		{
-			playerPos -= -playerForward * 200.0f * Time::Delta();
+			playerPos += moveVertical;
 		}
 
 		//Player move right
 		if (Keyboard::Get()->Press('D'))
 		{
-			playerPos -= playerRight * 200.0f * Time::Delta();
+			playerPos += -moveHorizontal;
 		}
 
 		//Player move left
 		if (Keyboard::Get()->Press('A'))
 		{
-			playerPos -= -playerRight * 200.0f * Time::Delta();
+			playerPos += moveHorizontal;
 		}
 	}
 
