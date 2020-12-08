@@ -46,7 +46,7 @@ void Player::CreateArcherModel()
 	archer->ReadClip(L"Archer/Jump");
 	archer->ReadClip(L"Archer/Running");
 
-	archer->PlayClip(0, IDLE, 1.0f);
+	archer->PlayClip(0, STATE_IDLE, 1.0f);
 
 	Transform* transform = NULL;
 
@@ -68,34 +68,33 @@ void Player::Move()
 	playerForward = model->GetTransform(0)->Forward();
 	playerRight = model->GetTransform(0)->Right();
 
-	moveVertical = playerForward * 200.0f * Time::Delta();
-	moveHorizontal = playerRight * 200.0f * Time::Delta();
+	moveVertical = playerForward * velocity * Time::Delta();
+	moveHorizontal = playerRight * velocity * Time::Delta();
 
-	if (isMove == false)
+	if (isMove == true) return;
+
+	//Player move forward
+	if (Keyboard::Get()->Press('W'))
 	{
-		//Player move forward
-		if (Keyboard::Get()->Press('W'))
-		{
-			playerPos += -moveVertical;
-		}
+		playerPos += -moveVertical;
+	}
 
-		//Player move backward
-		if (Keyboard::Get()->Press('S'))
-		{
-			playerPos += moveVertical;
-		}
+	//Player move backward
+	if (Keyboard::Get()->Press('S'))
+	{
+		playerPos += moveVertical;
+	}
 
-		//Player move right
-		if (Keyboard::Get()->Press('D'))
-		{
-			playerPos += -moveHorizontal;
-		}
+	//Player move right
+	if (Keyboard::Get()->Press('D'))
+	{
+		playerPos += -moveHorizontal;
+	}
 
-		//Player move left
-		if (Keyboard::Get()->Press('A'))
-		{
-			playerPos += moveHorizontal;
-		}
+	//Player move left
+	if (Keyboard::Get()->Press('A'))
+	{
+		playerPos += moveHorizontal;
 	}
 
 	model->GetTransform(0)->Position(playerPos);

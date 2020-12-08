@@ -3,7 +3,7 @@
 class Player
 {
 private:
-	enum PlayerState {IDLE, DANCE, JUMP, RUNNING};
+	enum PlayerState {STATE_IDLE, STATE_DANCE, STATE_JUMP, STATE_RUNNING};
 
 public:
 	Player();
@@ -38,4 +38,5 @@ private:
 	Vector3 moveHorizontal = Vector3(0.0f, 0.0f, 0.0f);
 
 	bool isMove = false;
+	float velocity = 200.0f;
 };
