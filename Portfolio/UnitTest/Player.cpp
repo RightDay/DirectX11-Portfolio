@@ -23,6 +23,7 @@ void Player::Update()
 	model->Update();
 
 	Move();
+	Rotation();
 }
 
 void Player::Render()
@@ -100,4 +101,23 @@ void Player::Move()
 	model->GetTransform(0)->Position(playerPos);
 	model->UpdateTransforms();
 
+}
+
+void Player::Rotation()
+{
+	//Player move right
+	if (Keyboard::Get()->Press('Q'))
+	{
+		angle -= 0.5f;
+	}
+
+	//Player move left
+	if (Keyboard::Get()->Press('E'))
+	{
+		angle += 0.5f;
+	}
+
+	playerRot = Vector3(0.0f, angle, 0.0f);
+
+	model->GetTransform(0)->RotationDegree(playerRot);	
 }

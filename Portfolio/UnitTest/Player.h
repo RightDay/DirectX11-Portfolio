@@ -16,6 +16,7 @@ public:
 private:
 	void CreateArcherModel();
 	void Move();
+	void Rotation();
 
 public:
 	Vector3 GetPlayerPos() { return playerPos; }
@@ -33,10 +34,12 @@ private:
 	Vector3 playerRight = Vector3(0.0f, 0.0f, 0.0f);
 
 	Vector3 playerPos = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 playerRot = Vector3(0.0f, 0.0f, 0.0f);
 
 	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 moveHorizontal = Vector3(0.0f, 0.0f, 0.0f);
 
 	bool isMove = false;
 	float velocity = 200.0f;
+	float angle = 180.0f;
 };
