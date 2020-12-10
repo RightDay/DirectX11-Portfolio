@@ -39,7 +39,11 @@ void GameScene::Destroy()
 void GameScene::Update()
 {
 	playerPos = player->GetPlayerPos();
-	Context::Get()->GetCamera()->Position(playerPos.x, playerPos.y + 50.0f, playerPos.z - 50.0f);
+
+	if (Mouse::Get()->Press(1) == false)
+	{
+		Context::Get()->GetCamera()->Position(playerPos.x, playerPos.y + 50.0f, playerPos.z - 50.0f);
+	}
 
 	sky->Update();
 	terrain->Update();

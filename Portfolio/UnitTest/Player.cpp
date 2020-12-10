@@ -66,13 +66,15 @@ void Player::CreateArcherModel()
 
 void Player::Move()
 {
+	if (Mouse::Get()->Press(1) == true) return;
+
 	playerForward = model->GetTransform(0)->Forward();
 	playerRight = model->GetTransform(0)->Right();
-
+	
 	moveVertical = playerForward * velocity * Time::Delta();
 	moveHorizontal = playerRight * velocity * Time::Delta();
 
-	if (isMove == true) return;
+	if (isMove == false) return;
 
 	//Player move forward
 	if (Keyboard::Get()->Press('W'))
@@ -100,7 +102,6 @@ void Player::Move()
 
 	model->GetTransform(0)->Position(playerPos);
 	model->UpdateTransforms();
-
 }
 
 void Player::Rotation()
