@@ -76,29 +76,7 @@ void Player::Move()
 
 	if (isMove == false) return;
 
-	//Player move forward
-	if (Keyboard::Get()->Press('W'))
-	{
-		playerPos += -moveVertical;
-	}
-
-	//Player move backward
-	if (Keyboard::Get()->Press('S'))
-	{
-		playerPos += moveVertical;
-	}
-
-	//Player move right
-	if (Keyboard::Get()->Press('D'))
-	{
-		playerPos += -moveHorizontal;
-	}
-
-	//Player move left
-	if (Keyboard::Get()->Press('A'))
-	{
-		playerPos += moveHorizontal;
-	}
+	playerControl();
 
 	model->GetTransform(0)->Position(playerPos);
 	model->UpdateTransforms();
@@ -121,4 +99,43 @@ void Player::Rotation()
 	playerRot = Vector3(0.0f, angle, 0.0f);
 
 	model->GetTransform(0)->RotationDegree(playerRot);
+}
+
+void Player::playerControl()
+{
+	//Player move forward
+	if (Keyboard::Get()->Press('W'))
+	{
+		playerMovePos(moveVertical, false);
+	}
+
+	//Player move backward
+	if (Keyboard::Get()->Press('S'))
+	{
+		playerMovePos(moveVertical, true);
+	}
+
+	//Player move right
+	if (Keyboard::Get()->Press('D'))
+	{
+		playerMovePos(moveHorizontal, false);
+	}
+
+	//Player move left
+	if (Keyboard::Get()->Press('A'))
+	{
+		playerMovePos(moveHorizontal, true);
+	}
+}
+
+void Player::playerMovePos(Vector3 pos, bool plus)
+{
+	if (plus)
+	{
+		playerPos += pos;
+	}
+	else
+	{
+		playerPos -= pos;
+	}
 }

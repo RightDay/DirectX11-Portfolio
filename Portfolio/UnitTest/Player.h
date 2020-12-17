@@ -15,8 +15,12 @@ public:
 
 private:
 	void CreateArcherModel();
+
 	void Move();
 	void Rotation();
+
+	void playerControl();
+	void playerMovePos(Vector3 pos, bool plus);
 
 public:
 	Vector3 GetPlayerPos() { return playerPos; }
