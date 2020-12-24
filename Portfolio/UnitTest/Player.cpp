@@ -84,17 +84,7 @@ void Player::Move()
 
 void Player::Rotation()
 {
-	//Player rotation left
-	if (Keyboard::Get()->Press('Q'))
-	{
-		angle -= 0.5f;
-	}
-
-	//Player rotation right
-	if (Keyboard::Get()->Press('E'))
-	{
-		angle += 0.5f;
-	}
+	playerControl();
 
 	playerRot = Vector3(0.0f, angle, 0.0f);
 
@@ -125,6 +115,18 @@ void Player::playerControl()
 	if (Keyboard::Get()->Press('A'))
 	{
 		playerMovePos(moveHorizontal, true);
+	}
+
+	//Player rotation left
+	if (Keyboard::Get()->Press('Q'))
+	{
+		angle -= 0.5f;
+	}
+
+	//Player rotation right
+	if (Keyboard::Get()->Press('E'))
+	{
+		angle += 0.5f;
 	}
 }
 
