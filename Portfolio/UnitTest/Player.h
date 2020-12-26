@@ -21,6 +21,7 @@ private:
 
 	void playerControl();
 	void playerMovePos(Vector3 pos, bool plus);
+	void playerRotationAngle(float rotationAngle);
 
 public:
 	Vector3 GetPlayerPos() { return playerPos; }
