@@ -1,6 +1,7 @@
 #pragma once
+#include "GameActor.h"
 
-class Player
+class Player : public GameActor
 {
 private:
 	enum PlayerState {STATE_IDLE, STATE_DANCE, STATE_JUMP, STATE_RUNNING};
@@ -10,8 +11,8 @@ public:
 	Player(ModelAnimator* model);
 	~Player();
 
-	void Update();
-	void Render();
+	void Update() override;
+	void Render() override;
 
 private:
 	void CreateArcherModel();
