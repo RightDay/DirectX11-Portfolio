@@ -33,6 +33,18 @@ void Player::Render()
 	model->Render();
 }
 
+void Player::Jump()
+{
+}
+
+void Player::Run()
+{
+}
+
+void Player::Attack()
+{
+}
+
 
 void Player::CreateArcherModel()
 {

@@ -14,6 +14,10 @@ public:
 	void Update() override;
 	void Render() override;
 
+	void Jump() override;
+	void Run() override;
+	void Attack() override;
+
 private:
 	void CreateArcherModel();
 
