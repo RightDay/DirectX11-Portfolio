@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "PlayerState.h"
 
 Player::Player()
 {
@@ -11,7 +12,6 @@ Player::Player()
 Player::Player(ModelAnimator* model)
 	:model(model)
 {
-	
 }
 
 Player::~Player()
@@ -22,6 +22,11 @@ void Player::Update()
 {
 	model->Update();
 
+	if (state == NULL)
+	{
+		state = new StandingState();
+	}
+	state->Update(*this);
 	Move();
 	Rotation();
 }
@@ -45,6 +50,17 @@ void Player::Attack()
 {
 }
 
+void Player::handleInput(Input input)
+{
+	PlayerState* state_ = state->handleInput(*this, input);
+	if (state_ != NULL)
+	{
+		delete state;
+		state = state_;
+
+		state->Enter(*this);
+	}
+}
 
 void Player::CreateArcherModel()
 {
@@ -55,9 +71,9 @@ void Player::CreateArcherModel()
 	archer->ReadMesh(L"Archer/Archer");
 
 	archer->ReadClip(L"Archer/Idle");
+	archer->ReadClip(L"Archer/Running");
 	archer->ReadClip(L"Archer/Hip_Hop_Dancing");
 	archer->ReadClip(L"Archer/Jump");
-	archer->ReadClip(L"Archer/Running");
 
 	archer->PlayClip(0, STATE_IDLE, 1.0f);
 
@@ -108,25 +124,25 @@ void Player::playerControl()
 	//Player move forward
 	if (Keyboard::Get()->Press('W'))
 	{
-		playerMovePos(moveVertical, false);
+		handleInput(PRESS_W);
 	}
 
 	//Player move backward
 	if (Keyboard::Get()->Press('S'))
 	{
-		playerMovePos(moveVertical, true);
+		handleInput(PRESS_S);
 	}
 
 	//Player move right
 	if (Keyboard::Get()->Press('D'))
 	{
-		playerMovePos(moveHorizontal, false);
+		handleInput(PRESS_D);
 	}
 
 	//Player move left
 	if (Keyboard::Get()->Press('A'))
 	{
-		playerMovePos(moveHorizontal, true);
+		handleInput(PRESS_A);
 	}
 
 	//Player rotation left
@@ -140,6 +156,12 @@ void Player::playerControl()
 	{
 		playerRotationAngle(+0.5f);
 	}
+
+	if (Keyboard::Get()->Up('W') || Keyboard::Get()->Up('S') || Keyboard::Get()->Up('A') || Keyboard::Get()->Up('D'))
+	{
+		handleInput(RELEASE_MOVE);
+	}
+
 }
 
 void Player::playerMovePos(Vector3 pos, bool plus)

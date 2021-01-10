@@ -40,13 +40,7 @@ void GameScene::Update()
 {
 	playerPos = player->GetPlayerPos();
 	playerRot = player->GetPlayerRot();
-
-	if (Mouse::Get()->Press(1) == false)
-	{
-		Context::Get()->GetCamera()->Position(playerPos.x, playerPos.y + 50.0f, playerPos.z - 50.0f);
-		//Context::Get()->GetCamera()->RotationDegree(0,  playerRot.y, 0);
-		Context::Get()->GetCamera()->RotationDegree(0, playerRot.y, 0);
-	}
+	
 
 	sky->Update();
 	terrain->Update();
