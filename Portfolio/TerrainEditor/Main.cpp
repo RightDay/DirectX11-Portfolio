@@ -7,8 +7,8 @@
 
 void Main::Initialize()
 {
-	//Push(new Viewer());
-	Push(new Editor());
+	Push(new Viewer());
+	//Push(new Editor());
 }
 
 void Main::Ready()
