@@ -1,5 +1,5 @@
 #include "Framework.h"
-#include "TerrainLod.h"
+
 
 TerrainLod::TerrainLod(InitializeDesc & desc)
 	: Renderer(desc.shader), initDesc(desc)
@@ -75,7 +75,6 @@ void TerrainLod::Update()
 	ImGui::SliderFloat("MaxDistance", &bufferDesc.MaxDistance, 1, 1000);
 
 	camera->Update();
-
 	frustum->Update();
 	frustum->Planes(bufferDesc.WorldFrustumPlanes);
 }
@@ -125,6 +124,14 @@ void TerrainLod::NormalMap(wstring file)
 
 	normalMap = new Texture(file);
 }
+
+void TerrainLod::HeightMap(wstring file)
+{
+	SafeDelete(heightMap);
+
+	heightMap = new Texture(file);
+}
+
 
 bool TerrainLod::InBounds(UINT x, UINT z)
 {

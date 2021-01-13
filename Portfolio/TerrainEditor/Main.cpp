@@ -7,8 +7,8 @@
 
 void Main::Initialize()
 {
-	Push(new Viewer());
-	//Push(new Editor());
+	//Push(new Viewer());
+	Push(new Editor());
 }
 
 void Main::Ready()
@@ -65,7 +65,7 @@ void Main::Push(IExecute * execute)
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE prevInstance, LPSTR param, int command)
 {
 	D3DDesc desc;
-	desc.AppName = L"D3D Game";
+	desc.AppName = L"TerrainEditor";
 	desc.Instance = instance;
 	desc.bFullScreen = false;
 	desc.bVsync = false;

@@ -14,8 +14,13 @@ public:
 	virtual void ResizeScreen() override {}
 
 private:
+	void ImportHeightMap(wstring files);
+
+private:
 	CubeSky* sky;
 
 	Shader* shader;
 	TerrainLod* terrain;
+	
+	Texture* heightMapTexture;
 };

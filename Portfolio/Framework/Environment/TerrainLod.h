@@ -12,9 +12,18 @@ public:
 	void Update();
 	void Render();
 
+	Texture* BaseMap() { return baseMap; }
 	void BaseMap(wstring file);
+
+	Texture* LayerMap() { return layerMap; }
 	void LayerMap(wstring layer, wstring alpha);
+
+	Texture* NormalMap() { return normalMap; }
 	void NormalMap(wstring file);
+
+	Texture* HeightMap() { return heightMap; }
+	void HeightMap(wstring file);
+	void SetHeightMap() { sHeightMap->SetResource(heightMap->SRV()); }
 
 private:
 	bool InBounds(UINT x, UINT z);
@@ -80,10 +89,9 @@ private:
 	Camera* camera;
 	Perspective* perspective;
 
-	Texture* heightMap;
+	Texture* heightMap = NULL;
 	vector<D3DXCOLOR> heightMapPixel;
 	ID3DX11EffectShaderResourceVariable* sHeightMap;
-
 
 	vector<Vector2> bounds;
 
