@@ -7,11 +7,14 @@ Player::Player()
 	CreateArcherModel();
 
 	model = archer;
+
+	state = new StandingState();
 }
 
 Player::Player(ModelAnimator* model)
 	:model(model)
 {
+	state = new StandingState();
 }
 
 Player::~Player()
@@ -22,10 +25,10 @@ void Player::Update()
 {
 	model->Update();
 
-	if (state == NULL)
-	{
-		state = new StandingState();
-	}
+	//if (state == NULL)
+	//{
+	//	state = new StandingState();
+	//}
 	state->Update(*this);
 	Move();
 	Rotation();
