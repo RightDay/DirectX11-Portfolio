@@ -14,6 +14,7 @@ public:
 	virtual void ResizeScreen() override {}
 
 private:
+	void ImportBaseMap(wstring files);
 	void ImportHeightMap(wstring files);
 
 private:
@@ -21,6 +22,7 @@ private:
 
 	Shader* shader;
 	TerrainLod* terrain;
-	
+
+	Texture* baseMapTexture;
 	Texture* heightMapTexture;
 };

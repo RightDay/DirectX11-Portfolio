@@ -390,4 +390,5 @@ MigrationBackup/
 *.sln
 [Dd]ebug*/
 *.ini
+*.props
 # End of https://www.gitignore.io/api/c++,visualstudio

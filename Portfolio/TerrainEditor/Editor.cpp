@@ -14,7 +14,7 @@ void Editor::Initialize()
 	//Terrain
 	{
 		TerrainLod::InitializeDesc desc =
-		{ 
+		{
 			shader,
 			L"Terrain/Gray512.png",
 			1.0f, 16, 5
@@ -38,14 +38,20 @@ void Editor::Destroy()
 
 void Editor::Update()
 {
-	int frame_padding = -1;									// -1 == uses default padding (style.FramePadding)
-	ImVec2 size = ImVec2(32.0f, 32.0f);                     // Size of the image we want to make visible
-	ImVec2 uv0 = ImVec2(0.0f, 0.0f);                        // UV coordinates for lower-left
-	ImVec2 uv1 = ImVec2(32.0f / 1.0f, 32.0f / 1.0f);		// UV coordinates for (32,32) in our texture
-	ImVec4 bg_col = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);         // Black background
-	ImVec4 tint_col = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);       // No tint
-	
-	
+	ImVec2 size = ImVec2(100.0f, 100.0f);                     // Size of the image we want to make visible
+
+	baseMapTexture = terrain->BaseMap();
+	if (ImGui::ImageButton(baseMapTexture->SRV(), size))
+	{
+		Path::OpenFileDialog(
+			L"",
+			L"Every File(*.*)\0*.*\0Text File\0*.txt;*.doc\0",
+			L"../../_Textures/",
+			bind(&Editor::ImportBaseMap, this, placeholders::_1),
+			D3D::GetDesc().Handle
+		);
+	}
+
 	heightMapTexture = terrain->HeightMap();
 	if (ImGui::ImageButton(heightMapTexture->SRV(), size))
 	{
@@ -65,6 +71,14 @@ void Editor::Render()
 {
 	sky->Render();
 	terrain->Render();
+}
+
+void Editor::ImportBaseMap(wstring files)
+{
+	if (terrain->BaseMap()->GetFile() == files) return;
+
+	terrain->BaseMap(files);
+	terrain->SetBaseMap();
 }
 
 void Editor::ImportHeightMap(wstring files)

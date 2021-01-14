@@ -4,7 +4,7 @@ class TerrainLod : public Renderer
 {
 public:
 	struct InitializeDesc;
-	
+
 public:
 	TerrainLod(InitializeDesc& desc);
 	~TerrainLod();
@@ -14,6 +14,7 @@ public:
 
 	Texture* BaseMap() { return baseMap; }
 	void BaseMap(wstring file);
+	void SetBaseMap() { sBaseMap->SetResource(baseMap->SRV()); }
 
 	Texture* LayerMap() { return layerMap; }
 	void LayerMap(wstring layer, wstring alpha);
