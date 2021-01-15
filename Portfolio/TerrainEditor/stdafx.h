@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Framework.h"
-#pragma comment(lib, "Framework.lib")
+#pragma comment(lib, "../Debug/Framework.lib")
 
 #include "Assimp/Importer.hpp"
 #include "Assimp/scene.h"
