@@ -1,6 +1,7 @@
 #pragma once
 #include "Systems/IExecute.h"
 
+enum class MapTypes { BASE_MAP, LAYER_MAP, NORMAL_MAP, HEIGHT_MAP };
 class Editor : public IExecute
 {
 public:
@@ -14,8 +15,16 @@ public:
 	virtual void ResizeScreen() override {}
 
 private:
+	void ImportMapTypes(wstring files, MapTypes mapTypes);
 	void ImportBaseMap(wstring files);
+	void ImportLayerMap(wstring files);
+	void ImportNormalMap(wstring files);
 	void ImportHeightMap(wstring files);
+
+	void AddMapButton(Texture * mapTexture, ImVec2 size, function<void(wstring)> func);
+
+private:
+	bool showTerrainEditor = true;
 
 private:
 	CubeSky* sky;
@@ -25,4 +34,8 @@ private:
 
 	Texture* baseMapTexture;
 	Texture* heightMapTexture;
+	Texture* layerMapTexture;
+	Texture* normalMapTexture;
+
+	function<void(wstring)> func = NULL;
 };

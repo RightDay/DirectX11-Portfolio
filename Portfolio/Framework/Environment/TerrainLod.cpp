@@ -1,6 +1,5 @@
 #include "Framework.h"
 
-
 TerrainLod::TerrainLod(InitializeDesc & desc)
 	: Renderer(desc.shader), initDesc(desc)
 {
@@ -99,7 +98,6 @@ void TerrainLod::Render()
 	buffer->Apply();
 	sBuffer->SetConstantBuffer(buffer->Buffer());
 	shader->DrawIndexed(0, Pass(), indexCount);
-
 }
 
 void TerrainLod::BaseMap(wstring file)
@@ -107,6 +105,13 @@ void TerrainLod::BaseMap(wstring file)
 	SafeDelete(baseMap);
 
 	baseMap = new Texture(file);
+}
+
+void TerrainLod::LayerMap(wstring layer)
+{
+	SafeDelete(layerMap);
+
+	layerMap = new Texture(layer);
 }
 
 void TerrainLod::LayerMap(wstring layer, wstring alpha)

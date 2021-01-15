@@ -17,10 +17,12 @@ public:
 	void SetBaseMap() { sBaseMap->SetResource(baseMap->SRV()); }
 
 	Texture* LayerMap() { return layerMap; }
+	void LayerMap(wstring layer);
 	void LayerMap(wstring layer, wstring alpha);
 
 	Texture* NormalMap() { return normalMap; }
 	void NormalMap(wstring file);
+	void SetNormalMap() { sNormalMap->SetResource(normalMap->SRV()); }
 
 	Texture* HeightMap() { return heightMap; }
 	void HeightMap(wstring file);

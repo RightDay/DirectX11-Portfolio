@@ -10,7 +10,7 @@ void Editor::Initialize()
 	shader = new Shader(L"47_TerrainLod.fx");
 
 	sky = new CubeSky(L"Environment/GrassCube1024.dds");
-
+	
 	//Terrain
 	{
 		TerrainLod::InitializeDesc desc =
@@ -39,30 +39,56 @@ void Editor::Destroy()
 void Editor::Update()
 {
 	ImVec2 size = ImVec2(100.0f, 100.0f);                     // Size of the image we want to make visible
-
-	baseMapTexture = terrain->BaseMap();
-	if (ImGui::ImageButton(baseMapTexture->SRV(), size))
+	ImGui::Begin("Inspector", &showTerrainEditor);
 	{
-		Path::OpenFileDialog(
-			L"",
-			L"Every File(*.*)\0*.*\0Text File\0*.txt;*.doc\0",
-			L"../../_Textures/",
-			bind(&Editor::ImportBaseMap, this, placeholders::_1),
-			D3D::GetDesc().Handle
-		);
-	}
+		const char* toolTypes[] = { "None" };
+		ImGui::Text("Setting Type");
+		if (ImGui::BeginCombo("ToolType", "None"))
+		{
+			if (ImGui::Selectable("Terrain HeightMap", false))
+			{
+				//TODO: Make HeightMap combo.
+				ImGui::SetItemDefaultFocus();
+			}
+			ImGui::EndCombo();
+		}
 
-	heightMapTexture = terrain->HeightMap();
-	if (ImGui::ImageButton(heightMapTexture->SRV(), size))
-	{
-		Path::OpenFileDialog(
-			L"",
-			L"Every File(*.*)\0*.*\0Text File\0*.txt;*.doc\0",
-			L"../../_Textures/",
-			bind(&Editor::ImportHeightMap, this, placeholders::_1),
-			D3D::GetDesc().Handle
-		);
+		if (ImGui::TreeNode("BaseMap"))
+		{
+			ImGui::Text("Terrain BaseMap");
+
+			baseMapTexture = terrain->BaseMap();
+			//TODO: Modify func to put ImportMapTypes for make it work by assign MapTypes variable.
+			func = bind(&Editor::ImportBaseMap, this, placeholders::_1);
+			AddMapButton(baseMapTexture, size, func);
+			
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("LayerMap"))
+		{
+			ImGui::Text("Terrain LayerMap");
+
+			layerMapTexture = terrain->LayerMap();
+			func = bind(&Editor::ImportLayerMap, this,  placeholders::_1);
+			AddMapButton(layerMapTexture, size, func);
+
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("NormalMap"))
+		{
+			ImGui::Text("Terrain NormalMap");
+
+			normalMapTexture = terrain->NormalMap();
+			func = bind(&Editor::ImportNormalMap, this, placeholders::_1);
+			AddMapButton(normalMapTexture, size, func);
+
+			ImGui::TreePop();
+		}
+		ImGui::End();
 	}
+	
 	sky->Update();
 	terrain->Update();
 }
@@ -73,6 +99,27 @@ void Editor::Render()
 	terrain->Render();
 }
 
+void Editor::ImportMapTypes(wstring files, MapTypes mapTypes)
+{
+	switch (mapTypes)
+	{
+	case MapTypes::BASE_MAP:
+		ImportBaseMap(files);
+		break;
+	case MapTypes::LAYER_MAP:
+		ImportLayerMap(files);
+		break;
+	case MapTypes::NORMAL_MAP:
+		ImportNormalMap(files);
+		break;
+	case MapTypes::HEIGHT_MAP:
+		ImportHeightMap(files);
+		break;
+	default:
+		break;
+	}
+}
+
 void Editor::ImportBaseMap(wstring files)
 {
 	if (terrain->BaseMap()->GetFile() == files) return;
@@ -81,10 +128,40 @@ void Editor::ImportBaseMap(wstring files)
 	terrain->SetBaseMap();
 }
 
+void Editor::ImportLayerMap(wstring files)
+{
+	if (terrain->LayerMap()->GetFile() == files) return;
+
+	terrain->LayerMap(files);
+	terrain->SetBaseMap();
+}
+
+void Editor::ImportNormalMap(wstring files)
+{
+	if (terrain->NormalMap()->GetFile() == files) return;
+
+	terrain->NormalMap(files);
+	terrain->SetNormalMap();
+}
+
 void Editor::ImportHeightMap(wstring files)
 {
 	if (terrain->HeightMap()->GetFile() == files) return;
 
 	terrain->HeightMap(files);
 	terrain->SetHeightMap();
+}
+
+void Editor::AddMapButton(Texture * mapTexture, ImVec2 size, function<void(wstring)> func)
+{
+	if (ImGui::ImageButton(mapTexture->SRV(), size))
+	{
+		Path::OpenFileDialog(
+			L"",
+			L"Every File(*.*)\0*.*\0Text File\0*.txt;*.doc\0",
+			L"../../_Textures/",
+			func,
+			D3D::GetDesc().Handle
+		);
+	}
 }
