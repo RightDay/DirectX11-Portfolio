@@ -15,11 +15,12 @@ public:
 	virtual void ResizeScreen() override {}
 
 private:
-	void ImportMapTypes(wstring files, MapTypes mapTypes);
+	Texture * GetMapTexture(MapTypes mapTypes);
 	void ImportBaseMap(wstring files);
 	void ImportLayerMap(wstring files);
 	void ImportNormalMap(wstring files);
 	void ImportHeightMap(wstring files);
+	void UpdateMapImage(Texture *& mapTexture, MapTypes mapTypes, function<void(wstring)>& func, void(Editor::* function)(wstring files));
 
 	void AddMapButton(Texture * mapTexture, ImVec2 size, function<void(wstring)> func);
 
@@ -32,10 +33,10 @@ private:
 	Shader* shader;
 	TerrainLod* terrain;
 
-	Texture* baseMapTexture;
-	Texture* heightMapTexture;
-	Texture* layerMapTexture;
-	Texture* normalMapTexture;
+	Texture* baseMapTexture = NULL;
+	Texture* heightMapTexture = NULL;
+	Texture* layerMapTexture = NULL;
+	Texture* normalMapTexture = NULL;
 
 	function<void(wstring)> func = NULL;
 };

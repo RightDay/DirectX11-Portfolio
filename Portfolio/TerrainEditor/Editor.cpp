@@ -28,7 +28,10 @@ void Editor::Initialize()
 		//terrain->Pass(1);
 	}
 
-	heightMapTexture = NULL;
+	heightMapTexture = terrain->HeightMap();
+	baseMapTexture = terrain->BaseMap();
+	layerMapTexture = terrain->LayerMap();
+	normalMapTexture = terrain->NormalMap();
 }
 
 void Editor::Destroy()
@@ -57,9 +60,7 @@ void Editor::Update()
 		{
 			ImGui::Text("Terrain BaseMap");
 
-			baseMapTexture = terrain->BaseMap();
-			//TODO: Modify func to put ImportMapTypes for make it work by assign MapTypes variable.
-			func = bind(&Editor::ImportBaseMap, this, placeholders::_1);
+			UpdateMapImage(baseMapTexture, MapTypes::BASE_MAP, func, &Editor::ImportBaseMap);
 			AddMapButton(baseMapTexture, size, func);
 			
 			ImGui::TreePop();
@@ -69,8 +70,7 @@ void Editor::Update()
 		{
 			ImGui::Text("Terrain LayerMap");
 
-			layerMapTexture = terrain->LayerMap();
-			func = bind(&Editor::ImportLayerMap, this,  placeholders::_1);
+			UpdateMapImage(layerMapTexture, MapTypes::LAYER_MAP, func, &Editor::ImportLayerMap);
 			AddMapButton(layerMapTexture, size, func);
 
 			ImGui::TreePop();
@@ -80,8 +80,7 @@ void Editor::Update()
 		{
 			ImGui::Text("Terrain NormalMap");
 
-			normalMapTexture = terrain->NormalMap();
-			func = bind(&Editor::ImportNormalMap, this, placeholders::_1);
+			UpdateMapImage(normalMapTexture, MapTypes::NORMAL_MAP, func, &Editor::ImportNormalMap);
 			AddMapButton(normalMapTexture, size, func);
 
 			ImGui::TreePop();
@@ -99,24 +98,24 @@ void Editor::Render()
 	terrain->Render();
 }
 
-void Editor::ImportMapTypes(wstring files, MapTypes mapTypes)
+Texture * Editor::GetMapTexture(MapTypes mapTypes)
 {
 	switch (mapTypes)
 	{
 	case MapTypes::BASE_MAP:
-		ImportBaseMap(files);
+		return terrain->BaseMap();
 		break;
 	case MapTypes::LAYER_MAP:
-		ImportLayerMap(files);
+		return terrain->LayerMap();
 		break;
 	case MapTypes::NORMAL_MAP:
-		ImportNormalMap(files);
+		return terrain->NormalMap();
 		break;
 	case MapTypes::HEIGHT_MAP:
-		ImportHeightMap(files);
+		return terrain->HeightMap();
 		break;
 	default:
-		break;
+		return NULL;
 	}
 }
 
@@ -151,6 +150,13 @@ void Editor::ImportHeightMap(wstring files)
 	terrain->HeightMap(files);
 	terrain->SetHeightMap();
 }
+
+void Editor::UpdateMapImage(Texture *& mapTexture, MapTypes mapTypes, function<void(wstring)>& func, void(Editor::*function)(wstring files))
+{
+	mapTexture = GetMapTexture(mapTypes);
+	func = bind(function, this, placeholders::_1);
+}
+
 
 void Editor::AddMapButton(Texture * mapTexture, ImVec2 size, function<void(wstring)> func)
 {
