@@ -41,50 +41,10 @@ void Editor::Destroy()
 
 void Editor::Update()
 {
-	ImVec2 size = ImVec2(100.0f, 100.0f);                     // Size of the image we want to make visible
 	ImGui::Begin("Inspector", &showTerrainEditor);
 	{
-		const char* toolTypes[] = { "None" };
-		ImGui::Text("Setting Type");
-		if (ImGui::BeginCombo("ToolType", "None"))
-		{
-			if (ImGui::Selectable("Terrain HeightMap", false))
-			{
-				//TODO: Make HeightMap combo.
-				ImGui::SetItemDefaultFocus();
-			}
-			ImGui::EndCombo();
-		}
-
-		if (ImGui::TreeNode("BaseMap"))
-		{
-			ImGui::Text("Terrain BaseMap");
-
-			UpdateMapImage(baseMapTexture, MapTypes::BASE_MAP, func, &Editor::ImportBaseMap);
-			AddMapButton(baseMapTexture, size, func);
-			
-			ImGui::TreePop();
-		}
-
-		if (ImGui::TreeNode("LayerMap"))
-		{
-			ImGui::Text("Terrain LayerMap");
-
-			UpdateMapImage(layerMapTexture, MapTypes::LAYER_MAP, func, &Editor::ImportLayerMap);
-			AddMapButton(layerMapTexture, size, func);
-
-			ImGui::TreePop();
-		}
-
-		if (ImGui::TreeNode("NormalMap"))
-		{
-			ImGui::Text("Terrain NormalMap");
-
-			UpdateMapImage(normalMapTexture, MapTypes::NORMAL_MAP, func, &Editor::ImportNormalMap);
-			AddMapButton(normalMapTexture, size, func);
-
-			ImGui::TreePop();
-		}
+		AddSettingTypeCombobox();
+		
 		ImGui::End();
 	}
 	
@@ -116,6 +76,86 @@ Texture * Editor::GetMapTexture(MapTypes mapTypes)
 		break;
 	default:
 		return NULL;
+	}
+}
+
+void Editor::AddSettingTypeCombobox()
+{
+	const char* toolTypes[] = { "None", "Terrain HeightMap" };
+	static int item_current_idx = 0;
+	const char* combo_label = toolTypes[item_current_idx];
+	ImGui::Text("Setting Type");
+	if (ImGui::BeginCombo("ToolType", combo_label))
+	{
+		for (int n = 0; n < IM_ARRAYSIZE(toolTypes); n++)
+		{
+			const bool is_selected = (item_current_idx == n);
+			if (ImGui::Selectable(toolTypes[n], is_selected))
+				item_current_idx = n;
+
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected)
+				ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+
+	if (item_current_idx == 0)
+	{
+		NoneSettingType();
+	}
+	if (item_current_idx == 1)
+	{
+		HeightMapSettingType();
+	}
+}
+
+void Editor::NoneSettingType()
+{
+	if (ImGui::CollapsingHeader("Terrain Diffuse"))
+	{
+		if (ImGui::TreeNode("BaseMap"))
+		{
+			ImGui::Text("Terrain BaseMap");
+
+			UpdateMapImage(baseMapTexture, MapTypes::BASE_MAP, func, &Editor::ImportBaseMap);
+			AddMapButton(baseMapTexture, btnSize, func);
+
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("LayerMap"))
+		{
+			ImGui::Text("Terrain LayerMap");
+
+			UpdateMapImage(layerMapTexture, MapTypes::LAYER_MAP, func, &Editor::ImportLayerMap);
+			AddMapButton(layerMapTexture, btnSize, func);
+
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("NormalMap"))
+		{
+			ImGui::Text("Terrain NormalMap");
+
+			UpdateMapImage(normalMapTexture, MapTypes::NORMAL_MAP, func, &Editor::ImportNormalMap);
+			AddMapButton(normalMapTexture, btnSize, func);
+
+			ImGui::TreePop();
+		}
+	}
+}
+
+void Editor::HeightMapSettingType()
+{
+	if (ImGui::TreeNode("HeightMap"))
+	{
+		ImGui::Text("Terrain HeightMap");
+
+		UpdateMapImage(heightMapTexture, MapTypes::HEIGHT_MAP, func, &Editor::ImportHeightMap);
+		AddMapButton(heightMapTexture, btnSize, func);
+
+		ImGui::TreePop();
 	}
 }
 

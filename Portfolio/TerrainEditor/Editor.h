@@ -16,6 +16,10 @@ public:
 
 private:
 	Texture * GetMapTexture(MapTypes mapTypes);
+	void AddSettingTypeCombobox();
+	void NoneSettingType();
+	void HeightMapSettingType();
+
 	void ImportBaseMap(wstring files);
 	void ImportLayerMap(wstring files);
 	void ImportNormalMap(wstring files);
@@ -34,9 +38,10 @@ private:
 	TerrainLod* terrain;
 
 	Texture* baseMapTexture = NULL;
-	Texture* heightMapTexture = NULL;
 	Texture* layerMapTexture = NULL;
 	Texture* normalMapTexture = NULL;
+	Texture* heightMapTexture = NULL;
 
 	function<void(wstring)> func = NULL;
+	ImVec2 btnSize = ImVec2(100.0f, 100.0f);
 };
