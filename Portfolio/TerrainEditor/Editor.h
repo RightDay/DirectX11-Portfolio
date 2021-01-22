@@ -2,7 +2,7 @@
 #include "Systems/IExecute.h"
 
 enum class MapTypes { BASE_MAP, LAYER_MAP, NORMAL_MAP, HEIGHT_MAP };
-
+enum FillModes { NONE = 0, WIRE_FRAME };
 class Editor : public IExecute
 {
 public:
@@ -17,9 +17,11 @@ public:
 
 private:
 	Texture * GetMapTexture(MapTypes mapTypes);
+
 	void AddSettingTypeCombobox();
 	void NoneSettingType();
 	void HeightMapSettingType();
+	void DetailTerrainSettingType();
 
 	void ImportBaseMap(wstring files);
 	void ImportLayerMap(wstring files);
@@ -30,6 +32,8 @@ private:
 	Texture* GetTextureMap(Texture *& mapTexture, MapTypes mapTypes);
 
 	void AddMapButton(Texture * mapTexture, ImVec2 size, function<void(wstring)> func);
+
+	void ChangeFillMode(int fillmode) { terrain->Pass(fillmode); }
 
 private:
 	bool showTerrainEditor = true;

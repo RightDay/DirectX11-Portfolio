@@ -81,7 +81,7 @@ Texture * Editor::GetMapTexture(MapTypes mapTypes)
 
 void Editor::AddSettingTypeCombobox()
 {
-	const char* toolTypes[] = { "None", "Terrain HeightMap" };
+	const char* toolTypes[] = { "None", "Terrain HeightMap", "Terrain Detail" };
 	static int item_current_idx = 0;
 	const char* combo_label = toolTypes[item_current_idx];
 	ImGui::Text("Setting Type");
@@ -104,9 +104,14 @@ void Editor::AddSettingTypeCombobox()
 	{
 		NoneSettingType();
 	}
+
 	if (item_current_idx == 1)
 	{
 		HeightMapSettingType();
+	}
+	if (item_current_idx == 2)
+	{
+		DetailTerrainSettingType();
 	}
 }
 
@@ -158,6 +163,28 @@ void Editor::HeightMapSettingType()
 		GetTextureMap(heightMapTexture, MapTypes::HEIGHT_MAP);
 		GetImportTextureMapFunction(func, &Editor::ImportHeightMap);
 		AddMapButton(heightMapTexture, btnSize, func);
+
+		ImGui::TreePop();
+	}
+}
+
+void Editor::DetailTerrainSettingType()
+{
+	if (ImGui::TreeNode("Terrain Detail"))
+	{
+		ImGui::Text("Terrain FillMode");
+
+		static bool isWireFrameCheck = false;
+		ImGui::Checkbox("checkbox", &isWireFrameCheck);
+
+		if (isWireFrameCheck)
+		{
+			ChangeFillMode(WIRE_FRAME);
+		}
+		else
+		{
+			ChangeFillMode(NONE);
+		}
 
 		ImGui::TreePop();
 	}
