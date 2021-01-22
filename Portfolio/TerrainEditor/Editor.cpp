@@ -118,7 +118,8 @@ void Editor::NoneSettingType()
 		{
 			ImGui::Text("Terrain BaseMap");
 
-			UpdateMapImage(baseMapTexture, MapTypes::BASE_MAP, func, &Editor::ImportBaseMap);
+			GetTextureMap(baseMapTexture, MapTypes::BASE_MAP);
+			GetImportTextureMapFunction(func, &Editor::ImportBaseMap);
 			AddMapButton(baseMapTexture, btnSize, func);
 
 			ImGui::TreePop();
@@ -128,7 +129,8 @@ void Editor::NoneSettingType()
 		{
 			ImGui::Text("Terrain LayerMap");
 
-			UpdateMapImage(layerMapTexture, MapTypes::LAYER_MAP, func, &Editor::ImportLayerMap);
+			GetTextureMap(layerMapTexture, MapTypes::LAYER_MAP);
+			GetImportTextureMapFunction(func, &Editor::ImportLayerMap);
 			AddMapButton(layerMapTexture, btnSize, func);
 
 			ImGui::TreePop();
@@ -138,7 +140,8 @@ void Editor::NoneSettingType()
 		{
 			ImGui::Text("Terrain NormalMap");
 
-			UpdateMapImage(normalMapTexture, MapTypes::NORMAL_MAP, func, &Editor::ImportNormalMap);
+			GetTextureMap(normalMapTexture, MapTypes::NORMAL_MAP);
+			GetImportTextureMapFunction(func, &Editor::ImportNormalMap);
 			AddMapButton(normalMapTexture, btnSize, func);
 
 			ImGui::TreePop();
@@ -152,7 +155,8 @@ void Editor::HeightMapSettingType()
 	{
 		ImGui::Text("Terrain HeightMap");
 
-		UpdateMapImage(heightMapTexture, MapTypes::HEIGHT_MAP, func, &Editor::ImportHeightMap);
+		GetTextureMap(heightMapTexture, MapTypes::HEIGHT_MAP);
+		GetImportTextureMapFunction(func, &Editor::ImportHeightMap);
 		AddMapButton(heightMapTexture, btnSize, func);
 
 		ImGui::TreePop();
@@ -191,10 +195,15 @@ void Editor::ImportHeightMap(wstring files)
 	terrain->SetHeightMap();
 }
 
-void Editor::UpdateMapImage(Texture *& mapTexture, MapTypes mapTypes, function<void(wstring)>& func, void(Editor::*function)(wstring files))
+function<void(wstring)> Editor::GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files))
 {
-	mapTexture = GetMapTexture(mapTypes);
-	func = bind(function, this, placeholders::_1);
+	return func = bind(function, this, placeholders::_1);
+	
+}
+
+Texture * Editor::GetTextureMap(Texture *& mapTexture, MapTypes mapTypes)
+{
+	return mapTexture = GetMapTexture(mapTypes);
 }
 
 

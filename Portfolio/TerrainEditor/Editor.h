@@ -2,6 +2,7 @@
 #include "Systems/IExecute.h"
 
 enum class MapTypes { BASE_MAP, LAYER_MAP, NORMAL_MAP, HEIGHT_MAP };
+
 class Editor : public IExecute
 {
 public:
@@ -24,7 +25,9 @@ private:
 	void ImportLayerMap(wstring files);
 	void ImportNormalMap(wstring files);
 	void ImportHeightMap(wstring files);
-	void UpdateMapImage(Texture *& mapTexture, MapTypes mapTypes, function<void(wstring)>& func, void(Editor::* function)(wstring files));
+
+	function<void(wstring)> GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files));
+	Texture* GetTextureMap(Texture *& mapTexture, MapTypes mapTypes);
 
 	void AddMapButton(Texture * mapTexture, ImVec2 size, function<void(wstring)> func);
 
