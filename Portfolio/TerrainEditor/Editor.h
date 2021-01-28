@@ -19,9 +19,10 @@ private:
 	Texture * GetMapTexture(MapTypes mapTypes);
 
 	void AddSettingTypeCombobox();
-	void NoneSettingType();
-	void HeightMapSettingType();
-	void DetailTerrainSettingType();
+	void NoneToolType();
+	void HeightMapToolType();
+	void DetailTerrainToolType();
+	void TerrainBrushToolType();
 
 	void ImportBaseMap(wstring files);
 	void ImportLayerMap(wstring files);
