@@ -198,7 +198,7 @@ void Editor::DetailTerrainToolType()
 
 void Editor::TerrainBrushToolType()
 {
-	if (ImGui::TreeNode("Terrain Detail"))
+	if (ImGui::TreeNode("Terrain Splatting"))
 	{
 		ImGui::Text("");
 		ImGui::TreePop();
