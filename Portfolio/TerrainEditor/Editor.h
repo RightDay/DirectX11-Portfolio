@@ -26,7 +26,7 @@ private:
 
 	void ImportBaseMap(wstring files);
 	void ImportLayerMap(wstring files);
-	void ImportNormalMap(wstring files);
+	//void ImportNormalMap(wstring files);
 	void ImportHeightMap(wstring files);
 
 	function<void(wstring)> GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files));
@@ -43,7 +43,7 @@ private:
 	CubeSky* sky;
 
 	Shader* shader;
-	TerrainLod* terrain;
+	Terrain* terrain;
 
 	Texture* baseMapTexture = NULL;
 	Texture* layerMapTexture = NULL;

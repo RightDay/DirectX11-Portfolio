@@ -101,13 +101,29 @@ void Terrain::BaseMap(wstring file)
 	baseMap = new Texture(file);
 }
 
-void Terrain::LayerMap(wstring file, wstring alphaFile)
+void Terrain::LayerMap(wstring layer)
 {
 	SafeDelete(layerMap);
 	SafeDelete(alphaMap);
 
-	layerMap = new Texture(file);
-	alphaMap = new Texture(alphaFile);
+	layerMap = new Texture(layer);
+	alphaMap = heightMap;
+}
+
+void Terrain::LayerMap(wstring layer, wstring alpha)
+{
+	SafeDelete(layerMap);
+	SafeDelete(alphaMap);
+
+	layerMap = new Texture(layer);
+	alphaMap = new Texture(alpha);
+}
+
+void Terrain::HeightMap(wstring file)
+{
+	SafeDelete(heightMap);
+
+	heightMap = new Texture(file);
 }
 
 float Terrain::GetHeight(Vector3 & position)

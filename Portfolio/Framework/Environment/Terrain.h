@@ -12,8 +12,17 @@ public:
 	void Update();
 	void Render();
 
+	Texture* BaseMap() { return baseMap; }
 	void BaseMap(wstring file);
-	void LayerMap(wstring file, wstring alphaFile);
+	void SetBaseMap() { sBaseMap->SetResource(baseMap->SRV()); }
+
+	Texture* LayerMap() { return layerMap; }
+	void LayerMap(wstring layer);
+	void LayerMap(wstring layer, wstring alpha);
+
+	Texture* HeightMap() { return heightMap; }
+	void HeightMap(wstring file);
+	//void SetHeightMap() { sHeightMap->SetResource(heightMap->SRV()); }
 
 	float GetHeight(Vector3& position);
 	float GetHeightPick(Vector3& position);
