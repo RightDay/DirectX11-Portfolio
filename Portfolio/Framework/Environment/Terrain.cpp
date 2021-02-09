@@ -6,6 +6,7 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 {
 	heightMap = new Texture(heightFile);
 
+	sHeightMap = shader->AsSRV("HeightMap");
 	sBaseMap = shader->AsSRV("BaseMap");
 	sLayerMap = shader->AsSRV("LayerMap");
 	sAlphaMap = shader->AsSRV("AlphaMap");
@@ -13,6 +14,8 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 
 	brushBuffer = new ConstantBuffer(&brushDesc, sizeof(BrushDesc));
 	sBrushBuffer = shader->AsConstantBuffer("CB_Brush");
+
+	sHeightMap->SetResource(heightMap->SRV());
 
 	lineBuffer = new ConstantBuffer(&lineDesc, sizeof(LineDesc));
 	sLineBuffer = shader->AsConstantBuffer("CB_TerrainLine");
@@ -107,7 +110,7 @@ void Terrain::LayerMap(wstring layer)
 	SafeDelete(alphaMap);
 
 	layerMap = new Texture(layer);
-	alphaMap = heightMap;
+	alphaMap = new Texture(heightMap->GetFile());
 }
 
 void Terrain::LayerMap(wstring layer, wstring alpha)

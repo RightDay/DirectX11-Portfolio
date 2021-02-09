@@ -26,7 +26,6 @@ private:
 
 	void ImportBaseMap(wstring files);
 	void ImportLayerMap(wstring files);
-	//void ImportNormalMap(wstring files);
 	void ImportHeightMap(wstring files);
 
 	function<void(wstring)> GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files));

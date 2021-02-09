@@ -19,10 +19,11 @@ public:
 	Texture* LayerMap() { return layerMap; }
 	void LayerMap(wstring layer);
 	void LayerMap(wstring layer, wstring alpha);
+	void SetLayerMap() { sLayerMap->SetResource(layerMap->SRV()); }
 
 	Texture* HeightMap() { return heightMap; }
 	void HeightMap(wstring file);
-	//void SetHeightMap() { sHeightMap->SetResource(heightMap->SRV()); }
+	void SetHeightMap() { sHeightMap->SetResource(heightMap->SRV()); }
 
 	float GetHeight(Vector3& position);
 	float GetHeightPick(Vector3& position);
@@ -55,6 +56,7 @@ private:
 
 private:
 	Texture* heightMap;
+	ID3DX11EffectShaderResourceVariable* sHeightMap;
 
 	UINT width;
 	UINT height;

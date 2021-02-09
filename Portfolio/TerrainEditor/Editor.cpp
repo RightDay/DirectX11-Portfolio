@@ -16,14 +16,13 @@ void Editor::Initialize()
 		terrain = new Terrain(shader, L"Terrain/Gray512.png");
 		terrain->BaseMap(L"Terrain/Dirt.png");
 		terrain->LayerMap(L"Terrain/Forest Floor.jpg", L"Terrain/Gray512.png");
-		//terrain->NormalMap(L"Terrain/Dirt_Normal.png");
+
 		terrain->Pass(NONE);
 	}
 
-	heightMapTexture = terrain->HeightMap();
-	baseMapTexture = terrain->BaseMap();
-	layerMapTexture = terrain->LayerMap();
-	//normalMapTexture = terrain->NormalMap();
+	//heightMapTexture = terrain->HeightMap();
+	//baseMapTexture = terrain->BaseMap();
+	//layerMapTexture = terrain->LayerMap();
 }
 
 void Editor::Destroy()
@@ -138,17 +137,6 @@ void Editor::NoneToolType()
 
 			ImGui::TreePop();
 		}
-
-		//if (ImGui::TreeNode("NormalMap"))
-		//{
-		//	ImGui::Text("Terrain NormalMap");
-
-		//	GetTextureMap(normalMapTexture, MapTypes::NORMAL_MAP);
-		//	GetImportTextureMapFunction(func, &Editor::ImportNormalMap);
-		//	AddMapButton(normalMapTexture, btnSize, func);
-
-		//	ImGui::TreePop();
-		//}
 	}
 }
 
@@ -210,23 +198,15 @@ void Editor::ImportLayerMap(wstring files)
 	if (terrain->LayerMap()->GetFile() == files) return;
 
 	terrain->LayerMap(files);
-	terrain->SetBaseMap();
+	terrain->SetLayerMap();
 }
-
-//void Editor::ImportNormalMap(wstring files)
-//{
-//	if (terrain->NormalMap()->GetFile() == files) return;
-//
-//	terrain->NormalMap(files);
-//	terrain->SetNormalMap();
-//}
 
 void Editor::ImportHeightMap(wstring files)
 {
 	if (terrain->HeightMap()->GetFile() == files) return;
 
 	terrain->HeightMap(files);
-	//terrain->SetHeightMap();
+	terrain->SetHeightMap();
 }
 
 function<void(wstring)> Editor::GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files))
