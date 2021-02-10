@@ -55,7 +55,7 @@ private:
 	} lineDesc;
 
 private:
-	Texture* heightMap;
+	Texture* heightMap = NULL;
 	ID3DX11EffectShaderResourceVariable* sHeightMap;
 
 	UINT width;

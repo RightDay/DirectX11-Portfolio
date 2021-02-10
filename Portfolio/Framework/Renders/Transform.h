@@ -11,14 +11,17 @@ public:
 
 	void SetShader(Shader* shader);
 
+	Vector3 Position() { return position; }
 	void Position(float x, float y, float z);
 	void Position(Vector3& vec);
 	void Position(Vector3* vec);
 
+	Vector3 Scale() { return scale; }
 	void Scale(float x, float y, float z);
 	void Scale(Vector3& vec);
 	void Scale(Vector3* vec);
 
+	Vector3 Rotation() { return rotation; }
 	void Rotation(float x, float y, float z);
 	void Rotation(Vector3& vec);
 	void Rotation(Vector3* vec);

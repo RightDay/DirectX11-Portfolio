@@ -15,11 +15,8 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 	brushBuffer = new ConstantBuffer(&brushDesc, sizeof(BrushDesc));
 	sBrushBuffer = shader->AsConstantBuffer("CB_Brush");
 
-	sHeightMap->SetResource(heightMap->SRV());
-
 	lineBuffer = new ConstantBuffer(&lineDesc, sizeof(LineDesc));
 	sLineBuffer = shader->AsConstantBuffer("CB_TerrainLine");
-
 
 	CreateVertexData();
 	CreateIndexData();
@@ -33,8 +30,8 @@ Terrain::~Terrain()
 {
 	SafeDelete(brushBuffer);
 	SafeDelete(lineBuffer);
+
 	SafeDelete(heightMap);
-	
 	SafeDelete(baseMap);
 	SafeDelete(layerMap);
 	SafeDelete(alphaMap);
@@ -77,6 +74,9 @@ void Terrain::Update()
 void Terrain::Render()
 {
 	Super::Render();
+
+	if (heightMap != NULL)
+		sHeightMap->SetResource(heightMap->SRV());
 
 	if (baseMap != NULL)
 		sBaseMap->SetResource(baseMap->SRV());

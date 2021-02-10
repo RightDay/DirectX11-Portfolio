@@ -20,7 +20,7 @@ void Editor::Initialize()
 		terrain->Pass(NONE);
 	}
 
-	//heightMapTexture = terrain->HeightMap();
+	heightMapTexture = terrain->HeightMap();
 	//baseMapTexture = terrain->BaseMap();
 	//layerMapTexture = terrain->LayerMap();
 }
@@ -58,9 +58,6 @@ Texture * Editor::GetMapTexture(MapTypes mapTypes)
 		break;
 	case MapTypes::LAYER_MAP:
 		return terrain->LayerMap();
-		break;
-	case MapTypes::NORMAL_MAP:
-		//return terrain->NormalMap();
 		break;
 	case MapTypes::HEIGHT_MAP:
 		return terrain->HeightMap();

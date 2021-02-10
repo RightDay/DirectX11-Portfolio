@@ -16,13 +16,16 @@ VertexTerrain VS_Terrain(VertexTextureNormal input)
     VertexTerrain output;
     output.Position = mul(input.Position, World);
     output.wPosition = output.Position.xyz;
-    
-    output.Position = mul(output.Position, View);
-    output.Position = mul(output.Position, Projection);
-    
+
     output.Normal = WorldNormal(input.Normal);
     output.Uv = input.Uv;
-    
+
+    output.Position.y = HeightMap.SampleLevel(LinearSampler, output.Uv, 0).r * 255 / 5; // HeightRatio : 5
+    output.Position = mul(output.Position, View);
+    output.Position = mul(output.Position, Projection);
+
+//    output.Position = WorldPosition(float4(position, 1));
+//    output.Position = ViewProjection(output.Position);
     return output;
 }
 
