@@ -24,8 +24,8 @@ VertexTerrain VS_Terrain(VertexTextureNormal input)
     output.Position = mul(output.Position, View);
     output.Position = mul(output.Position, Projection);
 
-//    output.Position = WorldPosition(float4(position, 1));
-//    output.Position = ViewProjection(output.Position);
+    //output.Position = WorldPosition(float4(position, 1));
+    //output.Position = ViewProjection(output.Position);
     return output;
 }
 

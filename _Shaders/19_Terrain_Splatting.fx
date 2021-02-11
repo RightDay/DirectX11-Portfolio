@@ -8,10 +8,10 @@ float4 PS(VertexTerrain input) : SV_Target
     //float4 layer = LayerMap.Sample(LinearSampler, input.Uv);
     //float4 color = lerp(base, layer, input.Uv.x);
     
-    /*float4 color = GetLayerColor(input.Uv);
-    float NdotL = dot(-GlobalLight.Direction, normalize(input.Normal));
+    //float4 color = GetLayerColor(input.Uv);
+    //float NdotL = dot(-GlobalLight.Direction, normalize(input.Normal));
     
-    return (color * NdotL);*/
+    //return (color * NdotL);
 
     float2 left = input.Uv + float2(-TexelCellSpaceU, 0.0f);
     float2 right = input.Uv + float2(+TexelCellSpaceU, 0.0f);
@@ -28,11 +28,12 @@ float4 PS(VertexTerrain input) : SV_Target
     float3 normal = normalize(cross(tangent, biTangent));
 
     float4 brush = GetBrushColor(input.wPosition);
-
+    
+    float NdotL = dot(-GlobalLight.Direction, normalize(input.Normal));
     Material.Diffuse = GetLayerColor(input.Uv);
     NormalMapping(input.Uv, normal, tangent);
 
-    return Material.Diffuse;
+    return (Material.Diffuse * NdotL);
 }
 
 float4 PS_GridLine(VertexTerrain input) : SV_Target
