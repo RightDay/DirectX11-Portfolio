@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30128.74
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest", "UnitTest\UnitTest.vcxproj", "{36708F0D-47D6-48EA-84F8-04AAC8A2B31C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FB41BDB-F96C-459D-BE5B-2C316AF1B747} = {9FB41BDB-F96C-459D-BE5B-2C316AF1B747}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{0A928265-9C89-4999-8F00-110A328D9D18}"
+	ProjectSection(SolutionItems) = preProject
+		..\_Shaders\00_Deffered.fx = ..\_Shaders\00_Deffered.fx
+		..\_Shaders\00_Global.fx = ..\_Shaders\00_Global.fx
+		..\_Shaders\00_Light.fx = ..\_Shaders\00_Light.fx
+		..\_Shaders\00_PostEffect.fx = ..\_Shaders\00_PostEffect.fx
+		..\_Shaders\00_Render.fx = ..\_Shaders\00_Render.fx
+		..\_Shaders\00_Sky.fx = ..\_Shaders\00_Sky.fx
+		..\_Shaders\00_Terrain.fx = ..\_Shaders\00_Terrain.fx
+		..\_Shaders\00_Water.fx = ..\_Shaders\00_Water.fx
+		..\_Shaders\16_CubeSky.fx = ..\_Shaders\16_CubeSky.fx
+		..\_Shaders\19_Terrain_Splatting.fx = ..\_Shaders\19_Terrain_Splatting.fx
+		..\_Shaders\21_DebugLine.fx = ..\_Shaders\21_DebugLine.fx
+		..\_Shaders\27_Animation.fx = ..\_Shaders\27_Animation.fx
+		..\_Shaders\27_Instancing.fx = ..\_Shaders\27_Instancing.fx
+		..\_Shaders\27_Model.fx = ..\_Shaders\27_Model.fx
+		..\_Shaders\47_TerrainLod.fx = ..\_Shaders\47_TerrainLod.fx
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TerrainEditor", "TerrainEditor\TerrainEditor.vcxproj", "{14B9ACAF-C45A-4740-A1EA-6C333EA9D49D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9FB41BDB-F96C-459D-BE5B-2C316AF1B747} = {9FB41BDB-F96C-459D-BE5B-2C316AF1B747}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Framework", "Framework\Framework.vcxproj", "{9FB41BDB-F96C-459D-BE5B-2C316AF1B747}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36708F0D-47D6-48EA-84F8-04AAC8A2B31C}.Debug|x86.ActiveCfg = Debug|Win32
+		{36708F0D-47D6-48EA-84F8-04AAC8A2B31C}.Debug|x86.Build.0 = Debug|Win32
+		{36708F0D-47D6-48EA-84F8-04AAC8A2B31C}.Release|x86.ActiveCfg = Release|Win32
+		{36708F0D-47D6-48EA-84F8-04AAC8A2B31C}.Release|x86.Build.0 = Release|Win32
+		{14B9ACAF-C45A-4740-A1EA-6C333EA9D49D}.Debug|x86.ActiveCfg = Debug|Win32
+		{14B9ACAF-C45A-4740-A1EA-6C333EA9D49D}.Debug|x86.Build.0 = Debug|Win32
+		{14B9ACAF-C45A-4740-A1EA-6C333EA9D49D}.Release|x86.ActiveCfg = Release|Win32
+		{14B9ACAF-C45A-4740-A1EA-6C333EA9D49D}.Release|x86.Build.0 = Release|Win32
+		{9FB41BDB-F96C-459D-BE5B-2C316AF1B747}.Debug|x86.ActiveCfg = Debug|Win32
+		{9FB41BDB-F96C-459D-BE5B-2C316AF1B747}.Debug|x86.Build.0 = Debug|Win32
+		{9FB41BDB-F96C-459D-BE5B-2C316AF1B747}.Release|x86.ActiveCfg = Release|Win32
+		{9FB41BDB-F96C-459D-BE5B-2C316AF1B747}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7CBB9AE-71C7-45D0-B5B9-95E4D02A0A99}
+	EndGlobalSection
+EndGlobal
