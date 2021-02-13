@@ -1,6 +1,6 @@
 #include "Framework.h"
 
-TerrainLod::TerrainLod(InitializeDesc & desc)
+TerrainLod::TerrainLod(InitializeDesc& desc)
 	: Renderer(desc.shader), initDesc(desc)
 {
 	Topology(D3D11_PRIMITIVE_TOPOLOGY_4_CONTROL_POINT_PATCHLIST);
@@ -13,7 +13,6 @@ TerrainLod::TerrainLod(InitializeDesc & desc)
 
 	buffer = new ConstantBuffer(&bufferDesc, sizeof(BufferDesc));
 	sBuffer = shader->AsConstantBuffer("CB_TerrainLod");
-
 
 	heightMap = new Texture(initDesc.heightMap);
 	sHeightMap->SetResource(heightMap->SRV());
@@ -140,7 +139,7 @@ void TerrainLod::HeightMap(wstring file)
 
 bool TerrainLod::InBounds(UINT x, UINT z)
 {
-	return x >= 0 && x < width && z >= 0 && z < height;
+	return x >= 0 && x < width&& z >= 0 && z < height;
 }
 
 void TerrainLod::CalcPatchBounds(UINT x, UINT z)

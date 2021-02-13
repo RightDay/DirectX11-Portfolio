@@ -36,6 +36,14 @@ private:
 	void CreateNormalData();
 
 private:
+	struct BufferDesc
+	{
+		float TerrainCellSpaceU;
+		float TerrainCellSpaceV;
+		float WorldCellSpace = 1.0f;
+		float HeightRatio = 1.0f;
+	} bufferDesc;
+
 	struct BrushDesc
 	{
 		Color Color = D3DXCOLOR(0, 1, 0, 1);
@@ -55,13 +63,15 @@ private:
 	} lineDesc;
 
 private:
+	ConstantBuffer* buffer;
+	ID3DX11EffectConstantBuffer* sBuffer;
+
 	Texture* heightMap = NULL;
 	ID3DX11EffectShaderResourceVariable* sHeightMap;
 
 	UINT width;
 	UINT height;
 
-	
 	TerrainVertex* vertices;	
 	UINT* indices;
 
@@ -73,6 +83,8 @@ private:
 
 	Texture* alphaMap = NULL;
 	ID3DX11EffectShaderResourceVariable* sAlphaMap;
+
+
 
 	ConstantBuffer* brushBuffer;
 	ID3DX11EffectConstantBuffer* sBrushBuffer;

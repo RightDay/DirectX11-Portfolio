@@ -118,14 +118,14 @@ void NormalMapping(float2 uv, float3 normal, float3 tangent, SamplerState samp)
     float3 N = normalize(normal); //Z
     //float3 T = normalize(tangent); //X
     float3 T = normalize(tangent - dot(tangent, N) * N); //X
-    float3 B = cross(N, T);
+    float3 B = cross(N, T); //Y
     float3x3 TBN = float3x3(T, B, N);
     
     //ÀÌ¹ÌÁö ÇÈ¼¿·ÎºÎÅÍ ³ë¸Öº¤ÅÍ ¹æÇâ
     float3 coord = map.rgb * 2.0f - 1.0f; //-1 ~ 1
     
     //ÅºÁ¨Æ® °ø°£ º¯È¯
-    coord = mul(coord, TBN);
+    coord = mul(coord, TBN); //Image Space -> 3D Space
     
     Material.Diffuse *= saturate(dot(coord, -GlobalLight.Direction));
 }

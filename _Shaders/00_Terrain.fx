@@ -11,6 +11,14 @@ struct VertexTerrain
     float3 Normal : Normal;
 };
 
+cbuffer CB_Terrain
+{
+    float TerrainCellSpaceU;
+    float TerrainCellSpaceV;
+    float TerrainWorldCellSpace;
+    float TTerrainHeightRatio;
+};
+
 VertexTerrain VS_Terrain(VertexTextureNormal input)
 {
     VertexTerrain output;
@@ -21,12 +29,26 @@ VertexTerrain VS_Terrain(VertexTextureNormal input)
     output.Uv = input.Uv;
 
     output.Position.y = HeightMap.SampleLevel(LinearSampler, output.Uv, 0).r * 255 / 5; // HeightRatio : 5
+
     output.Position = mul(output.Position, View);
     output.Position = mul(output.Position, Projection);
 
-    //output.Position = WorldPosition(float4(position, 1));
-    //output.Position = ViewProjection(output.Position);
     return output;
+
+    //VertexTerrain output;
+
+    //output.Position = input.Position;
+    //output.Uv = input.Uv;
+    //output.Position = mul(input.Position, World);
+    //output.Position.y = HeightMap.SampleLevel(LinearSampler, output.Uv, 0).r * 255 / 5; // HeightRatio : 5
+    //
+    //output.wPosition = output.Position.xyz;
+
+    //output.Normal = WorldNormal(input.Normal);
+
+    //output.Position = ViewProjection(output.Position);
+
+    //return output;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

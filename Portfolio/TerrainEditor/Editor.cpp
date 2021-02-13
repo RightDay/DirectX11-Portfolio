@@ -21,8 +21,8 @@ void Editor::Initialize()
 	}
 
 	heightMapTexture = terrain->HeightMap();
-	//baseMapTexture = terrain->BaseMap();
-	//layerMapTexture = terrain->LayerMap();
+	baseMapTexture = terrain->BaseMap();
+	layerMapTexture = terrain->LayerMap();
 }
 
 void Editor::Destroy()
@@ -209,7 +209,6 @@ void Editor::ImportHeightMap(wstring files)
 function<void(wstring)> Editor::GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files))
 {
 	return func = bind(function, this, placeholders::_1);
-	
 }
 
 Texture * Editor::GetTextureMap(Texture *& mapTexture, MapTypes mapTypes)

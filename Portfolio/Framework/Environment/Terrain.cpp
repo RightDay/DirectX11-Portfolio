@@ -6,11 +6,14 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 {
 	heightMap = new Texture(heightFile);
 
-	sHeightMap = shader->AsSRV("HeightMap");
 	sBaseMap = shader->AsSRV("BaseMap");
 	sLayerMap = shader->AsSRV("LayerMap");
 	sAlphaMap = shader->AsSRV("AlphaMap");
+	sHeightMap = shader->AsSRV("HeightMap");
+	sHeightMap->SetResource(heightMap->SRV());
 
+	buffer = new ConstantBuffer(&bufferDesc, sizeof(BufferDesc));
+	sBuffer = shader->AsConstantBuffer("CB_Terrain");
 
 	brushBuffer = new ConstantBuffer(&brushDesc, sizeof(BrushDesc));
 	sBrushBuffer = shader->AsConstantBuffer("CB_Brush");
@@ -24,6 +27,9 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 
 	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(TerrainVertex), 0, true);
 	indexBuffer = new IndexBuffer(indices, indexCount);
+
+	bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
+	bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
 }
 
 Terrain::~Terrain()
@@ -76,7 +82,7 @@ void Terrain::Render()
 	Super::Render();
 
 	if (heightMap != NULL)
-		sHeightMap->SetResource(heightMap->SRV());
+		//sHeightMap->SetResource(heightMap->SRV());
 
 	if (baseMap != NULL)
 		sBaseMap->SetResource(baseMap->SRV());
@@ -86,7 +92,8 @@ void Terrain::Render()
 		sLayerMap->SetResource(layerMap->SRV());
 		sAlphaMap->SetResource(alphaMap->SRV());
 	}
-
+	buffer->Apply();
+	sBuffer->SetConstantBuffer(buffer->Buffer());
 
 	brushBuffer->Apply();
 	sBrushBuffer->SetConstantBuffer(brushBuffer->Buffer());
