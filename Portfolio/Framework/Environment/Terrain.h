@@ -23,7 +23,10 @@ public:
 
 	Texture* HeightMap() { return heightMap; }
 	void HeightMap(wstring file);
-	void SetHeightMap() { sHeightMap->SetResource(heightMap->SRV()); }
+	void SetHeightMap() 
+	{ 
+		sHeightMap->SetResource(heightMap->SRV()); 
+	}
 
 	float GetHeight(Vector3& position);
 	float GetHeightPick(Vector3& position);
@@ -34,6 +37,9 @@ private:
 	void CreateVertexData();
 	void CreateIndexData();
 	void CreateNormalData();
+
+public:
+	void SetTerrainData();
 
 private:
 	struct BufferDesc

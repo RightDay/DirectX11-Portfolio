@@ -146,7 +146,7 @@ void Editor::HeightMapToolType()
 		GetTextureMap(heightMapTexture, MapTypes::HEIGHT_MAP);
 		GetImportTextureMapFunction(func, &Editor::ImportHeightMap);
 		AddMapButton(heightMapTexture, btnSize, func);
-
+		
 		ImGui::TreePop();
 	}
 }
@@ -204,6 +204,7 @@ void Editor::ImportHeightMap(wstring files)
 
 	terrain->HeightMap(files);
 	terrain->SetHeightMap();
+	terrain->SetTerrainData();
 }
 
 function<void(wstring)> Editor::GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files))

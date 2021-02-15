@@ -7,55 +7,11 @@ float4 PS(VertexTerrain input) : SV_Target
     //float4 base = BaseMap.Sample(LinearSampler, input.Uv);
     //float4 layer = LayerMap.Sample(LinearSampler, input.Uv);
     //float4 color = lerp(base, layer, input.Uv.x);
-    //
-    //float4 color = GetLayerColor(input.Uv);
-    //float NdotL = dot(-GlobalLight.Direction, normalize(input.Normal));
-    //NormalMapping(input.Uv, input.Normal, input.Tangent);
-    //color = CalcualteFogColor(PS_Shadow(input.Position, PS_AllLight(input)), input.wPosition);
-    //return (color * NdotL);
-    //--------------------//
-    //float2 left = input.Uv + float2(-TexelCellSpaceU, 0.0f);
-    //float2 right = input.Uv + float2(+TexelCellSpaceU, 0.0f);
-    //float2 top = input.Uv + float2(0.0f, -TexelCellSpaceV);
-    //float2 bottom = input.Uv + float2(0.0f, TexelCellSpaceV);
 
-    //float leftY = HeightMap.SampleLevel(LinearSampler, left, 0).r * 255 / TerrainHeightRatio;
-    //float rightY = HeightMap.SampleLevel(LinearSampler, right, 0).r * 255 / TerrainHeightRatio;
-    //float topY = HeightMap.SampleLevel(LinearSampler, top, 0).r * 255 / TerrainHeightRatio;
-    //float bottomY = HeightMap.SampleLevel(LinearSampler, bottom, 0).r * 255 / TerrainHeightRatio;
+    float4 color = GetLayerColor(input.Uv);
+    float NdotL = dot(-GlobalLight.Direction, normalize(input.Normal));
 
-    //float3 tangent = normalize(float3(WorldCellSpace * 2.0f, rightY - leftY, 0.0f));
-    //float3 biTangent = normalize(float3(0.0f, bottomY - topY, WorldCellSpace * -2.0f));
-    //float3 normal = normalize(cross(tangent, biTangent));
-    //------------------------------------------//
-    float2 left = input.Uv + float2(-TexelCellSpaceU, 0.0f);
-    float2 right = input.Uv + float2(+TexelCellSpaceU, 0.0f);
-    float2 top = input.Uv + float2(0.0f, -TexelCellSpaceV);
-    float2 bottom = input.Uv + float2(0.0f, TexelCellSpaceV);
-
-    float leftY = HeightMap.SampleLevel(LinearSampler, left, 0).r * 255 / 5.0f;
-    float rightY = HeightMap.SampleLevel(LinearSampler, right, 0).r * 255 / 5.0f;
-    float topY = HeightMap.SampleLevel(LinearSampler, top, 0).r * 255 / 5.0f;
-    float bottomY = HeightMap.SampleLevel(LinearSampler, bottom, 0).r * 255 / 5.0f;
-
-    float3 tangent = normalize(float3(1.0f * 2.0f, rightY - leftY, 0.0f));
-    float3 biTangent = normalize(float3(0.0f, bottomY - topY, 1.0f * -2.0f));
-    //float3 normal = normalize(cross(tangent, biTangent));
-
-    float4 brush = GetBrushColor(input.wPosition);
-    float3 normal = WorldNormal(input.Normal);
-    Material.Diffuse = GetLayerColor(input.Uv);
-    //NormalMapping(input.Uv, normal, tangent);
-
-    //return Material.Diffuse;
-
-    //TODO: input.Normal이 아닌 normal이 계산되게 만들기
-
-    MaterialDesc output;
-    //ComputeLight(output, input.Normal, input.wPosition);
-    ComputeLight(output, normal, input.wPosition);
-
-    return float4(MaterialToColor(output), 1.0f);
+    return (color * NdotL);
 }
 
 float4 PS_GridLine(VertexTerrain input) : SV_Target

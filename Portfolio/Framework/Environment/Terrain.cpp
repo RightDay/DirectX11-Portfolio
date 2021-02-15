@@ -64,7 +64,6 @@ void Terrain::Update()
 			RaiseHeight(brushDesc.Location, brushDesc.Type, brushDesc.Range);
 	}
 
-
 	ImGui::Separator();
 	//ImGui::ColorEdit3("Color", lineDesc.Color);
 
@@ -82,7 +81,7 @@ void Terrain::Render()
 	Super::Render();
 
 	if (heightMap != NULL)
-		//sHeightMap->SetResource(heightMap->SRV());
+		SetHeightMap();
 
 	if (baseMap != NULL)
 		sBaseMap->SetResource(baseMap->SRV());
@@ -399,4 +398,19 @@ void Terrain::CreateNormalData()
 		D3DXVec3Normalize(&vertices[i].Tangent, &vertices[i].Tangent);
 	}
 		
+}
+
+void Terrain::SetTerrainData()
+{
+	CreateVertexData();
+	CreateIndexData();
+	CreateNormalData();
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(vertexBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, vertices, sizeof(TerrainVertex) * vertexCount);
+	}
+	D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
+	bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
+	bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
 }

@@ -34,21 +34,6 @@ VertexTerrain VS_Terrain(VertexTextureNormal input)
     output.Position = mul(output.Position, Projection);
 
     return output;
-
-    //VertexTerrain output;
-
-    //output.Position = input.Position;
-    //output.Uv = input.Uv;
-    //output.Position = mul(input.Position, World);
-    //output.Position.y = HeightMap.SampleLevel(LinearSampler, output.Uv, 0).r * 255 / 5; // HeightRatio : 5
-    //
-    //output.wPosition = output.Position.xyz;
-
-    //output.Normal = WorldNormal(input.Normal);
-
-    //output.Position = ViewProjection(output.Position);
-
-    //return output;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
