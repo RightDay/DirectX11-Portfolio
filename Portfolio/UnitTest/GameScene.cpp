@@ -5,9 +5,8 @@
 void GameScene::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(32, 0, 0);
-	Context::Get()->GetCamera()->Position(0, 10, -30);
-	((Freedom*)Context::Get()->GetCamera())->Speed(100, 2);
-
+	//Context::Get()->GetCamera()->Position(0, 80, -30);
+	//((Freedom*)Context::Get()->GetCamera())->Speed(100, 2);
 	shader = new Shader(L"47_TerrainLod.fx");
 
 	sky = new CubeSky(L"Environment/GrassCube1024.dds");
@@ -30,6 +29,7 @@ void GameScene::Initialize()
 	}
 	
 	player = new Player();
+	((OrbitCamera*)Context::Get()->GetCamera())->SetTarget(player->GetPlayerPos());
 }
 void GameScene::Destroy()
 {
@@ -38,10 +38,6 @@ void GameScene::Destroy()
 
 void GameScene::Update()
 {
-	playerPos = player->GetPlayerPos();
-	playerRot = player->GetPlayerRot();
-	
-
 	sky->Update();
 	terrain->Update();
 	player->Update();

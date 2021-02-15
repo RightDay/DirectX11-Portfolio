@@ -34,7 +34,7 @@ public:
 	void playerRotationAngle(float rotationAngle);
 
 public:
-	Vector3 GetPlayerPos() { return playerPos; }
+	Vector3 * GetPlayerPos() { return &playerPos; }
 	Vector3 GetPlayerRot() { return playerRot; }
 
 public:

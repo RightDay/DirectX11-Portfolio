@@ -7,6 +7,7 @@ Player::Player()
 	CreateArcherModel();
 
 	model = archer;
+	playerPos = Vector3(0, 5.0f, 0);
 
 	state = new StandingState();
 }
@@ -29,7 +30,9 @@ void Player::Update()
 	//{
 	//	state = new StandingState();
 	//}
+
 	state->Update(*this);
+
 	Move();
 	Rotation();
 }
@@ -97,7 +100,7 @@ void Player::CreateArcherModel()
 
 void Player::Move()
 {
-	if (Mouse::Get()->Press(1) == true) return;
+	if (Mouse::Get()->Down(1) == true) return;
 
 	playerForward = model->GetTransform(0)->Forward();
 	playerRight = model->GetTransform(0)->Right();
