@@ -16,6 +16,7 @@ public:
 
 	void Update();
 	void Render();
+	void ChangeCamera(Camera* camera);
 
 	D3DXMATRIX View();
 	D3DXMATRIX Projection();

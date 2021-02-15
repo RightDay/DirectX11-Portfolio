@@ -31,7 +31,7 @@ Context::Context()
 
 	perspective = new Perspective(desc.Width, desc.Height);
 	viewport = new Viewport(desc.Width, desc.Height);
-	camera = new Freedom();
+	camera = new OrbitCamera();
 }
 
 Context::~Context()
@@ -73,6 +73,13 @@ void Context::Render()
 	str = "Cam Rotation : ";
 	str += to_string((int)camDir.x) + ", " + to_string((int)camDir.y);
 	Gui::Get()->RenderText(5, 35, 1, 1, 1, str);
+}
+
+void Context::ChangeCamera(Camera* camera)
+{
+	SafeDelete(this->camera);
+
+	this->camera = new Freedom();
 }
 
 D3DXMATRIX Context::View()

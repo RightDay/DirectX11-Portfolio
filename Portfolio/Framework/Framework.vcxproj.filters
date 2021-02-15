@@ -197,6 +197,9 @@
     <ClCompile Include="Environment\CubeSky.cpp">
       <Filter>Environment</Filter>
     </ClCompile>
+    <ClCompile Include="Viewer\OrbitCamera.cpp">
+      <Filter>Viewer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Meshes\Mesh.h">
@@ -403,6 +406,9 @@
     </ClInclude>
     <ClInclude Include="Environment\CubeSky.h">
       <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewer\OrbitCamera.h">
+      <Filter>Viewer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

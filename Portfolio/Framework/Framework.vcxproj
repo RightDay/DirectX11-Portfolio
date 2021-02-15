@@ -82,6 +82,7 @@
     <ClCompile Include="Viewer\DepthStencil.cpp" />
     <ClCompile Include="Viewer\Fixity.cpp" />
     <ClCompile Include="Viewer\Freedom.cpp" />
+    <ClCompile Include="Viewer\OrbitCamera.cpp" />
     <ClCompile Include="Viewer\Orthographic.cpp" />
     <ClCompile Include="Viewer\Perspective.cpp" />
     <ClCompile Include="Viewer\Projection.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Viewer\DepthStencil.h" />
     <ClInclude Include="Viewer\Fixity.h" />
     <ClInclude Include="Viewer\Freedom.h" />
+    <ClInclude Include="Viewer\OrbitCamera.h" />
     <ClInclude Include="Viewer\Orthographic.h" />
     <ClInclude Include="Viewer\Perspective.h" />
     <ClInclude Include="Viewer\Projection.h" />
