@@ -3,8 +3,8 @@
 
 void Editor::Initialize()
 {
-	Context::Get()->GetCamera()->RotationDegree(0, 0, 0);
-	Context::Get()->GetCamera()->Position(0, 10, -30);
+	Context::Get()->GetCamera()->RotationDegree(40, 0, 0);
+	Context::Get()->GetCamera()->Position(240, 560, -300);
 	((Freedom*)Context::Get()->GetCamera())->Speed(100, 2);
 
 	shader = new Shader(L"19_Terrain_Splatting.fx");
