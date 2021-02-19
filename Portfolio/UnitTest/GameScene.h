@@ -26,7 +26,14 @@ private:
 
 	Vector3 playerPos = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 playerRot = Vector3(0.0f, 0.0f, 0.0f);
-	//vector<MeshRender*> meshes;
-	//vector<ModelRender*> models;
-	//vector<ModelAnimator*> animators;
+
+	vector<MeshRender*> meshes;
+	vector<ModelRender*> models;
+	vector<ModelAnimator*> animators;
+
+private:
+	Shader* modelShader;
+	ModelAnimator* archer = NULL;
+	Model* weapon = NULL;
+	void CreateArcherModel();
 };

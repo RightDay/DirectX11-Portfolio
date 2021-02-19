@@ -22,8 +22,6 @@ public:
 	void handleInput(Input input);
 
 private:
-	void CreateArcherModel();
-
 	void Move();
 	void Rotation();
 
@@ -41,7 +39,7 @@ public:
 	ModelAnimator* model = NULL;
 	ModelAnimator* archer = NULL;
 
-	vector<ModelAnimator*> animators;
+	Model* weapon = NULL;
 
 	Shader* modelShader = NULL;
 
@@ -57,7 +55,7 @@ private:
 	bool isMove = true;
 	float velocity = 200.0f;
 	float angle = 180.0f;
-
+	//Transform* attachHand = NULL;
 public:
 	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 moveHorizontal = Vector3(0.0f, 0.0f, 0.0f);
