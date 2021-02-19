@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <Material>
+        <Name>sword_textures</Name>
+        <DiffuseFile>Weapon_Diffuse.png</DiffuseFile>
+        <SpecularFile>Weapon_Specular.png</SpecularFile>
+        <NormalFile>Weapon_Normal.png</NormalFile>
+        <Ambient R="0.58823532" G="0.58823532" B="0.58823532" A="1"/>
+        <Diffuse R="0.58823532" G="0.58823532" B="0.58823532" A="1"/>
+        <Specular R="0.48627454" G="0.90196085" B="0.76078439" A="1.4142135"/>
+        <Emissive R="0.15" G="0.15" B="0.15" A="0.3"/>
+    </Material>
+</Materials>
