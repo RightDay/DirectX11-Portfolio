@@ -134,6 +134,7 @@ void Player::PlayerControl()
 	{
 		handleInput(ATTACK);
 	}
+
 	handleInput(INPUT_NULL);
 }
 

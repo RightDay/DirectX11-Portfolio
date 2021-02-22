@@ -4,7 +4,7 @@
 
 void StandingState::Enter(Player& player)
 {
-	player.model->PlayClip(0, Player::STATE_IDLE, 1.0f);
+	player.model->PlayClip(0, Player::STATE_IDLE, 1.0f, 0.5f);
 }
 
 PlayerState* StandingState::handleInput(Player& player, Input input)
@@ -63,7 +63,7 @@ void MovingState::Update(Player& player)
 
 void AttackState::Enter(Player& player)
 {
-	player.model->PlayClip(0, Player::STATE_ATTACK, 1.0f, 0.5f);
+	player.model->PlayClip(0, Player::STATE_ATTACK, 2.0f, 0.1f);
 }
 
 PlayerState* AttackState::handleInput(Player& player, Input input)
@@ -72,17 +72,22 @@ PlayerState* AttackState::handleInput(Player& player, Input input)
 	{
 		return new MovingState();
 	}
+
 	if (input == INPUT_NULL)
 	{
-		if (player.model->StopAnim(0))
+		if (attackStop)
 		{
 			return new StandingState();
 		}
+		attackStop = false;
 	}
 	return NULL;
 }
 
 void AttackState::Update(Player& player)
 {
-
+	if (player.model->StopAnim(0, 20))
+	{
+		attackStop = true;
+	}
 }

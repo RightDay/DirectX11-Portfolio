@@ -34,7 +34,8 @@ public:
 	void Enter(Player& player) override;
 	PlayerState* handleInput(Player& player, Input input) override;
 	void Update(Player& player) override;
-	PlayerState* AttackState::STOP();
+
+	PlayerState* isStop();
 
 private:
 	bool attackStop = false;

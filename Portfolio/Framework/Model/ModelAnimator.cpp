@@ -211,11 +211,11 @@ Matrix ModelAnimator::GetAttachTransform(UINT index)
 	return transform * result * world;
 }
 
-bool ModelAnimator::StopAnim(int i)
+bool ModelAnimator::StopAnim(int instance, int cutFrameCount)
 {
-	TweenDesc& desc = tweenDesc[i];
+	TweenDesc& desc = tweenDesc[instance];
 	ModelClip* clip = model->ClipByIndex(desc.Curr.Clip);
-	if (desc.Curr.CurrFrame >= clip->FrameCount() - 1)
+	if (desc.Curr.CurrFrame >= clip->FrameCount() - cutFrameCount)
 		return true;
 
 	return false;
