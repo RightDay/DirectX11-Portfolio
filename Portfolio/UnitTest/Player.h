@@ -1,12 +1,12 @@
 #pragma once
 #include "GameActor.h"
 
-enum Input { PRESS_W, PRESS_A, PRESS_D, PRESS_S, RELEASE_MOVE };
+enum Input { PRESS_W, PRESS_A, PRESS_D, PRESS_S, RELEASE_MOVE, ATTACK, INPUT_NULL };
 
 class Player : public GameActor
 {
 public:
-	enum AnimState { STATE_IDLE, STATE_RUN };
+	enum AnimState { STATE_IDLE, STATE_RUN, STATE_ATTACK };
 public:
 	Player();
 	Player(ModelAnimator* model);
@@ -25,7 +25,7 @@ private:
 	void Move();
 	void Rotation();
 
-	void playerControl();
+	void PlayerControl();
 
 public:
 	void playerMovePos(Vector3 pos, bool plus);

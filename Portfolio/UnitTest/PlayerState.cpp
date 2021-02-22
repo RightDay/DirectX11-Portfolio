@@ -13,6 +13,11 @@ PlayerState* StandingState::handleInput(Player& player, Input input)
 	{
 		return new MovingState();
 	}
+	
+	if (input == ATTACK)
+	{
+		return new AttackState();
+	}
 
 	return NULL;
 }
@@ -54,4 +59,30 @@ PlayerState* MovingState::handleInput(Player& player, Input input)
 
 void MovingState::Update(Player& player)
 {
+}
+
+void AttackState::Enter(Player& player)
+{
+	player.model->PlayClip(0, Player::STATE_ATTACK, 1.0f, 0.5f);
+}
+
+PlayerState* AttackState::handleInput(Player& player, Input input)
+{
+	if (input == PRESS_W || input == PRESS_S || input == PRESS_D || input == PRESS_A)
+	{
+		return new MovingState();
+	}
+	if (input == INPUT_NULL)
+	{
+		if (player.model->StopAnim(0))
+		{
+			return new StandingState();
+		}
+	}
+	return NULL;
+}
+
+void AttackState::Update(Player& player)
+{
+
 }

@@ -26,3 +26,16 @@ public:
 	PlayerState* handleInput(Player& player, Input input) override;
 	void Update(Player& player) override;
 };
+
+class AttackState : public PlayerState
+{
+public:
+	AttackState() {}
+	void Enter(Player& player) override;
+	PlayerState* handleInput(Player& player, Input input) override;
+	void Update(Player& player) override;
+	PlayerState* AttackState::STOP();
+
+private:
+	bool attackStop = false;
+};

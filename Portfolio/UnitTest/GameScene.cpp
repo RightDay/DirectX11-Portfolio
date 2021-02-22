@@ -63,6 +63,7 @@ void GameScene::CreateArcherModel()
 
 	archer->ReadClip(L"Archer/Idle");
 	archer->ReadClip(L"Archer/Running");
+	archer->ReadClip(L"Archer/Attack");
 	archer->ReadClip(L"Archer/Hip_Hop_Dancing");
 	archer->ReadClip(L"Archer/Jump");
 

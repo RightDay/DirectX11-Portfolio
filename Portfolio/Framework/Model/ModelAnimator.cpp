@@ -62,6 +62,9 @@ void ModelAnimator::Update()
 				desc.Curr.NextFrame = (desc.Curr.CurrFrame + 1) % clip->FrameCount();
 			}
 			desc.Curr.Time = desc.Curr.RunningTime / time;
+			ImGui::Text("desc.Curr.CurrFrame : %d ", desc.Curr.CurrFrame);
+			ImGui::Text("desc.Curr.CurrFrame : %d ", desc.Curr.NextFrame);
+			ImGui::Text("Frame : %d ", clip->FrameCount());
 		}
 
 		//다음 애니메이션
@@ -118,6 +121,7 @@ void ModelAnimator::Update()
 
 	for (ModelMesh* mesh : model->Meshes())
 		mesh->Update();
+
 }
 
 void ModelAnimator::Render()
@@ -127,7 +131,6 @@ void ModelAnimator::Render()
 		CreateTexture();
 		CreateComputeDesc();
 	}
-		
 
 	instanceBuffer->Render();
 
@@ -206,6 +209,16 @@ Matrix ModelAnimator::GetAttachTransform(UINT index)
 	Matrix world = GetTransform(index)->World();
 
 	return transform * result * world;
+}
+
+bool ModelAnimator::StopAnim(int i)
+{
+	TweenDesc& desc = tweenDesc[i];
+	ModelClip* clip = model->ClipByIndex(desc.Curr.Clip);
+	if (desc.Curr.CurrFrame >= clip->FrameCount() - 1)
+		return true;
+
+	return false;
 }
 
 void ModelAnimator::CreateTexture()

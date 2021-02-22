@@ -24,12 +24,9 @@ void Player::Update()
 {
 	model->Update();
 
-	//if (state == NULL)
-	//{
-	//	state = new StandingState();
-	//}
-
 	state->Update(*this);
+
+	PlayerControl();
 
 	Move();
 	Rotation();
@@ -73,12 +70,10 @@ void Player::Move()
 	playerForward = model->GetTransform(0)->Forward();
 	playerRight = model->GetTransform(0)->Right();
 	
-	moveVertical = playerForward * velocity * Time::Delta();
-	moveHorizontal = playerRight * velocity * Time::Delta();
+	moveVertical = playerForward * velocity * Time::Delta() * 2.0f;
+	moveHorizontal = playerRight * velocity * Time::Delta() * 2.0f;
 
 	if (isMove == false) return;
-
-	playerControl();
 
 	model->GetTransform(0)->Position(playerPos);
 	model->UpdateTransforms();
@@ -86,14 +81,12 @@ void Player::Move()
 
 void Player::Rotation()
 {
-	playerControl();
-
 	playerRot = Vector3(0.0f, angle, 0.0f);
 
 	model->GetTransform(0)->RotationDegree(playerRot);
 }
 
-void Player::playerControl()
+void Player::PlayerControl()
 {
 	//Player move forward
 	if (Keyboard::Get()->Press('W'))
@@ -122,13 +115,13 @@ void Player::playerControl()
 	//Player rotation left
 	if (Keyboard::Get()->Press('Q'))
 	{
-		playerRotationAngle(-0.5f);
+		playerRotationAngle(-1.0f);
 	}
 
 	//Player rotation right
 	if (Keyboard::Get()->Press('E'))
 	{
-		playerRotationAngle(+0.5f);
+		playerRotationAngle(+1.0f);
 	}
 
 	if (Keyboard::Get()->Up('W') || Keyboard::Get()->Up('S') || Keyboard::Get()->Up('A') || Keyboard::Get()->Up('D'))
@@ -136,6 +129,12 @@ void Player::playerControl()
 		handleInput(RELEASE_MOVE);
 	}
 
+	//Player attack
+	if (Keyboard::Get()->Down('F'))
+	{
+		handleInput(ATTACK);
+	}
+	handleInput(INPUT_NULL);
 }
 
 void Player::playerMovePos(Vector3 pos, bool plus)

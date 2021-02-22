@@ -26,6 +26,8 @@ public:
 
 	Matrix GetAttachTransform(UINT index);
 
+	bool StopAnim(int i);
+
 private:
 	void CreateTexture();
 	void CreateClipTransform(UINT index);
