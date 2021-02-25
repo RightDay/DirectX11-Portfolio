@@ -22,6 +22,7 @@ public:
 	void handleInput(Input input);
 
 private:
+	void CreateArcherModel();
 	void Move();
 	void Rotation();
 
@@ -32,10 +33,11 @@ public:
 	void playerRotationAngle(float rotationAngle);
 
 public:
+	ModelAnimator* GetModel() { return model; }
 	Vector3 * GetPlayerPos() { return &playerPos; }
 	Vector3 GetPlayerRot() { return playerRot; }
 
-public:
+private:
 	ModelAnimator* model = NULL;
 	ModelAnimator* archer = NULL;
 

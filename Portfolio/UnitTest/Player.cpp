@@ -4,6 +4,8 @@
 
 Player::Player()
 {
+	CreateArcherModel();
+
 	model = archer;
 	playerPos = Vector3(0, 5.0f, 0);
 
@@ -60,6 +62,49 @@ void Player::handleInput(Input input)
 		state = state_;
 
 		state->Enter(*this);
+	}
+}
+
+void Player::CreateArcherModel()
+{
+	modelShader = new Shader(L"27_Animation.fxo");
+	archer = new ModelAnimator(modelShader);
+
+	archer->ReadMaterial(L"Archer/Archer");
+	archer->ReadMesh(L"Archer/Archer");
+
+	archer->ReadClip(L"Archer/Idle");
+	archer->ReadClip(L"Archer/Running");
+	archer->ReadClip(L"Archer/Attack");
+	archer->ReadClip(L"Archer/Hip_Hop_Dancing");
+	archer->ReadClip(L"Archer/Jump");
+
+	archer->PlayClip(0, 0, 1.0f);
+
+	Transform* transform = NULL;
+
+	transform = archer->AddTransform();
+	transform->Position(0.0f, 0.0f, 0.0f);
+	transform->RotationDegree(0.0f, 180.0f, 0.0f);
+	transform->Scale(0.075f, 0.075f, 0.075f);
+
+	archer->UpdateTransforms();
+
+	//animators.push_back(archer);
+
+	//Attach weapon
+	{
+		weapon = new Model();
+		weapon->ReadMaterial(L"Weapon/Sword");
+		weapon->ReadMesh(L"Weapon/Sword");
+
+		Transform attachHand;
+
+		attachHand.Scale(1.3f, 1.3f, 1.3f);
+		attachHand.RotationDegree(0.0f, 0.0f, 90.0f);
+		attachHand.Position(8.0f, 10.0f, -7.0f);
+
+		archer->GetModel()->Attach(modelShader, weapon, 37, &attachHand);
 	}
 }
 
