@@ -23,6 +23,10 @@ public:
 
 private:
 	void CreateArcherModel();
+	void CreatePlayerCollider();
+	void AttachCollider();
+	void ControlCollider(ColliderObjectDesc* collider);
+
 	void Move();
 	void Rotation();
 
@@ -41,6 +45,9 @@ private:
 	ModelAnimator* model = NULL;
 	ModelAnimator* archer = NULL;
 
+	ColliderObjectDesc* playerCollider;
+	ColliderObjectDesc* swordCollider;
+
 	Model* weapon = NULL;
 
 	Shader* modelShader = NULL;
@@ -57,7 +64,6 @@ private:
 	bool isMove = true;
 	float velocity = 200.0f;
 	float angle = 180.0f;
-	//Transform* attachHand = NULL;
 
 public:
 	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);

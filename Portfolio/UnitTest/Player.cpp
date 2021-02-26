@@ -7,8 +7,10 @@ Player::Player()
 	CreateArcherModel();
 
 	model = archer;
-	playerPos = Vector3(0, 5.0f, 0);
 
+	playerPos = Vector3(0, 2.0f, 0);
+
+	CreatePlayerCollider();
 	state = new StandingState();
 }
 
@@ -26,6 +28,8 @@ void Player::Update()
 {
 	model->Update();
 
+	AttachCollider();
+
 	state->Update(*this);
 
 	PlayerControl();
@@ -37,7 +41,8 @@ void Player::Update()
 void Player::Render()
 {
 	//Insert Shader Pass
-
+	playerCollider->Collider->Render(Color(0, 0, 1, 1));
+	swordCollider->Collider->Render(Color(0, 1, 0, 1));
 	model->Render();
 }
 
@@ -84,13 +89,11 @@ void Player::CreateArcherModel()
 	Transform* transform = NULL;
 
 	transform = archer->AddTransform();
-	transform->Position(0.0f, 0.0f, 0.0f);
-	transform->RotationDegree(0.0f, 180.0f, 0.0f);
 	transform->Scale(0.075f, 0.075f, 0.075f);
+	transform->RotationDegree(0.0f, 180.0f, 0.0f);
+	transform->Position(0.0f, 0.0f, 0.0f);
 
 	archer->UpdateTransforms();
-
-	//animators.push_back(archer);
 
 	//Attach weapon
 	{
@@ -106,6 +109,74 @@ void Player::CreateArcherModel()
 
 		archer->GetModel()->Attach(modelShader, weapon, 37, &attachHand);
 	}
+}
+
+void Player::CreatePlayerCollider()
+{
+	//Player Collider
+	{
+		playerCollider = new ColliderObjectDesc();
+		playerCollider->Init = new Transform();
+		playerCollider->Init->Position(playerPos.x, playerPos.y + 80, playerPos.z);
+		playerCollider->Init->Scale(60.0f, 170.0f, 70.0f);
+
+		playerCollider->Transform = new Transform();
+		playerCollider->Collider = new Collider(playerCollider->Transform, playerCollider->Init);
+	}
+
+	//Sword Collider
+	{
+		swordCollider = new ColliderObjectDesc();
+		swordCollider->Init = new Transform();
+
+		//swordCollider->Init->Position(-8.0f, 0.0f, -24.923f);
+		//swordCollider->Init->Scale(10.0f, 10.0f, 85.0f);
+
+		swordCollider->Transform = new Transform();
+		swordCollider->Collider = new Collider(swordCollider->Transform, swordCollider->Init);
+	}
+}
+
+void Player::AttachCollider()
+{
+	Matrix attachPlayer = model->GetTransform(0)->World();
+	playerCollider->Collider->GetTransform()->World(attachPlayer);
+	
+	playerCollider->Collider->Update();
+
+	if (swordCollider != NULL)
+	{
+		Matrix attach = model->GetAttachTransform(0);
+		
+		static Vector3 colliderScale = Vector3(10.0f, 10.0f, 55.0f);
+		static Vector3 colliderRotationDegree = Vector3(0.0f, 0.0f, 0.0f);
+		static Vector3 colliderPosition = Vector3(-10.0f, -5.0f, -38.0f);
+
+		ImGui::SliderFloat3("ColliderScale", colliderScale, 00.0f, 300.0f);
+		swordCollider->Init->Scale(colliderScale);
+
+		ImGui::SliderFloat3("ColliderRotation", colliderRotationDegree, -180.0f, 180.0f);
+		swordCollider->Init->RotationDegree(colliderRotationDegree);
+
+
+		ImGui::SliderFloat3("ColliderPosition", colliderPosition, -300.0f, 300.0f);
+		swordCollider->Init->Position(colliderPosition);
+
+		swordCollider->Collider = new Collider(swordCollider->Transform, swordCollider->Init);
+
+		swordCollider->Collider->GetTransform()->World(attach);
+		swordCollider->Collider->Update();
+	}
+}
+
+void Player::ControlCollider(ColliderObjectDesc* collider)
+{
+	//Control playerColliderScale
+	static Vector3 colliderScale = Vector3(1.0f, 1.0f, 1.0f);
+	ImGui::SliderFloat3("PlayerCollider", colliderScale, 0.0f, 600.0f);
+	collider->Init->Scale(colliderScale);
+
+	collider->Collider = new Collider(collider->Transform, collider->Init);
 }
 
 void Player::Move()

@@ -117,7 +117,7 @@ private:
 
 	struct AttachDesc
 	{
-		UINT AttachBoneIndex = 35;
+		UINT AttachBoneIndex = 73;
 		float Padding[3];
 	} attachDesc;
 
