@@ -1,12 +1,12 @@
 #pragma once
-#include "GameActor.h"
+#include "Enemy.h"
 
-class Enemy : public GameActor
+class Mutant : public Enemy
 {
 public:
-	Enemy();
-	Enemy(ModelAnimator* model);
-	~Enemy();
+	Mutant();
+	Mutant(ModelAnimator* model);
+	~Mutant();
 
 	void Update() override;
 	void Render() override;
@@ -16,9 +16,13 @@ public:
 	void Run() override;
 	void Attack() override;
 
+public:
+	ModelAnimator* GetModel() { return model; }
+
 private:
-	void CreateModel();
+	void CreateModel(UINT modelNum);
 
 private:
 	ModelAnimator* model = NULL;
+	Shader* modelShader = NULL;
 };

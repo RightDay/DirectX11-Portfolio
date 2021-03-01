@@ -3,7 +3,6 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Main.h" />
-    <ClInclude Include="GameScene.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="Command.h" />
@@ -11,11 +10,16 @@
     <ClInclude Include="Enemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Mutant.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="Command.cpp" />
@@ -23,10 +27,19 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Mutant.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Enemy">
       <UniqueIdentifier>{b1adf4e4-5957-4052-8a4e-29d48a1b3c0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{c5e6fb98-a03b-4298-9019-4e587b725482}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

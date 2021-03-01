@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
+#include "Mutant.h"
 #include "GameScene.h"
 
 void GameScene::Initialize()
@@ -31,6 +32,9 @@ void GameScene::Initialize()
 	player = new Player();
 	animators.push_back(player->GetModel());
 
+	mutant = new Mutant();
+	animators.push_back(mutant->GetModel());
+
 	((OrbitCamera*)Context::Get()->GetCamera())->SetTarget(player->GetPlayerPos());
 }
 
@@ -44,6 +48,7 @@ void GameScene::Update()
 	sky->Update();
 	terrain->Update();
 	player->Update();
+	mutant->Update();
 }
 
 void GameScene::Render()
@@ -52,6 +57,7 @@ void GameScene::Render()
 	Pass(0, 1, 2);
 	terrain->Render();
 	player->Render();
+	mutant->Render();
 }
 
 void GameScene::Pass(UINT mesh, UINT model, UINT anim)

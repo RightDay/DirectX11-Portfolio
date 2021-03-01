@@ -11,6 +11,10 @@ Enemy::Enemy(ModelAnimator* model)
 	
 }
 
+Enemy::~Enemy()
+{
+}
+
 void Enemy::Update()
 {
 	model->Update();
@@ -19,6 +23,10 @@ void Enemy::Update()
 void Enemy::Render()
 {
 	model->Render();
+}
+
+void Enemy::Move()
+{
 }
 
 void Enemy::Jump()
@@ -30,5 +38,9 @@ void Enemy::Run()
 }
 
 void Enemy::Attack()
+{
+}
+
+void Enemy::CreateModel()
 {
 }

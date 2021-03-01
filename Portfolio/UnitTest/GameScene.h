@@ -27,6 +27,8 @@ private:
 	Vector3 playerPos = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 playerRot = Vector3(0.0f, 0.0f, 0.0f);
 
+	class Mutant* mutant;
+
 	vector<MeshRender*> meshes;
 	vector<ModelRender*> models;
 	vector<ModelAnimator*> animators;
@@ -35,5 +37,6 @@ private:
 	Shader* modelShader;
 	ModelAnimator* archer = NULL;
 	Model* weapon = NULL;
+
 	void CreateArcherModel();
 };
