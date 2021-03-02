@@ -28,6 +28,7 @@ private:
 	Vector3 playerRot = Vector3(0.0f, 0.0f, 0.0f);
 
 	class Mutant* mutant;
+	class Warrok* warrok;
 
 	vector<MeshRender*> meshes;
 	vector<ModelRender*> models;
@@ -37,6 +38,4 @@ private:
 	Shader* modelShader;
 	ModelAnimator* archer = NULL;
 	Model* weapon = NULL;
-
-	void CreateArcherModel();
 };

@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "Player.h"
 #include "Mutant.h"
+#include "Warrok.h"
 #include "GameScene.h"
 
 void GameScene::Initialize()
 {
+	srand(time(NULL));
 	Context::Get()->GetCamera()->RotationDegree(32, 0, 0);
 	//Context::Get()->GetCamera()->Position(0, 80, -30);
 	//((Freedom*)Context::Get()->GetCamera())->Speed(100, 2);
@@ -31,9 +33,12 @@ void GameScene::Initialize()
 
 	player = new Player();
 	animators.push_back(player->GetModel());
-
+	
 	mutant = new Mutant();
 	animators.push_back(mutant->GetModel());
+
+	warrok = new Warrok();
+	animators.push_back(warrok->GetModel());
 
 	((OrbitCamera*)Context::Get()->GetCamera())->SetTarget(player->GetPlayerPos());
 }
@@ -47,8 +52,11 @@ void GameScene::Update()
 {
 	sky->Update();
 	terrain->Update();
+
 	player->Update();
+
 	mutant->Update();
+	warrok->Update();
 }
 
 void GameScene::Render()
@@ -56,8 +64,11 @@ void GameScene::Render()
 	sky->Render();
 	Pass(0, 1, 2);
 	terrain->Render();
+
 	player->Render();
+
 	mutant->Render();
+	warrok->Render();
 }
 
 void GameScene::Pass(UINT mesh, UINT model, UINT anim)
