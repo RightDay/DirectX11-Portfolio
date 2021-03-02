@@ -15,6 +15,9 @@ public:
 	void Jump() override;
 	void Run() override;
 	void Attack() override;
+	
+public:
+	ModelAnimator* GetModel() { return model; }
 
 private:
 	void CreateModel();
