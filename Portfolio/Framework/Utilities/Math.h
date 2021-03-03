@@ -25,6 +25,8 @@ public:
 	static LONG Clamp(LONG value, LONG min, LONG max);
 	static UINT Clamp(UINT value, UINT min, UINT max);
 
+	static float Length(float x, float y);
+
 	static float Lerp(float value1, float value2, float t);
 	static void LerpMatrix(OUT D3DXMATRIX& out, const D3DXMATRIX& m1, const D3DXMATRIX& m2, float amount);
 

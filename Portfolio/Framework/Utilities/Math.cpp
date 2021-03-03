@@ -1,5 +1,4 @@
 #include "Framework.h"
-#include "Math.h"
 
 const float Math::PI = 3.14159265f;
 const float Math::EPSILON = 1e-6f;
@@ -104,6 +103,15 @@ UINT Math::Clamp(UINT value, UINT min, UINT max)
 	value = value < min ? min : value;
 
 	return value;
+}
+
+float Math::Length(float x, float y)
+{
+	float length = 0.0f;
+
+	length = sqrt(pow(0.0f - x, 2) + pow(0.0f - y, 2));
+
+	return length;
 }
 
 float Math::Lerp(float value1, float value2, float t)
