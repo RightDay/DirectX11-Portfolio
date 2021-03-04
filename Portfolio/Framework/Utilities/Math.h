@@ -19,13 +19,13 @@ public:
 	static bool IsZero(float a);
 	static bool IsOne(float a);
 
-
 	static int Clamp(int value, int min, int max);
 	static float Clamp(float value, float min, float max);
 	static LONG Clamp(LONG value, LONG min, LONG max);
 	static UINT Clamp(UINT value, UINT min, UINT max);
 
 	static float Length(float x, float y);
+	static float Distance(Vector3 start, Vector3 end);
 
 	static float Lerp(float value1, float value2, float t);
 	static void LerpMatrix(OUT D3DXMATRIX& out, const D3DXMATRIX& m1, const D3DXMATRIX& m2, float amount);

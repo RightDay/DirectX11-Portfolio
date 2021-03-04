@@ -114,6 +114,15 @@ float Math::Length(float x, float y)
 	return length;
 }
 
+float Math::Distance(Vector3 start, Vector3 end)
+{
+	float distance = 0.0f;
+
+	distance = sqrt(pow(end.x - start.x, 2) + pow(end.z - start.z, 2));
+
+	return distance;
+}
+
 float Math::Lerp(float value1, float value2, float t)
 {
 	//(1 - t) * A + t * B
