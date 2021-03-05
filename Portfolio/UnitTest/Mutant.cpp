@@ -2,15 +2,16 @@
 #include "Mutant.h"
 
 Mutant::Mutant()
-	: Enemy(model)
 {
-	CreateModel(3);
+	CreateModel(ENEMY_NUM);
+
+	Initialize(model);
 }
 
 Mutant::Mutant(ModelAnimator* model)
 	: Enemy(model)
 {
-	CreateModel(3);
+	CreateModel(ENEMY_NUM);
 }
 
 Mutant::~Mutant()
@@ -19,18 +20,12 @@ Mutant::~Mutant()
 
 void Mutant::Update()
 {
-	//Super::Update();
-	for (int i = 0; i < 3; i++)
-	{
-		model->Update();
-	}
-	
+	Super::Update();
 }
 
 void Mutant::Render()
 {
-	//Super::Render();
-	model->Render();
+	Super::Render();
 }
 
 void Mutant::Move()
@@ -55,8 +50,11 @@ void Mutant::CreateModel(UINT modelNum)
 	model = new ModelAnimator(modelShader);
 
 	model->ReadMaterial(L"Enemy/Mutant");
-	model->ReadMesh(L"Enemy/Mutant");
-	model->ReadClip(L"Enemy/Idle");
+	model->ReadMesh(L"Enemy/Mutant/Mutant");
+	model->ReadClip(L"Enemy/Mutant/Mutant_Idle");
+	model->ReadClip(L"Enemy/Mutant/Mutant_Walking");
+	model->ReadClip(L"Enemy/Mutant/Mutant_Run");
+	model->ReadClip(L"Enemy/Mutant/Mutant_Attack");
 	{
 		Transform* transform = NULL;
 
@@ -65,12 +63,12 @@ void Mutant::CreateModel(UINT modelNum)
 			transform = model->AddTransform();
 
 			Vector3 randomVec3;
-			randomVec3 = Math::RandomVec3(10.0f, 30.0f);
+			randomVec3 = Math::RandomVec3(-30.0f, 30.0f);
 			randomVec3.y = 0;
 
 			transform->Position(randomVec3);
 			transform->Scale(0.1f, 0.1f, 0.1f);
-			model->PlayClip(i, 0, 1.0f);
+			model->PlayClip(i, M_WALK, 1.0f);
 		}
 	}
 	model->UpdateTransforms();

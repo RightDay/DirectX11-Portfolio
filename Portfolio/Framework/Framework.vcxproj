@@ -246,11 +246,8 @@
       <AdditionalLibraryDirectories>../../_Libraries/</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>copy /Y "$(SolutionDir)/Debug\$(ProjectName).lib" "$(SolutionDir)/UnitTest"
-copy /Y "$(SolutionDir)/Debug\$(ProjectName).pdb" "$(SolutionDir)/UnitTest"
-
-copy /Y "$(SolutionDir)/Debug\$(ProjectName).lib" "$(SolutionDir)/TerrainEditor"
-copy /Y "$(SolutionDir)/Debug\$(ProjectName).pdb" "$(SolutionDir)/TerrainEditor"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -1,6 +1,8 @@
 #pragma once
 #include "Enemy.h"
 
+enum M_Anim { M_IDLE, M_WALK, M_RUN, M_ATTACK };
+
 class Mutant : public Enemy
 {
 public:

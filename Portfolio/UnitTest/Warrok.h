@@ -1,6 +1,8 @@
 #pragma once
 #include "Enemy.h"
 
+enum W_Anim { W_WALK, W_ATTACK };
+
 class Warrok : public Enemy
 {
 public:

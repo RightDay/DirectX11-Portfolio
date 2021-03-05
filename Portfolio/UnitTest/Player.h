@@ -63,7 +63,7 @@ private:
 
 	bool isMove = true;
 	float velocity = 200.0f;
-	float angle = 180.0f;
+	float angle = 0.0f;
 
 public:
 	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);
