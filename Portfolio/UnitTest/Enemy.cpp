@@ -55,10 +55,11 @@ void Enemy::Patrol(ModelAnimator* target)
 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		//moveForward(i);
-		//rotateAccordingToDistance(i, 50.0f);
+		moveForward(i);
+		rotateAccordingToDistance(i, 50.0f);
 		rotateToPlayer(i, target);
 	}
+
 }
 
 void Enemy::CreateModel()
@@ -102,8 +103,7 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 {
 	static bool isRotate = false;
 	float dis = 0.0f;
-	//arrival = playerPos;
-	Vector3 thisPos, thisRot, targetPos;
+	static Vector3 thisPos, thisRot, targetPos;
 
 	model->GetTransform(instance)->Position(&thisPos);
 	model->GetTransform(instance)->RotationDegree(&thisRot);
@@ -112,15 +112,13 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 	dis = Math::Distance(thisPos, targetPos);
 
 	if (dis < 30.0f)
-	{
 		isRotate = false;
-	}
-	else
-	{
-		isRotate = true;
-	}
 
-	//if (isRotate == true) return;
+	else
+		isRotate = true;
+
+	if (isRotate == true) 
+		return;
 
 	Vector3 enemyDIrZ;
 	enemyDIrZ = -model->GetTransform(instance)->Forward();
@@ -155,6 +153,5 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 	{
 		thisRot.y += angleEnemyZAndPlayer;
 	}
-
 	model->GetTransform(instance)->RotationDegree(thisRot);
 }

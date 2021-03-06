@@ -56,15 +56,10 @@ void GameScene::Update()
 	player->Update();
 
 	mutant->Update();
-	warrok->Update();
-
 	mutant->Patrol(player->GetModel());
-	float dis = 0.0f;
 
-	Vector3 enemyPos = warrok->GetModel()->GetTransform(0)->Position();
-	Vector3 playerPos = player->GetModel()->GetTransform(0)->Position();
-	dis = Math::Distance(enemyPos, playerPos);
-	ImGui::Text("Distance : %f", dis);
+	warrok->Update();
+	warrok->Patrol(player->GetModel());
 }
 
 void GameScene::Render()

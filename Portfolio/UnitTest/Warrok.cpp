@@ -5,7 +5,8 @@
 Warrok::Warrok()
 {
 	CreateModel(ENEMY_NUM);
-	Super::Enemy(model);
+
+	Initialize(model);
 }
 
 Warrok::Warrok(ModelAnimator* model)
@@ -20,14 +21,12 @@ Warrok::~Warrok()
 
 void Warrok::Update()
 {
-	//Super::Update();
-	model->Update();
+	Super::Update();
 }
 
 void Warrok::Render()
 {
-	//Super::Render();
-	model->Render();
+	Super::Render();
 }
 
 void Warrok::Move()
@@ -64,11 +63,11 @@ void Warrok::CreateModel(UINT modelNum)
 
 			Vector3 randomVec3;
 			randomVec3 = Math::RandomVec3(-30.0f, 30.0f);
-			randomVec3.y = 0.0f;
+			randomVec3.y = 2.0f;
 
 			transform->Position(randomVec3);
 			transform->Scale(0.1f, 0.1f, 0.1f);
-			model->PlayClip(i, W_WALK, 0.5f);
+			model->PlayClip(i, W_WALK, 1.0f);
 		}
 	}
 	model->UpdateTransforms();

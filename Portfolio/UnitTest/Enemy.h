@@ -1,7 +1,7 @@
 #pragma once
 #include "GameActor.h"
 
-#define ENEMY_NUM 1
+#define ENEMY_NUM 3
 
 class Enemy : public GameActor
 {

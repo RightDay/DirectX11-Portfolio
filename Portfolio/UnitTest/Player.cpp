@@ -39,6 +39,7 @@ void Player::Update()
 
 	static Vector3 thisPos = Vector3(0.0f, 0.0f, 0.0f);
 	model->GetTransform(0)->Position(&thisPos);
+	model->UpdateTransforms();
 }
 
 void Player::Render()
@@ -195,7 +196,6 @@ void Player::Move()
 	if (isMove == false) return;
 
 	model->GetTransform(0)->Position(playerPos);
-	model->UpdateTransforms();
 }
 
 void Player::Rotation()

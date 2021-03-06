@@ -64,7 +64,7 @@ void Mutant::CreateModel(UINT modelNum)
 
 			Vector3 randomVec3;
 			randomVec3 = Math::RandomVec3(-30.0f, 30.0f);
-			randomVec3.y = 0;
+			randomVec3.y = 2.0f;
 
 			transform->Position(randomVec3);
 			transform->Scale(0.1f, 0.1f, 0.1f);
