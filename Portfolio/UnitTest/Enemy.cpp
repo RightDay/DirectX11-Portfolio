@@ -55,8 +55,8 @@ void Enemy::Patrol(ModelAnimator* target)
 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		moveForward(i);
-		rotateAccordingToDistance(i, 50.0f);
+		//moveForward(i);
+		//rotateAccordingToDistance(i, 50.0f);
 		rotateToPlayer(i, target);
 	}
 }
@@ -103,10 +103,10 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 	static bool isRotate = false;
 	float dis = 0.0f;
 	//arrival = playerPos;
-	Vector3 thisRot, thisPos, targetPos;
+	Vector3 thisPos, thisRot, targetPos;
 
-	model->GetTransform(instance)->RotationDegree(&thisRot);
 	model->GetTransform(instance)->Position(&thisPos);
+	model->GetTransform(instance)->RotationDegree(&thisRot);
 	target->GetTransform(0)->Position(&targetPos);
 
 	dis = Math::Distance(thisPos, targetPos);
@@ -124,15 +124,12 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 
 	Vector3 enemyDIrZ;
 	enemyDIrZ = -model->GetTransform(instance)->Forward();
-	ImGui::Text("enemyDIrZ : %f. %f, %f", enemyDIrZ.x, enemyDIrZ.y, enemyDIrZ.z);
 
 	Vector3 lookToPlayerDir;
 	lookToPlayerDir = targetPos - thisPos;
-	ImGui::Text("lookToPlayerDir : %f. %f, %f", lookToPlayerDir.x, lookToPlayerDir.y, lookToPlayerDir.z);
 
 	Vector3 enemyDirX;
 	enemyDirX = -model->GetTransform(instance)->Right();
-	ImGui::Text("enemyDirX : %f. %f, %f", enemyDirX.x, enemyDirX.y, enemyDirX.z);
 
 	D3DXVec3Normalize(&enemyDIrZ, &enemyDIrZ);
 	D3DXVec3Normalize(&lookToPlayerDir, &lookToPlayerDir);
@@ -140,26 +137,19 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 
 	float angleEnemyZAndPlayer = D3DXVec3Dot(&enemyDIrZ, &lookToPlayerDir);
 	float angleEnemyXAndPlayer = D3DXVec3Dot(&enemyDirX, &lookToPlayerDir);
-	ImGui::Text("angleEnemyXAndPlayer(D3DXVec3Dot) : %f", angleEnemyXAndPlayer);
 
 	angleEnemyXAndPlayer = acosf(angleEnemyXAndPlayer);
-	ImGui::Text("angleEnemyXAndPlayer(acos) : %f", angleEnemyXAndPlayer);
 	angleEnemyXAndPlayer = Math::ToDegree(angleEnemyXAndPlayer);
-	ImGui::Text("angleEnemyXAndPlayer : %f", angleEnemyXAndPlayer);
 
-	if (angleEnemyXAndPlayer >= 90.0f)
+	if (angleEnemyXAndPlayer > 90.0f)
 	{
 		angleEnemyZAndPlayer = -acosf(angleEnemyZAndPlayer);
-		ImGui::Text("angleEnemyZAndPlayer > 90.0f : %f", angleEnemyZAndPlayer);
-
 		angleEnemyZAndPlayer = Math::ToDegree(angleEnemyZAndPlayer);
-		ImGui::Text("angleEnemyZAndPlayer > 90.0f : %f", angleEnemyZAndPlayer);
 	}
-	else if (angleEnemyXAndPlayer < 90.0f)
+	else if (angleEnemyXAndPlayer <= 90.0f)
 	{
 		angleEnemyZAndPlayer = acosf(angleEnemyZAndPlayer);
 		angleEnemyZAndPlayer = Math::ToDegree(angleEnemyZAndPlayer);
-		ImGui::Text("angleEnemyZAndPlayer < 90.0f : %f", angleEnemyZAndPlayer);
 	}
 	if (isnan(angleEnemyZAndPlayer) == false)
 	{
