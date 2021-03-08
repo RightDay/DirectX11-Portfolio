@@ -7,6 +7,7 @@ class Player : public GameActor
 {
 public:
 	enum AnimState { STATE_IDLE, STATE_RUN, STATE_ATTACK };
+
 public:
 	Player();
 	Player(ModelAnimator* model);

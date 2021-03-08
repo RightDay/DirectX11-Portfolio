@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Enemy.h"
+#include "EnemyState.h"
 
 Enemy::Enemy()
 {
@@ -17,12 +18,20 @@ Enemy::~Enemy()
 void Enemy::Initialize(ModelAnimator* model)
 {
 	this->model = model;
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		state[i] = new E_MovingState();
+	}
 }
 
 void Enemy::Update()
 {
 	model->Update();
 	model->UpdateTransforms();
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		state[i]->Update(*this, i);
+	}
 }
 
 void Enemy::Render()
@@ -55,15 +64,26 @@ void Enemy::Patrol(ModelAnimator* target)
 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		moveForward(i);
-		rotateAccordingToDistance(i, 50.0f);
+		//moveForward(i);
+		//rotateAccordingToDistance(i, 50.0f);
 		rotateToPlayer(i, target);
 	}
-
 }
 
 void Enemy::CreateModel()
 {
+}
+
+void Enemy::handleState(eAnimState returnState, UINT instance)
+{
+	EnemyState* state_ = state[instance]->handleState(returnState);
+	if (state_ != NULL)
+	{
+		delete state[instance];
+		state[instance] = state_;
+
+		state[instance]->Enter(*this, instance);
+	}
 }
 
 void Enemy::moveForward(UINT instance)
@@ -101,7 +121,7 @@ void Enemy::rotateAccordingToDistance(UINT instance, float distance)
 
 void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 {
-	static bool isRotate = false;
+	static bool isRotate = true;
 	float dis = 0.0f;
 	static Vector3 thisPos, thisRot, targetPos;
 
@@ -110,15 +130,29 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 	target->GetTransform(0)->Position(&targetPos);
 
 	dis = Math::Distance(thisPos, targetPos);
+	ImGui::Text("Distance : %f", dis);
+	ImGui::Text("isRotate : %d", isRotate);
 
 	if (dis < 30.0f)
+	{
 		isRotate = false;
+	}
 
 	else
+	{
 		isRotate = true;
+	}
 
-	if (isRotate == true) 
-		return;
+	if (dis < 10.0f)
+	{
+		handleState(E_STATE_ATTACK, instance);
+	}
+	else
+	{
+		handleState(E_STATE_RUNNING, instance);
+	}
+
+	if (isRotate == true) return;
 
 	Vector3 enemyDIrZ;
 	enemyDIrZ = -model->GetTransform(instance)->Forward();

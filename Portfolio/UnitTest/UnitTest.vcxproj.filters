@@ -19,6 +19,9 @@
     <ClInclude Include="Warrok.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyState.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
@@ -37,6 +40,9 @@
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="Warrok.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyState.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
   </ItemGroup>

@@ -51,10 +51,10 @@ void Mutant::CreateModel(UINT modelNum)
 
 	model->ReadMaterial(L"Enemy/Mutant");
 	model->ReadMesh(L"Enemy/Mutant/Mutant");
-	model->ReadClip(L"Enemy/Mutant/Mutant_Idle");
-	model->ReadClip(L"Enemy/Mutant/Mutant_Walking");
 	model->ReadClip(L"Enemy/Mutant/Mutant_Run");
 	model->ReadClip(L"Enemy/Mutant/Mutant_Attack");
+	model->ReadClip(L"Enemy/Mutant/Mutant_Idle");
+	model->ReadClip(L"Enemy/Mutant/Mutant_Walking");
 	{
 		Transform* transform = NULL;
 
@@ -68,7 +68,7 @@ void Mutant::CreateModel(UINT modelNum)
 
 			transform->Position(randomVec3);
 			transform->Scale(0.1f, 0.1f, 0.1f);
-			model->PlayClip(i, M_WALK, 1.0f);
+			//model->PlayClip(i, M_WALK, 1.0f);
 		}
 	}
 	model->UpdateTransforms();

@@ -67,7 +67,7 @@ void Warrok::CreateModel(UINT modelNum)
 
 			transform->Position(randomVec3);
 			transform->Scale(0.1f, 0.1f, 0.1f);
-			model->PlayClip(i, W_WALK, 1.0f);
+			//model->PlayClip(i, W_WALK, 1.0f);
 		}
 	}
 	model->UpdateTransforms();

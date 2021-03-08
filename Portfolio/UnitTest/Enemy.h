@@ -3,8 +3,12 @@
 
 #define ENEMY_NUM 3
 
+
 class Enemy : public GameActor
 {
+public:
+	enum eAnimState { E_STATE_RUNNING, E_STATE_ATTACK, E_STATE_WALK};
+
 public:
 	Enemy();
 	Enemy(ModelAnimator* model);
@@ -26,13 +30,17 @@ public:
 
 private:
 	void CreateModel();
+	void handleState(eAnimState returnState, UINT instance);
 
+public:
 	void moveForward(UINT instance);
 	void rotateAccordingToDistance(UINT instance, float distance);
 	void rotateToPlayer(int instance, ModelAnimator* target);
 
 private:
 	ModelAnimator* model = NULL;
+
+	class EnemyState* state[ENEMY_NUM];
 
 	Vector3 position = Vector3(0.0f, 0.0f, 0.0f);
 
