@@ -23,8 +23,9 @@ VertexOutput VS(VertexInput input)
     //output.Position = WorldPosition(input.Position);
     //output.Scale = input.Scale;
     
-    output.Position = float4(input.VertexID * 2.0f, 0, 0, 1);
-    output.Scale = float2(1, 1);
+    //output.Position = float4(input.VertexID * 2.0f, 0, 0, 1);
+    output.Position = input.Position;
+    output.Scale = input.Scale;
     
     output.VertexID = input.VertexID;
     

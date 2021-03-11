@@ -19,6 +19,7 @@ void Editor::Initialize()
 
 		terrain->Pass(NONE);
 	}
+	AddBillboard();
 
 	heightMapTexture = terrain->HeightMap();
 	baseMapTexture = terrain->BaseMap();
@@ -41,12 +42,14 @@ void Editor::Update()
 	
 	sky->Update();
 	terrain->Update();
+	billboard->Update();
 }
 
 void Editor::Render()
 {
 	sky->Render();
 	terrain->Render();
+	billboard->Render();
 }
 
 Texture * Editor::GetMapTexture(MapTypes mapTypes)
@@ -229,5 +232,25 @@ void Editor::AddMapButton(Texture * mapTexture, ImVec2 size, function<void(wstri
 			func,
 			D3D::GetDesc().Handle
 		);
+	}
+}
+
+void Editor::AddBillboard()
+{
+	billboardShader = new Shader(L"26_Billboard.fx");
+
+	billboard = new Billboard(billboardShader);
+	billboard->AddTexture(L"Terrain/Tree.png");
+	billboard->AddTexture(L"Terrain/Tree2.png");
+	billboard->AddTexture(L"Terrain/Tree3.png");
+	billboard->AddTexture(L"Terrain/Tree4.png");
+
+	for (UINT i = 0; i < 20; i++)
+	{
+		Vector2 scale = Math::RandomVec2(50.0f, 100.0f);
+		Vector3 position = Math::RandomVec3(0.0f, 255.0f);
+		position.y = terrain->GetHeight(position) + scale.y * 0.5f;
+
+		billboard->Add(position, scale);
 	}
 }

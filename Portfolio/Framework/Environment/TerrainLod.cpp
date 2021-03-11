@@ -136,6 +136,53 @@ void TerrainLod::HeightMap(wstring file)
 	heightMap = new Texture(file);
 }
 
+float TerrainLod::GetHeight(Vector3& position)
+{
+
+	UINT x = (UINT)position.x + (width / 2);
+	UINT z = (UINT)position.z + (height / 2);
+
+	if (x < 0 || x > width) 
+		return FLT_MIN;
+	if (z < 0 || z > height) 
+		return FLT_MIN;
+	//if (x > (width / 2) || x < -(width / 2)) 
+	//	return FLT_MIN;
+	//if (z > (height / 2) || z < -(height / 2)) 
+	//	return FLT_MIN;
+
+
+	UINT index[4];
+	index[0] = vertexPerPatchX * z + x;
+	index[1] = vertexPerPatchX * z + x + 1;
+	index[2] = vertexPerPatchX * (z + 1) + x;
+	index[3] = vertexPerPatchX * (z + 1) + x + 1;
+
+	Vector3 v[4];
+	for (int i = 0; i < 4; i++)
+		v[i] = vertices[index[i]].Position;
+
+
+	float ddx = (position.x - v[0].x) / 1.0f;
+	float ddz = (position.z - v[0].z) / 1.0f;
+
+	Vector3 result;
+
+	if (ddx + ddz <= 1.0f)
+	{
+		result = v[0] + (v[2] - v[0]) * ddx + (v[1] - v[0]) * ddz;
+	}
+	else
+	{
+		ddx = 1.0f - ddx;
+		ddz = 1.0f - ddz;
+
+		result = v[3] + (v[1] - v[3]) * ddx + (v[2] - v[3]) * ddz;
+	}
+
+	return result.y;
+}
+
 
 bool TerrainLod::InBounds(UINT x, UINT z)
 {

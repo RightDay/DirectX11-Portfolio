@@ -35,6 +35,8 @@ private:
 
 	void ChangeFillMode(int fillmode) { terrain->Pass(fillmode); }
 
+	void AddBillboard();
+
 private:
 	bool showTerrainEditor = true;
 
@@ -51,4 +53,7 @@ private:
 
 	function<void(wstring)> func = NULL;
 	ImVec2 btnSize = ImVec2(100.0f, 100.0f);
+
+	Billboard* billboard;
+	Shader* billboardShader;
 };

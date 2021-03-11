@@ -28,6 +28,8 @@ public:
 	void HeightMap(wstring file);
 	void SetHeightMap() { sHeightMap->SetResource(heightMap->SRV()); }
 
+	float GetHeight(Vector3& position);
+
 private:
 	bool InBounds(UINT x, UINT z);
 	void CalcPatchBounds(UINT x, UINT z);
