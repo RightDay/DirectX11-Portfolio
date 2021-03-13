@@ -36,6 +36,4 @@ private:
 
 private:
 	Shader* modelShader;
-	ModelAnimator* archer = NULL;
-	Model* weapon = NULL;
 };

@@ -22,12 +22,14 @@ void Enemy::Initialize(ModelAnimator* model)
 	{
 		state[i] = new E_MovingState();
 	}
+	CreateCollider(0, collider);
 }
 
 void Enemy::Update()
 {
 	model->Update();
 	model->UpdateTransforms();
+	AttachCollider();
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		state[i]->Update(*this, i);
@@ -37,6 +39,8 @@ void Enemy::Update()
 void Enemy::Render()
 {
 	model->Render();
+
+	collider->Collider->Render(Color(0, 0, 1, 1));
 
 	if (isRender == false)
 		isRender = true;
@@ -84,6 +88,25 @@ void Enemy::handleState(eAnimState returnState, UINT instance)
 
 		state[instance]->Enter(*this, instance);
 	}
+}
+
+void Enemy::AttachCollider()
+{
+	Matrix attach = model->GetTransform(0)->World();
+	collider->Collider->GetTransform()->World(attach);
+
+	collider->Collider->Update();
+}
+
+void Enemy::CreateCollider(UINT instance, ColliderObjectDesc* collider)
+{
+	collider = new ColliderObjectDesc();
+	collider->Init = new Transform();
+	collider->Init->Position(position.x, position.y, position.z);
+	collider->Init->Scale(60.0f, 170.0f, 70.0f);
+
+	collider->Transform = new Transform();
+	collider->Collider = new Collider(collider->Transform, collider->Init);
 }
 
 void Enemy::moveForward(UINT instance)
