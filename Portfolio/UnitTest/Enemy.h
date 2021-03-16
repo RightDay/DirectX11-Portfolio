@@ -33,8 +33,8 @@ private:
 	void handleState(eAnimState returnState, UINT instance);
 
 public:
-	void AttachCollider();
 	void CreateCollider(UINT instance, ColliderObjectDesc* collider);
+	void AttachCollider();
 	void moveForward(UINT instance);
 	void rotateAccordingToDistance(UINT instance, float distance);
 	void rotateToPlayer(int instance, ModelAnimator* target);
@@ -44,7 +44,7 @@ private:
 
 	class EnemyState* state[ENEMY_NUM];
 
-	ColliderObjectDesc* collider;
+	ColliderObjectDesc* collider[ENEMY_NUM];
 
 	Vector3 position = Vector3(0.0f, 0.0f, 0.0f);
 

@@ -21,8 +21,8 @@ void Enemy::Initialize(ModelAnimator* model)
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		state[i] = new E_MovingState();
+		CreateCollider(i, collider[i]);
 	}
-	CreateCollider(0, collider);
 }
 
 void Enemy::Update()
@@ -39,8 +39,10 @@ void Enemy::Update()
 void Enemy::Render()
 {
 	model->Render();
-
-	collider->Collider->Render(Color(0, 0, 1, 1));
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		collider[i]->Collider->Render(Color(0, 0, 1, 1));
+	}
 
 	if (isRender == false)
 		isRender = true;
@@ -90,23 +92,33 @@ void Enemy::handleState(eAnimState returnState, UINT instance)
 	}
 }
 
-void Enemy::AttachCollider()
-{
-	Matrix attach = model->GetTransform(0)->World();
-	collider->Collider->GetTransform()->World(attach);
-
-	collider->Collider->Update();
-}
-
 void Enemy::CreateCollider(UINT instance, ColliderObjectDesc* collider)
 {
-	collider = new ColliderObjectDesc();
-	collider->Init = new Transform();
-	collider->Init->Position(position.x, position.y, position.z);
-	collider->Init->Scale(60.0f, 170.0f, 70.0f);
+	this->collider[instance] = new ColliderObjectDesc();
+	this->collider[instance]->Init = new Transform();
+	this->collider[instance]->Init->Position(position.x, position.y + 100.0f, position.z);
+	this->collider[instance]->Init->Scale(60.0f, 170.0f, 70.0f);
 
-	collider->Transform = new Transform();
-	collider->Collider = new Collider(collider->Transform, collider->Init);
+	this->collider[instance]->Transform = new Transform();
+	this->collider[instance]->Collider = new Collider(this->collider[instance]->Transform, this->collider[instance]->Init);
+	//collider = new ColliderObjectDesc();
+	//collider->Init = new Transform();
+	//collider->Init->Position(position.x, position.y, position.z);
+	//collider->Init->Scale(60.0f, 170.0f, 70.0f);
+
+	//collider->Transform = new Transform();
+	//collider->Collider = new Collider(collider->Transform, collider->Init);
+}
+
+void Enemy::AttachCollider()
+{
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		Matrix attach = model->GetTransform(i)->World();
+		collider[i]->Collider->GetTransform()->World(attach);
+
+		collider[i]->Collider->Update();
+	}
 }
 
 void Enemy::moveForward(UINT instance)
