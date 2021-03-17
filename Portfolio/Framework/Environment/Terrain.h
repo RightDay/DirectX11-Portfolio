@@ -33,6 +33,9 @@ public:
 	Vector3 GetPickedPosition();
 	void RaiseHeight(Vector3& position, UINT type, UINT range);
 
+	UINT GetWidth() { return width; }
+	UINT GetHeight() { return height; }
+
 private:
 	void CreateVertexData();
 	void CreateIndexData();

@@ -5,7 +5,7 @@ void Editor::Initialize()
 {
 	Context::Get()->GetCamera()->RotationDegree(40, 0, 0);
 	Context::Get()->GetCamera()->Position(240, 560, -300);
-	((Freedom*)Context::Get()->GetCamera())->Speed(100, 2);
+	((Freedom*)Context::Get()->GetCamera())->Speed(150, 2);
 
 	shader = new Shader(L"19_Terrain_Splatting.fx");
 
@@ -13,7 +13,7 @@ void Editor::Initialize()
 	
 	//Terrain
 	{
-		terrain = new Terrain(shader, L"Terrain/Gray512.png");
+		terrain = new Terrain(shader, L"Terrain/Gray256.png");
 		terrain->BaseMap(L"Terrain/Dirt.png");
 		terrain->LayerMap(L"Terrain/Forest Floor.jpg", L"Terrain/Gray512.png");
 
@@ -245,11 +245,20 @@ void Editor::AddBillboard()
 	billboard->AddTexture(L"Terrain/Tree3.png");
 	billboard->AddTexture(L"Terrain/Tree4.png");
 
+	//billboard->AddTexture(L"White.png");
+	//billboard->AddTexture(L"Red.png");
+	//billboard->AddTexture(L"Blue.png");
+	//billboard->AddTexture(L"Green.png");
+	//billboard->AddTexture(L"Box.png");
+	//billboard->AddTexture(L"Bricks.png");
+
+	UINT terrainWidth = terrain->GetWidth() - 3;
 	for (UINT i = 0; i < 20; i++)
 	{
-		Vector2 scale = Math::RandomVec2(50.0f, 100.0f);
-		Vector3 position = Math::RandomVec3(0.0f, 255.0f);
-		position.y = terrain->GetHeight(position) + scale.y * 0.5f;
+		//Vector2 scale = Math::RandomVec2(50.0f, 100.0f);
+		Vector2 scale = Math::RandomVec2(5.0f, 10.0f);
+		Vector3 position = Math::RandomVec3(0.0f, terrainWidth);
+		position.y = (terrain->GetHeight(position) + (scale.y * 0.5f));	//TODO : 2곱해야하는 이유 찾기
 
 		billboard->Add(position, scale);
 	}

@@ -154,7 +154,7 @@ float Terrain::GetHeight(Vector3 & position)
 	for (int i = 0; i < 4; i++)
 		v[i] = vertices[index[i]].Position;
 
-	
+
 	float ddx = (position.x - v[0].x) / 1.0f;
 	float ddz = (position.z - v[0].z) / 1.0f;
 
