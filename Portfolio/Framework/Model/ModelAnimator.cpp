@@ -193,7 +193,7 @@ void ModelAnimator::UpdateTransforms()
 	D3D::GetDC()->Unmap(instanceBuffer->Buffer(), 0);
 }
 
-Matrix ModelAnimator::GetAttachTransform(UINT index)
+Matrix ModelAnimator::GetAttachTransform(UINT index, UINT attachBoneIndex)
 {
 	if (csOutput == NULL)
 	{
@@ -203,6 +203,7 @@ Matrix ModelAnimator::GetAttachTransform(UINT index)
 		return temp;
 	}
 
+	attachDesc.AttachBoneIndex = attachBoneIndex;
 
 	Matrix transform = model->BoneByIndex(attachDesc.AttachBoneIndex)->Transform();
 	Matrix result = csOutput[index].Result;

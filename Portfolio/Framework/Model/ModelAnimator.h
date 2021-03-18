@@ -24,7 +24,7 @@ public:
 	Transform* GetTransform(UINT index) { return transforms[index]; }
 	void UpdateTransforms();
 
-	Matrix GetAttachTransform(UINT index);
+	Matrix GetAttachTransform(UINT index, UINT attachBoneIndex);
 
 	bool StopAnim(int instance, int cutFrameCount);
 
