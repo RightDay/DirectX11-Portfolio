@@ -121,7 +121,7 @@ void ModelAnimator::Update()
 
 	for (ModelMesh* mesh : model->Meshes())
 		mesh->Update();
-
+	ImGui::Text("tweenDesc[0].Curr.CurrFrame : %d ", tweenDesc[0].Curr.CurrFrame);
 }
 
 void ModelAnimator::Render()
