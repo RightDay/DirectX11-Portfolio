@@ -33,8 +33,12 @@ private:
 	void handleState(eAnimState returnState, UINT instance);
 
 public:
-	void CreateCollider(UINT instance, ColliderObjectDesc* collider);
+	void CreateCollider(UINT instance, ColliderObjectDesc*& collider);
+	void CreateAttackCollider(ColliderObjectDesc*& collider, UINT instance);
+
 	void AttachCollider();
+	void AttachAttackCollider(ColliderObjectDesc*& collider, UINT instance, UINT attachCollider, Vector3 srt[3]);
+
 	void moveForward(UINT instance);
 	void rotateAccordingToDistance(UINT instance, float distance);
 	void rotateToPlayer(int instance, ModelAnimator* target);
@@ -45,6 +49,7 @@ private:
 	class EnemyState* state[ENEMY_NUM];
 
 	ColliderObjectDesc* collider[ENEMY_NUM];
+	//ColliderObjectDesc* attackCollider;
 
 	Vector3 position = Vector3(0.0f, 0.0f, 0.0f);
 
@@ -53,4 +58,10 @@ private:
 	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);
 
 	bool isRender = false;
+
+public:
+	Vector3 attackColliderSRT[3];
+	ColliderObjectDesc* attackCollider[ENEMY_NUM];
+
+	bool bAttack = true;
 };

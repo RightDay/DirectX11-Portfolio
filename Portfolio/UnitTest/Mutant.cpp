@@ -6,6 +6,17 @@ Mutant::Mutant()
 	CreateModel(ENEMY_NUM);
 
 	Initialize(model);
+
+	lefthandBoneNumber = 12;
+
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		CreateAttackCollider(attackCollider[i], i);
+	}
+
+	attackColliderSRT[0] = Vector3(100.0f, 40.0f, 40.0f);
+	attackColliderSRT[1] = Vector3(0.0f, 0.0f, 0.0f);
+	attackColliderSRT[2] = Vector3(25.0, 0.0f, 0.0f);
 }
 
 Mutant::Mutant(ModelAnimator* model)
@@ -21,11 +32,21 @@ Mutant::~Mutant()
 void Mutant::Update()
 {
 	Super::Update();
+
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber, attackColliderSRT);
+	}
 }
 
 void Mutant::Render()
 {
 	Super::Render();
+
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		attackCollider[i]->Collider->Render(Color(0, 1, 0, 1));
+	}
 }
 
 void Mutant::Move()

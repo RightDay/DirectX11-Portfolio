@@ -41,7 +41,7 @@ void Enemy::Render()
 	model->Render();
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		collider[i]->Collider->Render(Color(0, 0, 1, 1));
+		collider[i]->Collider->Render(Color(1, 0, 0, 1));
 	}
 
 	if (isRender == false)
@@ -70,8 +70,6 @@ void Enemy::Patrol(ModelAnimator* target)
 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		//moveForward(i);
-		//rotateAccordingToDistance(i, 50.0f);
 		rotateToPlayer(i, target);
 	}
 }
@@ -92,22 +90,24 @@ void Enemy::handleState(eAnimState returnState, UINT instance)
 	}
 }
 
-void Enemy::CreateCollider(UINT instance, ColliderObjectDesc* collider)
+void Enemy::CreateCollider(UINT instance, ColliderObjectDesc*& collider)
 {
-	this->collider[instance] = new ColliderObjectDesc();
-	this->collider[instance]->Init = new Transform();
-	this->collider[instance]->Init->Position(position.x, position.y + 100.0f, position.z);
-	this->collider[instance]->Init->Scale(60.0f, 170.0f, 70.0f);
+	collider = new ColliderObjectDesc();
+	collider->Init = new Transform();
+	collider->Init->Position(position.x, position.y + 100.0f, position.z);
+	collider->Init->Scale(60.0f, 170.0f, 70.0f);
 
-	this->collider[instance]->Transform = new Transform();
-	this->collider[instance]->Collider = new Collider(this->collider[instance]->Transform, this->collider[instance]->Init);
-	//collider = new ColliderObjectDesc();
-	//collider->Init = new Transform();
-	//collider->Init->Position(position.x, position.y, position.z);
-	//collider->Init->Scale(60.0f, 170.0f, 70.0f);
+	collider->Transform = new Transform();
+	collider->Collider = new Collider(collider->Transform, collider->Init);
+}
 
-	//collider->Transform = new Transform();
-	//collider->Collider = new Collider(collider->Transform, collider->Init);
+void Enemy::CreateAttackCollider(ColliderObjectDesc*& collider, UINT instance)
+{
+	collider = new ColliderObjectDesc();
+	collider->Init = new Transform();
+
+	collider->Transform = new Transform();
+	collider->Collider = new Collider(collider->Transform, collider->Init);
 }
 
 void Enemy::AttachCollider()
@@ -118,6 +118,36 @@ void Enemy::AttachCollider()
 		collider[i]->Collider->GetTransform()->World(attach);
 
 		collider[i]->Collider->Update();
+	}
+}
+
+void Enemy::AttachAttackCollider(ColliderObjectDesc*& collider, UINT instance, UINT attachCollider, Vector3 srt[3])
+{
+	if (collider != NULL)
+	{
+		Matrix attach = model->GetAttachTransform(instance, attachCollider);
+
+		//static Vector3 colliderScale = Vector3(40.0f, 40.0f, 40.0f);
+		//static Vector3 colliderRotationDegree = Vector3(0.0f, 0.0f, 0.0f);
+		//static Vector3 colliderPosition = Vector3(0.0f, 0.0f, 0.0f);
+
+		Vector3 colliderScale = srt[0];
+		Vector3 colliderRotationDegree = srt[1];
+		Vector3 colliderPosition = srt[2];
+
+		ImGui::SliderFloat3("ColliderScale", colliderScale, 0.0f, 300.0f);
+		collider->Init->Scale(colliderScale);
+
+		ImGui::SliderFloat3("ColliderRotation", colliderRotationDegree, -180.0f, 180.0f);
+		collider->Init->RotationDegree(colliderRotationDegree);
+
+		ImGui::SliderFloat3("ColliderPosition", colliderPosition, -300.0f, 300.0f);
+		collider->Init->Position(colliderPosition);
+
+		collider->Collider = new Collider(collider->Transform, collider->Init);
+
+		collider->Collider->GetTransform()->World(attach);
+		collider->Collider->Update();
 	}
 }
 
@@ -178,7 +208,7 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 		isRotate = true;
 	}
 
-	if (dis < 10.0f)
+	if (dis < 15.0f)
 	{
 		handleState(E_STATE_ATTACK, instance);
 	}

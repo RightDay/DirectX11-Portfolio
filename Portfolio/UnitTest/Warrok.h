@@ -20,6 +20,7 @@ public:
 
 public:
 	ModelAnimator* GetModel() { return model; }
+	void isIntersect(ColliderObjectDesc* other, UINT instance);
 
 private:
 	void CreateModel(UINT modelNum);
@@ -27,4 +28,8 @@ private:
 private:
 	ModelAnimator* model = NULL;
 	Shader* modelShader = NULL;
+
+	//ColliderObjectDesc* attackCollider[ENEMY_NUM];
+
+	UINT lefthandBoneNumber;
 };

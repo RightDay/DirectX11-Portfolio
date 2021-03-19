@@ -7,6 +7,17 @@ Warrok::Warrok()
 	CreateModel(ENEMY_NUM);
 
 	Initialize(model);
+
+	lefthandBoneNumber = 11;
+
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		CreateAttackCollider(attackCollider[i], i);
+	}
+
+	attackColliderSRT[0] = Vector3(40.0f, 40.0f, 40.0f);
+	attackColliderSRT[1] = Vector3(0.0f, 0.0f, 0.0f);
+	attackColliderSRT[2] = Vector3(0.0, 0.0f, 0.0f);
 }
 
 Warrok::Warrok(ModelAnimator* model)
@@ -22,11 +33,21 @@ Warrok::~Warrok()
 void Warrok::Update()
 {
 	Super::Update();
+
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber, attackColliderSRT);
+	}
 }
 
 void Warrok::Render()
 {
 	Super::Render();
+
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		attackCollider[i]->Collider->Render(Color(0, 1, 0, 1));
+	}
 }
 
 void Warrok::Move()
@@ -43,6 +64,18 @@ void Warrok::Run()
 
 void Warrok::Attack()
 {
+}
+
+void Warrok::isIntersect(ColliderObjectDesc* other, UINT instance)
+{
+	static int num = 0;
+	if (attackCollider[instance]->Collider->IsIntersect(other->Collider))
+	{
+		bAttack = false;
+	}
+	ImGui::Text("Warrok[%d] bAttack : %d", instance, bAttack);
+
+	//ImGui::Text("%d : num %d", instance, num);
 }
 
 void Warrok::CreateModel(UINT modelNum)

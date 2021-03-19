@@ -27,4 +27,8 @@ private:
 private:
 	ModelAnimator* model = NULL;
 	Shader* modelShader = NULL;
+
+	//ColliderObjectDesc* attackCollider[ENEMY_NUM];
+
+	UINT lefthandBoneNumber;
 };
