@@ -1,5 +1,6 @@
 #include "Framework.h"
 #include "MeshRender.h"
+#include "HpBar.h"
 
 MeshRender::MeshRender(Shader * shader, Mesh * mesh)
 	: mesh(mesh)

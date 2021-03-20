@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{0A9282
 		..\_Shaders\00_Sky.fx = ..\_Shaders\00_Sky.fx
 		..\_Shaders\00_Terrain.fx = ..\_Shaders\00_Terrain.fx
 		..\_Shaders\00_Water.fx = ..\_Shaders\00_Water.fx
+		..\_Shaders\06_Grid.fx = ..\_Shaders\06_Grid.fx
+		..\..\AcademyStudy\_Shaders\10_Texture.fx = ..\..\AcademyStudy\_Shaders\10_Texture.fx
 		..\_Shaders\16_CubeSky.fx = ..\_Shaders\16_CubeSky.fx
 		..\_Shaders\19_Terrain_Splatting.fx = ..\_Shaders\19_Terrain_Splatting.fx
 		..\_Shaders\21_DebugLine.fx = ..\_Shaders\21_DebugLine.fx
@@ -25,6 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{0A9282
 		..\_Shaders\26_Billboard.fx = ..\_Shaders\26_Billboard.fx
 		..\_Shaders\27_Animation.fx = ..\_Shaders\27_Animation.fx
 		..\_Shaders\27_Instancing.fx = ..\_Shaders\27_Instancing.fx
+		..\_Shaders\27_Mesh.fx = ..\_Shaders\27_Mesh.fx
 		..\_Shaders\27_Model.fx = ..\_Shaders\27_Model.fx
 		..\_Shaders\47_TerrainLod.fx = ..\_Shaders\47_TerrainLod.fx
 	EndProjectSection

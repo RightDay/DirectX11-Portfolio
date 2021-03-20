@@ -200,6 +200,9 @@
     <ClCompile Include="Viewer\OrbitCamera.cpp">
       <Filter>Viewer</Filter>
     </ClCompile>
+    <ClCompile Include="HpBar.cpp">
+      <Filter>Meshes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Meshes\Mesh.h">
@@ -409,6 +412,9 @@
     </ClInclude>
     <ClInclude Include="Viewer\OrbitCamera.h">
       <Filter>Viewer</Filter>
+    </ClInclude>
+    <ClInclude Include="HpBar.h">
+      <Filter>Meshes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -60,7 +60,7 @@ private:
 	Model* weapon = NULL;
 
 	Shader* modelShader = NULL;
-
+	Shader* gridShader = NULL;
 	class PlayerState* state;
 
 	Vector3 playerForward = Vector3(0.0f, 0.0f, 0.0f);
@@ -74,4 +74,11 @@ private:
 	float angle = 0.0f;
 
 	UINT attachBone;
+
+	Material* hpBar;
+	Material* hpBG;
+
+	MeshRender* hp_bg;
+	class HpBar* hp_bar;
+	//MeshRender* hp_bar;
 };

@@ -1,18 +1,18 @@
 #include "Framework.h"
-#include "MeshQuad.h"
+#include "HpBar.h"
 
-MeshQuad::MeshQuad(float w, float h)
+HpBar::HpBar(float w, float h)
 	: w(w), h(h)
 {
-	
+
 }
 
-MeshQuad::~MeshQuad()
+HpBar::~HpBar()
 {
 
 }
 
-void MeshQuad::Create()
+void HpBar::Create()
 {
 	vector<MeshVertex> v;
 	v.push_back(MeshVertex(-w, -h, 0, 0, 1, 0, 0, -1, 1, 0, 0));
@@ -26,7 +26,7 @@ void MeshQuad::Create()
 	copy
 	(
 		v.begin(), v.end(),
-		stdext::checked_array_iterator<MeshVertex *>(vertices, vertexCount)
+		stdext::checked_array_iterator<MeshVertex*>(vertices, vertexCount)
 	);
 
 	indexCount = 6;
