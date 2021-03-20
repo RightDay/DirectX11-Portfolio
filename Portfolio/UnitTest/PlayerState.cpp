@@ -4,6 +4,7 @@
 
 void StandingState::Enter(Player& player)
 {
+	player.bAttack = false;
 	player.GetModel()->PlayClip(0, Player::STATE_IDLE, 1.0f, 0.5f);
 }
 
@@ -28,6 +29,7 @@ void StandingState::Update(Player& player)
 
 void MovingState::Enter(Player& player)
 {
+	player.bAttack = false;
 	player.GetModel()->PlayClip(0, Player::STATE_RUN, 1.0f);
 }
 
@@ -63,6 +65,7 @@ void MovingState::Update(Player& player)
 
 void AttackState::Enter(Player& player)
 {
+	player.bAttack = true;
 	player.GetModel()->PlayClip(0, Player::STATE_ATTACK, 2.0f, 0.1f);
 }
 

@@ -54,12 +54,33 @@ void GameScene::Update()
 	terrain->Update();
 
 	player->Update();
-
+	
 	mutant->Update();
 	mutant->Patrol(player->GetModel());
-
+	
 	warrok->Update();
 	warrok->Patrol(player->GetModel());
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		if (player->IsIntersect(mutant->collider[i]))
+		{
+			mutant->hp[i] -= 1;
+			ImGui::Text("Mutant[%d] hp : %d", i, mutant->hp[i]);
+		}
+		if (player->IsIntersect(warrok->collider[i]))
+		{
+			warrok->hp[i] -= 1;
+		}
+		if (mutant->IsIntersect(player->playerCollider, i))
+		{
+			player->hp -= 1;
+		}
+		
+		if (warrok->IsIntersect(player->playerCollider, i))
+		{
+			player->hp -= 1;
+		}
+	}
 }
 
 void GameScene::Render()

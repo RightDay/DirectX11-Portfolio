@@ -9,14 +9,14 @@ Mutant::Mutant()
 
 	lefthandBoneNumber = 12;
 
-	for (int i = 0; i < ENEMY_NUM; i++)
-	{
-		CreateAttackCollider(attackCollider[i], i);
-	}
-
 	attackColliderSRT[0] = Vector3(100.0f, 40.0f, 40.0f);
 	attackColliderSRT[1] = Vector3(0.0f, 0.0f, 0.0f);
 	attackColliderSRT[2] = Vector3(25.0, 0.0f, 0.0f);
+
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		CreateAttackCollider(attackCollider[i], i, attackColliderSRT);
+	}
 }
 
 Mutant::Mutant(ModelAnimator* model)
@@ -35,18 +35,16 @@ void Mutant::Update()
 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber, attackColliderSRT);
+		ImGui::Text("Mutant[%d] hp : %d", i, hp[i]);
+
+		if (bAttack[i] == true)
+			AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber);
 	}
 }
 
 void Mutant::Render()
 {
 	Super::Render();
-
-	for (int i = 0; i < ENEMY_NUM; i++)
-	{
-		attackCollider[i]->Collider->Render(Color(0, 1, 0, 1));
-	}
 }
 
 void Mutant::Move()
@@ -74,6 +72,7 @@ void Mutant::CreateModel(UINT modelNum)
 	model->ReadMesh(L"Enemy/Mutant/Mutant");
 	model->ReadClip(L"Enemy/Mutant/Mutant_Run");
 	model->ReadClip(L"Enemy/Mutant/Mutant_Attack");
+	model->ReadClip(L"Enemy/Mutant/Mutant_Dying");
 	model->ReadClip(L"Enemy/Mutant/Mutant_Idle");
 	model->ReadClip(L"Enemy/Mutant/Mutant_Walking");
 	{

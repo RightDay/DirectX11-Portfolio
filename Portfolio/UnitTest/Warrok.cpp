@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Warrok.h"
-#include "Player.h"
 
 Warrok::Warrok()
 {
@@ -10,14 +9,14 @@ Warrok::Warrok()
 
 	lefthandBoneNumber = 11;
 
-	for (int i = 0; i < ENEMY_NUM; i++)
-	{
-		CreateAttackCollider(attackCollider[i], i);
-	}
-
 	attackColliderSRT[0] = Vector3(40.0f, 40.0f, 40.0f);
 	attackColliderSRT[1] = Vector3(0.0f, 0.0f, 0.0f);
 	attackColliderSRT[2] = Vector3(0.0, 0.0f, 0.0f);
+
+	for (int i = 0; i < ENEMY_NUM; i++)
+	{
+		CreateAttackCollider(attackCollider[i], i, attackColliderSRT);
+	}
 }
 
 Warrok::Warrok(ModelAnimator* model)
@@ -36,18 +35,16 @@ void Warrok::Update()
 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber, attackColliderSRT);
+		ImGui::Text("Warrok[%d] hp : %d", i, hp[i]);
+
+		if (bAttack[i] == true)
+			AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber);
 	}
 }
 
 void Warrok::Render()
 {
 	Super::Render();
-
-	for (int i = 0; i < ENEMY_NUM; i++)
-	{
-		attackCollider[i]->Collider->Render(Color(0, 1, 0, 1));
-	}
 }
 
 void Warrok::Move()
@@ -66,18 +63,6 @@ void Warrok::Attack()
 {
 }
 
-void Warrok::isIntersect(ColliderObjectDesc* other, UINT instance)
-{
-	static int num = 0;
-	if (attackCollider[instance]->Collider->IsIntersect(other->Collider))
-	{
-		bAttack = false;
-	}
-	ImGui::Text("Warrok[%d] bAttack : %d", instance, bAttack);
-
-	//ImGui::Text("%d : num %d", instance, num);
-}
-
 void Warrok::CreateModel(UINT modelNum)
 {
 	modelShader = new Shader(L"27_Animation.fxo");
@@ -87,6 +72,7 @@ void Warrok::CreateModel(UINT modelNum)
 	model->ReadMesh(L"Enemy/Warrok/Warrok");
 	model->ReadClip(L"Enemy/Warrok/Warrok_Walk");
 	model->ReadClip(L"Enemy/Warrok/Warrok_Attack");
+	model->ReadClip(L"Enemy/Warrok/Warrok_Dying");
 	{
 		Transform* transform = NULL;
 

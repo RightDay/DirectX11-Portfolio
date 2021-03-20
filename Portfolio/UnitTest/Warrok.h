@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-enum W_Anim { W_WALK, W_ATTACK };
+enum W_Anim { W_WALK, W_ATTACK, W_DYING };
 
 class Warrok : public Enemy
 {
@@ -20,7 +20,6 @@ public:
 
 public:
 	ModelAnimator* GetModel() { return model; }
-	void isIntersect(ColliderObjectDesc* other, UINT instance);
 
 private:
 	void CreateModel(UINT modelNum);
@@ -28,8 +27,6 @@ private:
 private:
 	ModelAnimator* model = NULL;
 	Shader* modelShader = NULL;
-
-	//ColliderObjectDesc* attackCollider[ENEMY_NUM];
 
 	UINT lefthandBoneNumber;
 };

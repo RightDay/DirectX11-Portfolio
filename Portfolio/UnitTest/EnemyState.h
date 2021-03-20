@@ -28,3 +28,12 @@ public:
 	EnemyState* handleState(Enemy::eAnimState animState) override;
 	void Update(Enemy& enemy, UINT instance) override;
 };
+
+class E_DyingState : public EnemyState
+{
+public:
+	E_DyingState() {}
+	void Enter(Enemy& enemy, UINT instance) override;
+	EnemyState* handleState(Enemy::eAnimState animState) override;
+	void Update(Enemy& enemy, UINT instance) override;
+};

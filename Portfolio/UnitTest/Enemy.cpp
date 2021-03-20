@@ -21,7 +21,13 @@ void Enemy::Initialize(ModelAnimator* model)
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		state[i] = new E_MovingState();
+
 		CreateCollider(i, collider[i]);
+
+		isLive[i] = true;
+		bAttack[i] = true;
+
+		hp[i] = 3;
 	}
 }
 
@@ -33,15 +39,25 @@ void Enemy::Update()
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		state[i]->Update(*this, i);
+		if (hp[i] <= 0)
+		{
+			handleState(E_STATE_DYING, i);
+		}
 	}
 }
 
 void Enemy::Render()
 {
 	model->Render();
+
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		collider[i]->Collider->Render(Color(1, 0, 0, 1));
+
+		if (bAttack[i] == true)
+		{
+			attackCollider[i]->Collider->Render(Color(0, 1, 0, 1));
+		}
 	}
 
 	if (isRender == false)
@@ -74,6 +90,20 @@ void Enemy::Patrol(ModelAnimator* target)
 	}
 }
 
+bool Enemy::IsIntersect(ColliderObjectDesc* other, UINT instance)
+{
+	if (bAttack[instance] == false) return false;
+
+	if (attackCollider[instance]->Collider->IsIntersect(other->Collider))
+	{
+		bAttack[instance] = false;
+
+		return true;
+	}
+	ImGui::Text("Warrok[%d] bAttack : %d", instance, bAttack[instance]);
+	return false;
+}
+
 void Enemy::CreateModel()
 {
 }
@@ -101,10 +131,18 @@ void Enemy::CreateCollider(UINT instance, ColliderObjectDesc*& collider)
 	collider->Collider = new Collider(collider->Transform, collider->Init);
 }
 
-void Enemy::CreateAttackCollider(ColliderObjectDesc*& collider, UINT instance)
+void Enemy::CreateAttackCollider(ColliderObjectDesc*& collider, UINT instance, Vector3 srt[3])
 {
 	collider = new ColliderObjectDesc();
 	collider->Init = new Transform();
+
+	Vector3 colliderScale = srt[0];
+	Vector3 colliderRotationDegree = srt[1];
+	Vector3 colliderPosition = srt[2];
+
+	collider->Init->Scale(colliderScale);
+	collider->Init->RotationDegree(colliderRotationDegree);
+	collider->Init->Position(colliderPosition);
 
 	collider->Transform = new Transform();
 	collider->Collider = new Collider(collider->Transform, collider->Init);
@@ -121,30 +159,22 @@ void Enemy::AttachCollider()
 	}
 }
 
-void Enemy::AttachAttackCollider(ColliderObjectDesc*& collider, UINT instance, UINT attachCollider, Vector3 srt[3])
+void Enemy::AttachAttackCollider(ColliderObjectDesc*& collider, UINT instance, UINT attachCollider)
 {
 	if (collider != NULL)
 	{
 		Matrix attach = model->GetAttachTransform(instance, attachCollider);
 
-		//static Vector3 colliderScale = Vector3(40.0f, 40.0f, 40.0f);
-		//static Vector3 colliderRotationDegree = Vector3(0.0f, 0.0f, 0.0f);
-		//static Vector3 colliderPosition = Vector3(0.0f, 0.0f, 0.0f);
+		//ImGui::SliderFloat3("ColliderScale", colliderScale, 0.0f, 300.0f);
+		//collider->Init->Scale(colliderScale);
 
-		Vector3 colliderScale = srt[0];
-		Vector3 colliderRotationDegree = srt[1];
-		Vector3 colliderPosition = srt[2];
+		//ImGui::SliderFloat3("ColliderRotation", colliderRotationDegree, -180.0f, 180.0f);
+		//collider->Init->RotationDegree(colliderRotationDegree);
 
-		ImGui::SliderFloat3("ColliderScale", colliderScale, 0.0f, 300.0f);
-		collider->Init->Scale(colliderScale);
+		//ImGui::SliderFloat3("ColliderPosition", colliderPosition, -300.0f, 300.0f);
+		//collider->Init->Position(colliderPosition);
 
-		ImGui::SliderFloat3("ColliderRotation", colliderRotationDegree, -180.0f, 180.0f);
-		collider->Init->RotationDegree(colliderRotationDegree);
-
-		ImGui::SliderFloat3("ColliderPosition", colliderPosition, -300.0f, 300.0f);
-		collider->Init->Position(colliderPosition);
-
-		collider->Collider = new Collider(collider->Transform, collider->Init);
+		//collider->Collider = new Collider(collider->Transform, collider->Init);
 
 		collider->Collider->GetTransform()->World(attach);
 		collider->Collider->Update();

@@ -10,6 +10,12 @@ Player::Player()
 
 	playerPos = Vector3(0, 2.0f, 0);
 
+	attachBone = 73;
+
+	bAttack = true;
+
+	hp = 10;
+
 	CreatePlayerCollider();
 	state = new StandingState();
 }
@@ -29,6 +35,8 @@ void Player::Update()
 	model->Update();
 
 	AttachCollider();
+	//if (bAttack == true)
+		AttachSwordCollider();
 
 	state->Update(*this);
 
@@ -40,13 +48,19 @@ void Player::Update()
 	static Vector3 thisPos = Vector3(0.0f, 0.0f, 0.0f);
 	model->GetTransform(0)->Position(&thisPos);
 	model->UpdateTransforms();
+
+	ImGui::Text("HP : %d", hp);
 }
 
 void Player::Render()
 {
 	//Insert Shader Pass
 	playerCollider->Collider->Render(Color(0, 0, 1, 1));
-	swordCollider->Collider->Render(Color(0, 1, 0, 1));
+	if (bAttack == true)
+	{
+		swordCollider->Collider->Render(Color(0, 1, 0, 1));
+	}
+
 	model->Render();
 }
 
@@ -147,11 +161,14 @@ void Player::AttachCollider()
 	playerCollider->Collider->GetTransform()->World(attachPlayer);
 	
 	playerCollider->Collider->Update();
+}
 
+void Player::AttachSwordCollider()
+{
 	if (swordCollider != NULL)
 	{
-		Matrix attach = model->GetAttachTransform(0);
-		
+		Matrix attach = model->GetAttachTransform(0, attachBone);
+
 		static Vector3 colliderScale = Vector3(10.0f, 10.0f, 55.0f);
 		static Vector3 colliderRotationDegree = Vector3(0.0f, 0.0f, 0.0f);
 		static Vector3 colliderPosition = Vector3(-10.0f, -5.0f, -38.0f);
@@ -272,5 +289,19 @@ void Player::playerMovePos(Vector3 pos, bool plus)
 void Player::playerRotationAngle(float rotationAngle)
 {
 	angle += rotationAngle;
+}
+
+bool Player::IsIntersect(ColliderObjectDesc* other)
+{
+	if (bAttack == false) return false;
+
+	if (swordCollider->Collider->IsIntersect(other->Collider))
+	{
+		bAttack = false;
+
+		return true;
+	}
+	ImGui::Text("Player : bAttack : %d", bAttack);
+	return false;
 }
 

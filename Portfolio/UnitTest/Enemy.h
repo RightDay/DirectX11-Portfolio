@@ -7,7 +7,7 @@
 class Enemy : public GameActor
 {
 public:
-	enum eAnimState { E_STATE_RUNNING, E_STATE_ATTACK, E_STATE_WALK};
+	enum eAnimState { E_STATE_RUNNING, E_STATE_ATTACK, E_STATE_DYING, E_STATE_WALKING};
 
 public:
 	Enemy();
@@ -25,8 +25,8 @@ public:
 	
 public:
 	ModelAnimator* GetModel() { return model; }
-
 	void Patrol(ModelAnimator* target);
+	bool IsIntersect(ColliderObjectDesc* other, UINT instance);
 
 private:
 	void CreateModel();
@@ -34,10 +34,10 @@ private:
 
 public:
 	void CreateCollider(UINT instance, ColliderObjectDesc*& collider);
-	void CreateAttackCollider(ColliderObjectDesc*& collider, UINT instance);
+	void CreateAttackCollider(ColliderObjectDesc*& collider, UINT instance, Vector3 srt[3]);
 
 	void AttachCollider();
-	void AttachAttackCollider(ColliderObjectDesc*& collider, UINT instance, UINT attachCollider, Vector3 srt[3]);
+	void AttachAttackCollider(ColliderObjectDesc*& collider, UINT instance, UINT attachCollider);
 
 	void moveForward(UINT instance);
 	void rotateAccordingToDistance(UINT instance, float distance);
@@ -48,7 +48,7 @@ private:
 
 	class EnemyState* state[ENEMY_NUM];
 
-	ColliderObjectDesc* collider[ENEMY_NUM];
+	
 	//ColliderObjectDesc* attackCollider;
 
 	Vector3 position = Vector3(0.0f, 0.0f, 0.0f);
@@ -60,8 +60,13 @@ private:
 	bool isRender = false;
 
 public:
-	Vector3 attackColliderSRT[3];
+	ColliderObjectDesc* collider[ENEMY_NUM];
 	ColliderObjectDesc* attackCollider[ENEMY_NUM];
 
-	bool bAttack = true;
+	Vector3 attackColliderSRT[3];
+
+	bool isLive[ENEMY_NUM];
+	bool bAttack[ENEMY_NUM];
+
+	UINT hp[ENEMY_NUM];
 };

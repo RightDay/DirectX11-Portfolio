@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-enum M_Anim { M_IDLE, M_WALK, M_RUN, M_ATTACK };
+enum M_Anim { M_IDLE, M_WALK, M_RUN, M_ATTACK, M_DYING };
 
 class Mutant : public Enemy
 {
@@ -27,8 +27,6 @@ private:
 private:
 	ModelAnimator* model = NULL;
 	Shader* modelShader = NULL;
-
-	//ColliderObjectDesc* attackCollider[ENEMY_NUM];
 
 	UINT lefthandBoneNumber;
 };

@@ -26,6 +26,7 @@ private:
 	void CreateArcherModel();
 	void CreatePlayerCollider();
 	void AttachCollider();
+	void AttachSwordCollider();
 	void ControlCollider(ColliderObjectDesc* collider);
 
 	void Move();
@@ -36,24 +37,30 @@ private:
 public:
 	void playerMovePos(Vector3 pos, bool plus);
 	void playerRotationAngle(float rotationAngle);
+	bool IsIntersect(ColliderObjectDesc* other);
 
 public:
 	ModelAnimator* GetModel() { return model; }
 	Vector3 * GetPlayerPos() { return &playerPos; }
 	Vector3 GetPlayerRot() { return playerRot; }
 
+public:
+	ColliderObjectDesc* playerCollider;
+	ColliderObjectDesc* swordCollider;
+
+	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);
+	Vector3 moveHorizontal = Vector3(0.0f, 0.0f, 0.0f);
+
+	bool bAttack;
+
 private:
 	ModelAnimator* model = NULL;
 	ModelAnimator* archer = NULL;
-
-	ColliderObjectDesc* playerCollider;
-	ColliderObjectDesc* swordCollider;
 
 	Model* weapon = NULL;
 
 	Shader* modelShader = NULL;
 
-private:
 	class PlayerState* state;
 
 	Vector3 playerForward = Vector3(0.0f, 0.0f, 0.0f);
@@ -66,7 +73,5 @@ private:
 	float velocity = 200.0f;
 	float angle = 0.0f;
 
-public:
-	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);
-	Vector3 moveHorizontal = Vector3(0.0f, 0.0f, 0.0f);
+	UINT attachBone;
 };

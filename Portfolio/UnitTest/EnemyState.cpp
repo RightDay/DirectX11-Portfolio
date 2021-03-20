@@ -4,6 +4,7 @@
 
 void E_MovingState::Enter(Enemy& enemy, UINT instance)
 {
+	enemy.bAttack[instance] = false;
 	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_RUNNING, 1.0f);
 }
 
@@ -19,13 +20,18 @@ EnemyState* E_MovingState::handleState(Enemy::eAnimState animState)
 		return new E_AttackState();
 	}
 
+	if (animState == Enemy::E_STATE_DYING)
+	{
+		return new E_DyingState();
+	}
+
 	return NULL;
 }
 
 void E_MovingState::Update(Enemy& enemy, UINT instance)
 {
 	enemy.moveForward(instance);
-	enemy.rotateAccordingToDistance(instance, 40.0f);
+	enemy.rotateAccordingToDistance(instance, 100.0f);
 }
 
 void E_AttackState::Enter(Enemy& enemy, UINT instance)
@@ -45,9 +51,41 @@ EnemyState* E_AttackState::handleState(Enemy::eAnimState animState)
 		return new E_MovingState();
 	}
 
+	if (animState == Enemy::E_STATE_DYING)
+	{
+		return new E_DyingState();
+	}
+
 	return NULL;
 }
 
 void E_AttackState::Update(Enemy& enemy, UINT instance)
 {
+	if (enemy.GetModel()->StopAnim(instance, 1))
+	{
+		enemy.bAttack[instance] = true;
+	}
+}
+
+void E_DyingState::Enter(Enemy& enemy, UINT instance)
+{
+	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_DYING, 1.5f);
+}
+
+EnemyState* E_DyingState::handleState(Enemy::eAnimState animState)
+{
+	return nullptr;
+}
+
+void E_DyingState::Update(Enemy& enemy, UINT instance)
+{
+	if (enemy.GetModel()->StopAnim(instance, 1))
+	{
+		enemy.bAttack[instance] = true;
+		enemy.isLive[instance] = false;
+	}
+	if (enemy.isLive[instance] == false)
+	{
+		enemy.GetModel()->GetTransform(instance)->Position(-300, -300, -300);
+	}
 }

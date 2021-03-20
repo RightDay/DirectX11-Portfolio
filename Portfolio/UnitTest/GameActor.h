@@ -12,4 +12,7 @@ public:
 	virtual void Jump() = 0;
 	virtual void Run() = 0;
 	virtual void Attack() = 0;
+
+public:
+	UINT hp;
 };
