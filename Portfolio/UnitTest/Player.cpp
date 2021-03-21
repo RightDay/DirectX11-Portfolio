@@ -213,7 +213,10 @@ void Player::Move()
 
 	playerForward = model->GetTransform(0)->Forward();
 	playerRight = model->GetTransform(0)->Right();
-	
+	ImGui::Begin("Player dir");
+	ImGui::Text("Forward : %f %f %f", playerForward.x, playerForward.y, playerForward.z);
+	ImGui::Text("Right : %f %f %f", playerRight.x, playerRight.y, playerRight.z);
+	ImGui::End();
 	moveVertical = playerForward * velocity * Time::Delta() * 2.0f;
 	moveHorizontal = playerRight * velocity * Time::Delta() * 2.0f;
 

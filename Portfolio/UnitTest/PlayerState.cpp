@@ -35,22 +35,45 @@ void MovingState::Enter(Player& player)
 
 PlayerState* MovingState::handleInput(Player& player, Input input)
 {
+	static Vector3 pForward = player.GetModel()->GetTransform(0)->Forward();
 	if (input == PRESS_W)
 	{
-		player.playerMovePos(player.moveVertical, false);
+		pForward = player.GetModel()->GetTransform(0)->Forward();
+
+		if (pForward.z <= -0.075 || pForward.z >= -0.074)
+		{
+			player.playerRotationAngle(-5.0f);
+		}
 	}
+
 	if (input == PRESS_S)
 	{
-		player.playerMovePos(player.moveVertical, true);
+		pForward = player.GetModel()->GetTransform(0)->Forward();
+
+		if (pForward.z >= 0.075 || pForward.z <= 0.074)
+		{
+			player.playerRotationAngle(+5.0f);
+		}
 	}
+
 	if (input == PRESS_D)
 	{
-		player.playerMovePos(player.moveHorizontal, false);
+		pForward = player.GetModel()->GetTransform(0)->Forward();
+		if (pForward.z > 0)
+		{
+			player.playerRotationAngle(-5.0f);
+		}
 	}
+
 	if (input == PRESS_A)
 	{
-		player.playerMovePos(player.moveHorizontal, true);
+		pForward = player.GetModel()->GetTransform(0)->Forward();
+		if (pForward.z< 0)
+		{
+			player.playerRotationAngle(-5.0f);
+		}
 	}
+
 	else if (input == RELEASE_MOVE)
 	{
 		return new StandingState();
@@ -61,6 +84,7 @@ PlayerState* MovingState::handleInput(Player& player, Input input)
 
 void MovingState::Update(Player& player)
 {
+	player.playerMovePos(player.moveVertical, false);
 }
 
 void AttackState::Enter(Player& player)
