@@ -36,4 +36,6 @@ private:
 
 private:
 	Shader* modelShader;
+	Render2D* hpBar;
+	Render2D* hpGauge;
 };

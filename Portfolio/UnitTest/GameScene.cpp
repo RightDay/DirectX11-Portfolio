@@ -31,14 +31,15 @@ void GameScene::Initialize()
 		//terrain->Pass(1);
 	}
 
-	player = new Player();
-	animators.push_back(player->GetModel());
 	
 	mutant = new Mutant();
 	animators.push_back(mutant->GetModel());
 
 	warrok = new Warrok();
 	animators.push_back(warrok->GetModel());
+
+	player = new Player();
+	animators.push_back(player->GetModel());
 
 	((OrbitCamera*)Context::Get()->GetCamera())->SetTarget(player->GetPlayerPos());
 }
@@ -60,6 +61,7 @@ void GameScene::Update()
 	
 	warrok->Update();
 	warrok->Patrol(player->GetModel());
+
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		if (player->IsIntersect(mutant->collider[i]))
@@ -85,6 +87,7 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
+
 	sky->Render();
 	Pass(0, 1, 2);
 	terrain->Render();

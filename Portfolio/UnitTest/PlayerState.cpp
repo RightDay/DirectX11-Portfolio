@@ -30,7 +30,7 @@ void StandingState::Update(Player& player)
 void MovingState::Enter(Player& player)
 {
 	player.bAttack = false;
-	player.GetModel()->PlayClip(0, Player::STATE_RUN, 1.0f);
+	player.GetModel()->PlayClip(0, Player::STATE_RUN, 1.5f, 0.2f);
 }
 
 PlayerState* MovingState::handleInput(Player& player, Input input)

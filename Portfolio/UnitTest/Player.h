@@ -25,6 +25,8 @@ public:
 private:
 	void CreateArcherModel();
 	void CreatePlayerCollider();
+	void CreateHpBar();
+
 	void AttachCollider();
 	void AttachSwordCollider();
 	void ControlCollider(ColliderObjectDesc* collider);
@@ -33,6 +35,8 @@ private:
 	void Rotation();
 
 	void PlayerControl();
+
+	void controlHpBar();
 
 public:
 	void playerMovePos(Vector3 pos, bool plus);
@@ -70,15 +74,12 @@ private:
 	Vector3 playerRot = Vector3(0.0f, 0.0f, 0.0f);
 
 	bool isMove = true;
+	bool isRender = false;
 	float velocity = 200.0f;
 	float angle = 0.0f;
 
 	UINT attachBone;
 
-	Material* hpBar;
-	Material* hpBG;
-
-	MeshRender* hp_bg;
-	class HpBar* hp_bar;
-	//MeshRender* hp_bar;
+	Render2D* hpBar;
+	Render2D* hpGauge;
 };

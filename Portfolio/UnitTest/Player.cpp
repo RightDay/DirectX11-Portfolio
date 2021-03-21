@@ -17,32 +17,8 @@ Player::Player()
 
 	hp = 10;
 
-	gridShader = new Shader(L"27_Mesh.fx");
-
-	//Material(hp)
-	hpBG = new Material(gridShader);
-	hpBG->DiffuseMap("hp_bg.png");
-
-	//Grid
-	hp_bg = new MeshRender(gridShader, new MeshQuad());
-	hp_bg->AddTransform();
-	hp_bg->GetTransform(0)->Scale(10, 1, 1);
-	hp_bg->GetTransform(0)->RotationDegree(-90, 0, 0);
-	hp_bg->UpdateTransforms();
-	hp_bg->Pass(1);
-
-	//Quad
-	hpBar = new Material(gridShader);
-	hpBar->DiffuseMap("Red.png");
-
-	hp_bar = new HpBar(gridShader, 0.5f, 0.5f);
-	hp_bar->AddTransform();
-	hp_bar->GetTransform(0)->Scale(1, 1, 1);
-	hp_bar->GetTransform(0)->RotationDegree(-90, 0, 0);
-	hp_bar->UpdateTransforms();
-	hp_bar->Pass(1);
-
 	CreatePlayerCollider();
+	CreateHpBar();
 	state = new StandingState();
 }
 
@@ -74,25 +50,8 @@ void Player::Update()
 	static Vector3 thisPos = Vector3(0.0f, 0.0f, 0.0f);
 	model->GetTransform(0)->Position(&thisPos);
 	model->UpdateTransforms();
-	
-	//Grid
-	Vector3 camRot;
-	Context::Get()->GetCamera()->RotationDegree(&camRot);
-	static Vector3 gridScale = Vector3(10.0f, 1.0f, 1.0f);
-	static Vector3 gridPosition = Vector3(0.0f, 0.0f, 0.05f);
-	static float healthPoint = 0.0f;
-	ImGui::Begin("Grid");
-	ImGui::SliderFloat3("grid scale", gridScale, 0, 10.0f);
-	ImGui::SliderFloat3("grid position", gridPosition, 0, 10.0f);
-	ImGui::SliderFloat("HpBar", &healthPoint, -10.0f, 10.0f);
-	ImGui::End();
 
-	hp_bar->GetTransform(0)->Scale(gridScale);
-	hp_bar->GetTransform(0)->Position(playerPos.x + gridPosition.x, playerPos.y + 20.0f, playerPos.z + gridPosition.z);
-	hp_bar->GetTransform(0)->RotationDegree(camRot.x, camRot.y, 0.0f);
-	hp_bar->SetWidth(healthPoint);
-	hp_bar->Update();
-	hp_bar->UpdateTransforms();
+	controlHpBar();
 
 	ImGui::Text("HP : %d", hp);
 }
@@ -108,11 +67,8 @@ void Player::Render()
 
 	model->Render();
 
-	hpBG->Render();
-	hp_bg->Render();
-
 	hpBar->Render();
-	hp_bar->Render(1);
+	hpGauge->Render();
 }
 
 void Player::Jump()
@@ -323,6 +279,49 @@ void Player::PlayerControl()
 	}
 
 	handleInput(INPUT_NULL);
+}
+
+void Player::controlHpBar()
+{
+	if (hp <= 0) return;
+	static Vector3 pos = Vector3(0, 0, 0);
+	static Vector3 sca = Vector3(0, 0, 0);
+
+	hpGauge->GetTransform()->Position(&pos);
+	hpGauge->GetTransform()->Scale(&sca);
+
+	ImGui::Begin("hp");
+
+	ImGui::SliderFloat3("HpGauge pos", pos, 0, 800);
+	ImGui::SliderFloat3("HpGauge sca", sca, 0, 800);
+	static UINT prevHP = hp;
+	if (prevHP > hp)
+	{
+		hpGauge->GetTransform()->Position(pos.x - 17.75f, pos.y, pos.z);
+
+		prevHP = hp;
+	}
+	ImGui::End();
+	//hpGauge->GetTransform()->Position(pos.x, pos.y, pos.z);
+	hpGauge->GetTransform()->Scale(35.5f * hp, sca.y, sca.z);
+
+	hpBar->Update();
+	hpGauge->Update();
+}
+
+void Player::CreateHpBar()
+{
+	Texture* T_hpBar = new Texture(L"hp_bar.png");
+	hpBar = new Render2D();
+	hpBar->GetTransform()->Position(200.0f, 650.0f, 0);
+	hpBar->GetTransform()->Scale(400.0f, 28.0f, 1);
+	hpBar->SRV(T_hpBar->SRV());
+
+	Texture* T_hpGauge = new Texture(L"Red.png");
+	hpGauge = new Render2D();
+	hpGauge->GetTransform()->Position(200.0f, 650.5f, 0);
+	hpGauge->GetTransform()->Scale(hp * 35.5f, 20.0f, 1);
+	hpGauge->SRV(T_hpGauge->SRV());
 }
 
 void Player::playerMovePos(Vector3 pos, bool plus)

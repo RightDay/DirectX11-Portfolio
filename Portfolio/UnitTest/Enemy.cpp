@@ -33,6 +33,7 @@ void Enemy::Initialize(ModelAnimator* model)
 
 void Enemy::Update()
 {
+	if (isRender == false) return;
 	model->Update();
 	model->UpdateTransforms();
 	AttachCollider();
@@ -92,6 +93,8 @@ void Enemy::Patrol(ModelAnimator* target)
 
 bool Enemy::IsIntersect(ColliderObjectDesc* other, UINT instance)
 {
+	if (isRender == false) return false;
+
 	if (bAttack[instance] == false) return false;
 
 	if (attackCollider[instance]->Collider->IsIntersect(other->Collider))
