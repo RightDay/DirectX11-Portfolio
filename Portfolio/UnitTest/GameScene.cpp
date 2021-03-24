@@ -10,23 +10,16 @@ void GameScene::Initialize()
 	Context::Get()->GetCamera()->RotationDegree(32, 0, 0);
 	//Context::Get()->GetCamera()->Position(0, 80, -30);
 	//((Freedom*)Context::Get()->GetCamera())->Speed(100, 2);
-	shader = new Shader(L"47_TerrainLod.fx");
+	shader = new Shader(L"19_Terrain_Splatting.fx");
 
 	sky = new CubeSky(L"Environment/GrassCube1024.dds");
 
 	//Terrain
 	{
-		TerrainLod::InitializeDesc desc =
-		{
-			shader,
-			L"Terrain/Gray512.png",
-			1.0f, 16, 5
-		};
-
-		terrain = new TerrainLod(desc);
+		terrain = new Terrain(shader, L"Terrain/Gray512.png");
 		terrain->BaseMap(L"Terrain/Dirt2.png");
 		terrain->LayerMap(L"Terrain/Forest Floor.jpg", L"Terrain/Gray512.png");
-		terrain->NormalMap(L"Terrain/Dirt_Normal.png");
+		terrain->GetTransform()->Position(0, 0.5f, 0);
 		terrain->Pass(0);
 		//terrain->Pass(1);
 	}
@@ -64,6 +57,8 @@ void GameScene::Update()
 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
+		mutant->GetHeight(terrain, i);
+		warrok->GetHeight(terrain, i);
 		if (player->IsIntersect(mutant->collider[i]))
 		{
 			mutant->hp[i] -= 1;
@@ -83,6 +78,12 @@ void GameScene::Update()
 			player->hp -= 1;
 		}
 	}
+	//cubePosition.y = terrain->GetHeight(cubePosition) + 0.5f;
+	player->playerGetHeight(terrain);
+
+	ImGui::Begin("TerrainLod");
+	ImGui::Text("TerrainHeight : %f", terrain->GetHeight(player->GetModel()->GetTransform(0)->Position()));
+	ImGui::End();
 }
 
 void GameScene::Render()

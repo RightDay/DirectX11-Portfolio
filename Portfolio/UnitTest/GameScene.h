@@ -20,7 +20,7 @@ private:
 	CubeSky* sky;
 
 	Shader* shader;
-	TerrainLod* terrain;
+	Terrain* terrain;
 	
 	class Player* player;
 

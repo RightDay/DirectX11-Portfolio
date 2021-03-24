@@ -43,6 +43,8 @@ public:
 	void rotateAccordingToDistance(UINT instance, float distance);
 	void rotateToPlayer(int instance, ModelAnimator* target);
 
+	void GetHeight(Terrain* terrain, UINT instance);
+
 private:
 	ModelAnimator* model = NULL;
 

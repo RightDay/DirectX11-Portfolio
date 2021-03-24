@@ -42,6 +42,7 @@ public:
 	void playerMovePos(Vector3 pos, bool plus);
 	void playerRotationAngle(float rotationAngle);
 	bool IsIntersect(ColliderObjectDesc* other);
+	void playerGetHeight(Terrain* terrain);
 
 public:
 	ModelAnimator* GetModel() { return model; }

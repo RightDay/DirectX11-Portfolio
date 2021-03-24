@@ -194,6 +194,7 @@ void Enemy::moveForward(UINT instance)
 	}
 
 	model->GetTransform(instance)->Position(&position);
+
 	position -= moveVertical;
 
 	model->GetTransform(instance)->Position(position);
@@ -256,6 +257,8 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 	enemyDIrZ = -model->GetTransform(instance)->Forward();
 
 	Vector3 lookToPlayerDir;
+	targetPos.y = 0.0f;
+	thisPos.y = 0.0f;
 	lookToPlayerDir = targetPos - thisPos;
 
 	Vector3 enemyDirX;
@@ -286,4 +289,15 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 		thisRot.y += angleEnemyZAndPlayer;
 	}
 	model->GetTransform(instance)->RotationDegree(thisRot);
+}
+
+void Enemy::GetHeight(Terrain* terrain, UINT instance)
+{
+	static Vector3 enemyPos;
+	model->GetTransform(instance)->Position(&enemyPos);
+
+	enemyPos.y = terrain->GetHeight(enemyPos) * 2.0f;
+
+	model->GetTransform(instance)->Position(enemyPos);
+	///position.y = terrain->GetHeight(position) * 2.0f;
 }

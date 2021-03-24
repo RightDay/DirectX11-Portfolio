@@ -41,7 +41,7 @@ void Player::Update()
 		AttachSwordCollider();
 
 	state->Update(*this);
-
+	//playerPos.y = terrain->GetHeight(playerPos) + 0.5f;
 	PlayerControl();
 
 	Move();
@@ -356,4 +356,9 @@ bool Player::IsIntersect(ColliderObjectDesc* other)
 	}
 	ImGui::Text("Player : bAttack : %d", bAttack);
 	return false;
+}
+
+void Player::playerGetHeight(Terrain* terrain)
+{
+	playerPos.y = terrain->GetHeight(playerPos) * 2.0f;
 }
