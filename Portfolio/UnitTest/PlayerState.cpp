@@ -1,4 +1,4 @@
-#include "stdafx.h"
+ #include "stdafx.h"
 #include "Player.h"
 #include "PlayerState.h"
 
@@ -10,9 +10,11 @@ void StandingState::Enter(Player& player)
 
 PlayerState* StandingState::handleInput(Player& player, Input input)
 {
-	if (input == PRESS_W || input == PRESS_S || input == PRESS_D || input == PRESS_A)
+	if (input == DOWN_W || input == DOWN_S || input == DOWN_D || input == DOWN_A)
 	{
-		return new MovingState();
+		PlayerState* state = new MovingState(); 
+
+		return new MovingState(player, input);
 	}
 	
 	if (input == ATTACK)
@@ -27,57 +29,74 @@ void StandingState::Update(Player& player)
 {
 }
 
+MovingState::MovingState(Player player, Input input)
+{
+	handleInput(player, input);
+}
+
 void MovingState::Enter(Player& player)
 {
 	player.bAttack = false;
+	
 	player.GetModel()->PlayClip(0, Player::STATE_RUN, 1.5f, 0.2f);
 }
 
 PlayerState* MovingState::handleInput(Player& player, Input input)
 {
-	static Vector3 pForward = player.GetModel()->GetTransform(0)->Forward();
-	if (input == PRESS_W)
-	{
-		pForward = player.GetModel()->GetTransform(0)->Forward();
-
-		if (pForward.z <= -0.075 || pForward.z >= -0.074)
-		{
-			player.playerRotationAngle(-5.0f);
-		}
+	//Axis Vertical
+	if (input == DOWN_W)
+	{ 
+		inputDir.y = -1;
+		//bMove = false;
 	}
 
-	if (input == PRESS_S)
+	if (input == DOWN_S)
 	{
-		pForward = player.GetModel()->GetTransform(0)->Forward();
-
-		if (pForward.z >= 0.075 || pForward.z <= 0.074)
-		{
-			player.playerRotationAngle(+5.0f);
-		}
+		inputDir.y = 1;
 	}
 
-	if (input == PRESS_D)
+	//Axis Horizontal
+	if (input == DOWN_D)
 	{
-		pForward = player.GetModel()->GetTransform(0)->Forward();
-		if (pForward.z > 0)
-		{
-			player.playerRotationAngle(-5.0f);
-		}
+		inputDir.x = -1;
 	}
 
-	if (input == PRESS_A)
+	if (input == DOWN_A)
 	{
-		pForward = player.GetModel()->GetTransform(0)->Forward();
-		if (pForward.z< 0)
-		{
-			player.playerRotationAngle(-5.0f);
-		}
+		inputDir.x = 1;
+	}
+	
+	//
+	//Up
+	//
+	if (input == UP_W)
+	{
+		inputDir.y = 0;
 	}
 
-	else if (input == RELEASE_MOVE)
+	if (input == UP_S)
+	{
+		inputDir.y = 0;
+	}
+
+	//Axis Horizontal
+	if (input == UP_D)
+	{
+		inputDir.x = 0;
+	}
+
+	if (input == UP_A)
+	{
+		inputDir.x = 0;
+	}
+
+	if (abs(inputDir.x) < 1 && abs(inputDir.y) < 1)
 	{
 		return new StandingState();
 	}
+
+	angle = atan2(inputDir.x, inputDir.y);
+	player.RotationAngle(angle);
 
 	return NULL;
 }
@@ -85,6 +104,29 @@ PlayerState* MovingState::handleInput(Player& player, Input input)
 void MovingState::Update(Player& player)
 {
 	player.playerMovePos(player.moveVertical, false);
+
+	ImGui::Begin("MovingState");
+	ImGui::Text("bMove : %d", bMove);
+	ImGui::Text("InputDir : %f, %f", inputDir.x, inputDir.y);
+	ImGui::End();
+}
+
+void MovingState::CalcurateDirection()
+{
+	if (abs(inputDir.x) < 1 && abs(inputDir.y) < 1)
+		bMove = true;
+}
+
+void MovingState::Rotate(Player player)
+{
+	angle = atan2(inputDir.x, inputDir.y);
+	player.RotationAngle(angle);
+}
+
+void MovingState::Move(Player player)
+{
+	player.playerMovePos(player.moveVertical, false);
+
 }
 
 void AttackState::Enter(Player& player)
@@ -95,7 +137,7 @@ void AttackState::Enter(Player& player)
 
 PlayerState* AttackState::handleInput(Player& player, Input input)
 {
-	if (input == PRESS_W || input == PRESS_S || input == PRESS_D || input == PRESS_A)
+	if (input == DOWN_W || input == DOWN_S || input == DOWN_D || input == DOWN_A)
 	{
 		return new MovingState();
 	}

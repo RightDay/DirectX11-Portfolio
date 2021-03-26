@@ -3,10 +3,8 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Main.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="GameActor.h" />
     <ClInclude Include="Command.h" />
-    <ClInclude Include="PlayerState.h" />
     <ClInclude Include="Enemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -22,14 +20,18 @@
     <ClInclude Include="EnemyState.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="GameActor.cpp" />
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="Enemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
@@ -45,6 +47,12 @@
     <ClCompile Include="EnemyState.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Enemy">
@@ -52,6 +60,9 @@
     </Filter>
     <Filter Include="Scene">
       <UniqueIdentifier>{c5e6fb98-a03b-4298-9019-4e587b725482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Player">
+      <UniqueIdentifier>{6650064d-2577-4ad5-8eb8-5bcf82252aea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

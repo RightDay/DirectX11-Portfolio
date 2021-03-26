@@ -1,7 +1,7 @@
 #pragma once
 #include "GameActor.h"
 
-enum Input { PRESS_W, PRESS_A, PRESS_D, PRESS_S, RELEASE_MOVE, ATTACK, INPUT_NULL };
+enum Input { DOWN_W, DOWN_A, DOWN_D, DOWN_S, UP_W, UP_A, UP_D, UP_S, RELEASE_MOVE, ATTACK, INPUT_NULL };
 
 class Player : public GameActor
 {
@@ -40,7 +40,7 @@ private:
 
 public:
 	void playerMovePos(Vector3 pos, bool plus);
-	void playerRotationAngle(float rotationAngle);
+	void RotationAngle(float angle);
 	bool IsIntersect(ColliderObjectDesc* other);
 	void playerGetHeight(Terrain* terrain);
 
@@ -48,6 +48,8 @@ public:
 	ModelAnimator* GetModel() { return model; }
 	Vector3 * GetPlayerPos() { return &playerPos; }
 	Vector3 GetPlayerRot() { return playerRot; }
+	float GetAngle() { return angle; }
+	void SetAngle(float angle) { this->angle = angle; }
 
 public:
 	ColliderObjectDesc* playerCollider;
@@ -76,7 +78,9 @@ private:
 
 	bool isMove = true;
 	bool isRender = false;
+
 	float velocity = 200.0f;
+	float turnSpeed = 10.0f;
 	float angle = 0.0f;
 
 	UINT attachBone;

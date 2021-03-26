@@ -13,6 +13,7 @@ public:
 
 	void Update();
 
+	bool None(DWORD key) { return keyMap[key] = KEY_INPUT_STATUS_NONE; }
 	bool Down(DWORD key) { return keyMap[key] == KEY_INPUT_STATUS_DOWN; }
 	bool Up(DWORD key) { return keyMap[key] == KEY_INPUT_STATUS_UP; }
 	bool Press(DWORD key) { return keyMap[key] == KEY_INPUT_STATUS_PRESS; }

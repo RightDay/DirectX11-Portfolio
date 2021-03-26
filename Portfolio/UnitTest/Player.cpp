@@ -9,7 +9,7 @@ Player::Player()
 
 	model = archer;
 
-	playerPos = Vector3(0, 2.0f, 0);
+	playerPos = Vector3(256, 2.0f, 256);
 
 	attachBone = 73;
 
@@ -17,6 +17,7 @@ Player::Player()
 
 	hp = 10;
 
+	//model->GetTransform(0)->Position(playerPos);
 	CreatePlayerCollider();
 	CreateHpBar();
 	state = new StandingState();
@@ -40,9 +41,8 @@ void Player::Update()
 	//if (bAttack == true)
 		AttachSwordCollider();
 
-	state->Update(*this);
-	//playerPos.y = terrain->GetHeight(playerPos) + 0.5f;
 	PlayerControl();
+	state->Update(*this);
 
 	Move();
 	Rotation();
@@ -142,7 +142,7 @@ void Player::CreatePlayerCollider()
 	{
 		playerCollider = new ColliderObjectDesc();
 		playerCollider->Init = new Transform();
-		playerCollider->Init->Position(playerPos.x, playerPos.y + 80, playerPos.z);
+		playerCollider->Init->Position(0.0f, 100.0f, 0.0f);
 		playerCollider->Init->Scale(60.0f, 170.0f, 70.0f);
 
 		playerCollider->Transform = new Transform();
@@ -167,6 +167,9 @@ void Player::AttachCollider()
 	Matrix attachPlayer = model->GetTransform(0)->World();
 	playerCollider->Collider->GetTransform()->World(attachPlayer);
 	
+	ImGui::Begin("Collider");
+	ImGui::Text("Collider position %f", playerCollider->Collider->GetTransform()->Position().x);
+	ImGui::End();
 	playerCollider->Collider->Update();
 }
 
@@ -227,52 +230,90 @@ void Player::Move()
 
 void Player::Rotation()
 {
-	playerRot = Vector3(0.0f, angle, 0.0f);
-
-	model->GetTransform(0)->RotationDegree(playerRot);
+	//Quaternion targetR;
+	//Quaternion outR;
+	//D3DXQuaternionNormalize(&outR, &outR);
+	//D3DXQuaternionNormalize(&targetR, &targetR);
+	//D3DXQuaternionToAxisAngle(&targetR, &Vector3(0, 1, 0), &angle);
+	//D3DXQuaternionSlerp(&outR, &outR, &targetR, 10.0f * Time::Delta());
+	
+	//-------------------------------------------------------------------------------------------------
+	Vector3 outRot;
+	Vector3 targetRot;
+	targetRot = Vector3(0.0f, angle, 0.0f);
+	
+	model->GetTransform(0)->Rotation(targetRot);
+	ImGui::Begin("Player Status");
+	ImGui::Text("Player Angle : %f %f %f", model->GetTransform(0)->Rotation().y);
+	ImGui::Text("Angle : %f", angle);
+	ImGui::End();
 }
 
 void Player::PlayerControl()
 {
 	//Player move forward
-	if (Keyboard::Get()->Press('W'))
+	if (Keyboard::Get()->Down('W'))
 	{
-		handleInput(PRESS_W);
+		handleInput(DOWN_W);
 	}
 
 	//Player move backward
-	if (Keyboard::Get()->Press('S'))
+	if (Keyboard::Get()->Down('S'))
 	{
-		handleInput(PRESS_S);
+		handleInput(DOWN_S);
 	}
 
 	//Player move right
-	if (Keyboard::Get()->Press('D'))
+	if (Keyboard::Get()->Down('D'))
 	{
-		handleInput(PRESS_D);
+		handleInput(DOWN_D);
 	}
 
 	//Player move left
-	if (Keyboard::Get()->Press('A'))
+	if (Keyboard::Get()->Down('A'))
 	{
-		handleInput(PRESS_A);
+		handleInput(DOWN_A);
+	}
+
+	//Up Key
+	if (Keyboard::Get()->Up('W'))
+	{
+		handleInput(UP_W);
+	}
+
+	//Player move backward
+	if (Keyboard::Get()->Up('S'))
+	{
+		handleInput(UP_S);
+	}
+
+	//Player move right
+	if (Keyboard::Get()->Up('D'))
+	{
+		handleInput(UP_D);
+	}
+
+	//Player move left
+	if (Keyboard::Get()->Up('A'))
+	{
+		handleInput(UP_A);
 	}
 
 	//Player rotation left
 	if (Keyboard::Get()->Press('Q'))
 	{
-		playerRotationAngle(-1.0f);
+		RotationAngle(-1.0f);
 	}
 
 	//Player rotation right
 	if (Keyboard::Get()->Press('E'))
 	{
-		playerRotationAngle(+1.0f);
+		RotationAngle(+1.0f);
 	}
 
-	if (Keyboard::Get()->Up('W') || Keyboard::Get()->Up('S') || Keyboard::Get()->Up('A') || Keyboard::Get()->Up('D'))
+	else if (Keyboard::Get()->None('W') && Keyboard::Get()->None('S') && Keyboard::Get()->None('A') && Keyboard::Get()->None('D'))
 	{
-		handleInput(RELEASE_MOVE);
+		//handleInput(RELEASE_MOVE);
 	}
 
 	//Player attack
@@ -339,9 +380,9 @@ void Player::playerMovePos(Vector3 pos, bool plus)
 	}
 }
 
-void Player::playerRotationAngle(float rotationAngle)
+void Player::RotationAngle(float angle)
 {
-	angle += rotationAngle;
+	this->angle = angle;
 }
 
 bool Player::IsIntersect(ColliderObjectDesc* other)
