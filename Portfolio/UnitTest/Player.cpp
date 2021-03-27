@@ -10,13 +10,13 @@ Player::Player()
 	model = archer;
 
 	playerPos = Vector3(256, 0.0f, 256);
-
+	
 	attachBone = 73;
 
 	bAttack = true;
 
 	//Hp Bar
-	hp = 5;
+	hp = 15;
 	minusHpScale = hpGaugeScale / hp;
 	minusHpPosition = hpGaugeScale / hp / 2.0f;
 

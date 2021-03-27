@@ -155,8 +155,13 @@ PlayerState* AttackState::handleInput(Player& player, Input input)
 
 void AttackState::Update(Player& player)
 {
+	if (player.GetModel()->StopAnim(0, 50))
+	{
+		player.bAttack = true;
+	}
 	if (player.GetModel()->StopAnim(0, 20))
 	{
+		player.bAttack = false;
 		attackStop = true;
 	}
 }
