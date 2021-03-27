@@ -136,6 +136,11 @@ void TerrainLod::HeightMap(wstring file)
 	heightMap = new Texture(file);
 }
 
+float TerrainLod::GetHeight()
+{
+	return height * desc.CellSpacing;
+} 
+
 float TerrainLod::GetHeight(Vector3& position)
 {
 

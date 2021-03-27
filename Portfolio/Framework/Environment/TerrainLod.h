@@ -28,6 +28,7 @@ public:
 	void HeightMap(wstring file);
 	void SetHeightMap() { sHeightMap->SetResource(heightMap->SRV()); }
 
+	float GetHeight();
 	float GetHeight(Vector3& position);
 
 private:
@@ -47,7 +48,7 @@ public:
 		float CellSpacing;
 		UINT CellsPerPatch;
 		float HeightRatio;
-	};
+	} desc;
 
 private:
 	struct BufferDesc

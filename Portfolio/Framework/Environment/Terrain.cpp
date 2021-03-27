@@ -140,8 +140,10 @@ float Terrain::GetHeight(Vector3 & position)
 	UINT x = (UINT)position.x;
 	UINT z = (UINT)position.z;
 
-	if (x < 0 || x > width) return FLT_MIN;
-	if (z < 0 || z > height) return FLT_MIN;
+	if (x < 0 || x > width - 1) 
+		return FLT_MIN;
+	if (z < 0 || z > height - 2) 
+		return FLT_MIN;
 
 
 	UINT index[4];
