@@ -40,6 +40,8 @@ void Enemy::Update()
 		state[i]->Update(*this, i);
 		if (hp[i] <= 0)
 		{
+			bMove[i] = false;
+			bRotate[i] = false;
 			handleState(E_STATE_DYING, i);
 		}
 	}
@@ -231,15 +233,14 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 
 	dis = Math::Distance(thisPos, targetPos);
 	ImGui::Text("Distance : %f", dis);
-	ImGui::Text("isRotate : %d", bRotate);
 
 	if (dis < 30.0f)
 	{
-		bRotate = true;
+		bRotate[instance] = true;
 	}
 	else
 	{
-		bRotate = false;
+		bRotate[instance] = false;
 	}
 
 	if (dis < 15.0f)
@@ -248,12 +249,12 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 	}
 	else 
 	{
-		if (bMove)
+		if (bMove[instance])
 			handleState(E_STATE_RUNNING, instance);
 	}
 
-	if (bMove == false) return;
-	if (bRotate == false) return;
+	if (bMove[instance] == false) return;
+	if (bRotate[instance] == false) return;
 
 	Vector3 enemyDIrZ;
 	enemyDIrZ = -model->GetTransform(instance)->Forward();
@@ -302,4 +303,11 @@ void Enemy::GetHeight(Terrain* terrain, UINT instance)
 
 	model->GetTransform(instance)->Position(enemyPos);
 	///position.y = terrain->GetHeight(position) * 2.0f;
+}
+
+void Enemy::minusHP(UINT instance, UINT num)
+{
+	if (hp[instance] <= 0) return;
+
+	hp[instance] -= num;
 }

@@ -61,11 +61,11 @@ void GameScene::Update()
 
 		if (player->IsIntersect(mutant->collider[i]))
 		{
-			mutant->minusHP(1);
+			mutant->minusHP(i, 1);
 		}
 		if (player->IsIntersect(warrok->collider[i]))
 		{
-			warrok->minusHP(1);
+			warrok->minusHP(i, 1);
 		}
 		if (mutant->IsIntersect(player->playerCollider, i))
 		{

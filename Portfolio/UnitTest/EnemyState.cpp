@@ -4,8 +4,8 @@
 
 void E_MovingState::Enter(Enemy& enemy, UINT instance)
 {
-	enemy.bMove = true;
-	enemy.bRotate = true;
+	enemy.bMove[instance] = true;
+	enemy.bRotate[instance] = true;
 	enemy.bAttack[instance] = false;
 	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_RUNNING, 1.0f);
 }
@@ -38,8 +38,9 @@ void E_MovingState::Update(Enemy& enemy, UINT instance)
 
 void E_AttackState::Enter(Enemy& enemy, UINT instance)
 {
-	enemy.bMove = false;
-	enemy.bRotate = false;
+	enemy.bMove[instance] = false;
+	enemy.bRotate[instance] = false;
+	enemy.bAttack[instance] = false;
 	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_ATTACK, 1.0f);
 }
 
@@ -65,10 +66,10 @@ EnemyState* E_AttackState::handleState(Enemy::eAnimState animState)
 
 void E_AttackState::Update(Enemy& enemy, UINT instance)
 {
-	if (enemy.GetModel()->StopAnim(instance, 60))
+	if (enemy.GetModel()->StopAnim(instance, 50))
 	{
-		enemy.bMove = false;
-		enemy.bRotate = false;
+		enemy.bMove[instance] = false;
+		enemy.bRotate[instance] = false;
 		enemy.bAttack[instance] = true;
 	}
 	if (enemy.GetModel()->StopAnim(instance, 20))
@@ -77,8 +78,8 @@ void E_AttackState::Update(Enemy& enemy, UINT instance)
 	}
 	if (enemy.GetModel()->StopAnim(instance, 1))
 	{
-		enemy.bMove = true;
-		enemy.bRotate = true;
+		enemy.bMove[instance] = true;
+		enemy.bRotate[instance] = true;
 	}
 
 	ImGui::Begin("AttackState");
@@ -99,13 +100,12 @@ EnemyState* E_DyingState::handleState(Enemy::eAnimState animState)
 
 void E_DyingState::Update(Enemy& enemy, UINT instance)
 {
-	if (enemy.GetModel()->StopAnim(instance, 1))
+	if (enemy.GetModel()->StopAnim(instance, 10))
 	{
-		enemy.bAttack[instance] = true;
 		enemy.isLive[instance] = false;
 	}
 	if (enemy.isLive[instance] == false)
 	{
-		enemy.GetModel()->GetTransform(instance)->Position(-300, -300, -300);
+		enemy.GetModel()->GetTransform(instance)->Position(-3000, -3000, -3000);
 	}
 }

@@ -45,6 +45,8 @@ public:
 
 	void GetHeight(Terrain* terrain, UINT instance);
 
+	void minusHP(UINT instance, UINT num);
+
 private:
 	ModelAnimator* model = NULL;
 
@@ -69,8 +71,8 @@ public:
 
 	bool isLive[ENEMY_NUM];
 	bool bAttack[ENEMY_NUM];
-	bool bMove;
-	bool bRotate;
+	bool bMove[ENEMY_NUM];
+	bool bRotate[ENEMY_NUM];
 
 	UINT hp[ENEMY_NUM];
 };
