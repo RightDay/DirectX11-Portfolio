@@ -22,6 +22,11 @@ PlayerState* StandingState::handleInput(Player& player, Input input)
 		return new AttackState();
 	}
 
+	if (input == DASH_ATTACK)
+	{
+		return new DashAttackState();
+	}
+
 	return NULL;
 }
 
@@ -98,6 +103,11 @@ PlayerState* MovingState::handleInput(Player& player, Input input)
 	angle = atan2(inputDir.x, inputDir.y);
 	player.RotationAngle(angle);
 
+	if (input == DASH_ATTACK)
+	{
+		return new DashAttackState();
+	}
+
 	return NULL;
 }
 
@@ -126,7 +136,6 @@ void MovingState::Rotate(Player player)
 void MovingState::Move(Player player)
 {
 	player.playerMovePos(player.moveVertical, false);
-
 }
 
 void AttackState::Enter(Player& player)
@@ -159,6 +168,61 @@ void AttackState::Update(Player& player)
 	{
 		player.bAttack = true;
 	}
+
+	if (player.GetModel()->StopAnim(0, 20))
+	{
+		player.bAttack = false;
+		attackStop = true;
+	}
+}
+
+void DashAttackState::Enter(Player& player)
+{
+	distance = 0.0f;
+
+	player.GetModel()->PlayClip(0, Player::STATE_DASH_ATTACK, 4.0f, 0.1f);
+}
+
+PlayerState* DashAttackState::handleInput(Player& player, Input input)
+{
+	if (player.bAttack) return NULL;
+
+	if (input == DOWN_W || input == DOWN_S || input == DOWN_D || input == DOWN_A)
+	{
+		PlayerState* state = new MovingState();
+
+		return new MovingState(player, input);
+	}
+
+	if (input == INPUT_NULL)
+	{
+		if (attackStop)
+		{
+			return new StandingState();
+		}
+		attackStop = false;
+	}
+	return NULL;
+}
+
+void DashAttackState::Update(Player& player)
+{
+	//if (distance <= 300.0f)
+	//{
+	//	distance++;
+	//	player.playerMovePos(player.moveVertical * 2.0f, false);
+	//}
+
+	if (player.bAttack)
+	{
+		player.playerMovePos(player.moveVertical * 2.0f, false);
+	}
+
+	if (player.GetModel()->StopAnim(0, 70))
+	{
+		player.bAttack = true;
+	}
+
 	if (player.GetModel()->StopAnim(0, 20))
 	{
 		player.bAttack = false;

@@ -59,13 +59,27 @@ void GameScene::Update()
 		mutant->GetHeight(terrain, i);
 		warrok->GetHeight(terrain, i);
 
+		if (!player->bAttack)
+		{
+			mutant->bDamaged[i] = false;
+			warrok->bDamaged[i] = false;
+		}
+
 		if (player->IsIntersect(mutant->collider[i]))
 		{
-			mutant->minusHP(i, 1);
+			if (!mutant->bDamaged[i])
+			{
+				mutant->Damaged(i, player->bAttack);
+				mutant->minusHP(i, 1);
+			}
 		}
 		if (player->IsIntersect(warrok->collider[i]))
 		{
-			warrok->minusHP(i, 1);
+			if (!warrok->bDamaged[i])
+			{
+				warrok->Damaged(i, player->bAttack);
+				warrok->minusHP(i, 1);
+			}
 		}
 		if (mutant->IsIntersect(player->playerCollider, i))
 		{

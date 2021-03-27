@@ -26,6 +26,7 @@ void Enemy::Initialize(ModelAnimator* model)
 
 		isLive[i] = true;
 		bAttack[i] = false;
+		bDamaged[i] = false;
 
 		hp[i] = 3;
 	}
@@ -310,4 +311,9 @@ void Enemy::minusHP(UINT instance, UINT num)
 	if (hp[instance] <= 0) return;
 
 	hp[instance] -= num;
+}
+
+void Enemy::Damaged(UINT instance, bool bDamaged)
+{
+	this->bDamaged[instance] = bDamaged;
 }

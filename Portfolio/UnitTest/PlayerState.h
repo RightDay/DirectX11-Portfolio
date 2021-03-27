@@ -45,8 +45,20 @@ public:
 	PlayerState* handleInput(Player& player, Input input) override;
 	void Update(Player& player) override;
 
-	PlayerState* isStop();
+private:
+	bool attackStop = false;
+};
+
+
+class DashAttackState : public PlayerState
+{
+public:
+	DashAttackState() {}
+	void Enter(Player& player) override;
+	PlayerState* handleInput(Player& player, Input input) override;
+	void Update(Player& player) override;
 
 private:
+	float distance;
 	bool attackStop = false;
 };

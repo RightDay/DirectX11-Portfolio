@@ -112,8 +112,9 @@ void Player::CreateArcherModel()
 	archer->ReadClip(L"Archer/Idle");
 	archer->ReadClip(L"Archer/Running");
 	archer->ReadClip(L"Archer/Attack");
-	archer->ReadClip(L"Archer/Hip_Hop_Dancing");
+	archer->ReadClip(L"Archer/Dash_Attack");
 	archer->ReadClip(L"Archer/Jump");
+	archer->ReadClip(L"Archer/Hip_Hop_Dancing");
 
 	archer->PlayClip(0, 0, 1.0f);
 
@@ -317,16 +318,17 @@ void Player::PlayerControl()
 		RotationAngle(+1.0f);
 	}
 
-	else if (Keyboard::Get()->None('W') && Keyboard::Get()->None('S') && Keyboard::Get()->None('A') && Keyboard::Get()->None('D'))
-	{
-		//handleInput(RELEASE_MOVE);
-	}
-
 	//Player attack
 	if (Keyboard::Get()->Down('F'))
 	{
 		handleInput(ATTACK);
 	}
+	
+	if (Keyboard::Get()->Down('R'))
+	{
+		handleInput(DASH_ATTACK);
+	}
+
 
 	handleInput(INPUT_NULL);
 }
@@ -396,7 +398,7 @@ bool Player::IsIntersect(ColliderObjectDesc* other)
 
 	if (swordCollider->Collider->IsIntersect(other->Collider))
 	{
-		bAttack = false;
+		//bAttack = false;
 
 		return true;
 	}

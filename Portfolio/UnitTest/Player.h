@@ -1,12 +1,12 @@
 #pragma once
 #include "GameActor.h"
 
-enum Input { DOWN_W, DOWN_A, DOWN_D, DOWN_S, UP_W, UP_A, UP_D, UP_S, RELEASE_MOVE, ATTACK, INPUT_NULL };
+enum Input { DOWN_W, DOWN_A, DOWN_D, DOWN_S, UP_W, UP_A, UP_D, UP_S, ATTACK, DASH_ATTACK, INPUT_NULL };
 
 class Player : public GameActor
 {
 public:
-	enum AnimState { STATE_IDLE, STATE_RUN, STATE_ATTACK };
+	enum AnimState { STATE_IDLE, STATE_RUN, STATE_ATTACK, STATE_DASH_ATTACK };
 
 public:
 	Player();
@@ -59,6 +59,7 @@ public:
 	Vector3 moveHorizontal = Vector3(0.0f, 0.0f, 0.0f);
 
 	bool bAttack;
+	Vector3 playerForward = Vector3(0.0f, 0.0f, 0.0f);
 
 private:
 	ModelAnimator* model = NULL;
@@ -70,7 +71,6 @@ private:
 	Shader* gridShader = NULL;
 	class PlayerState* state;
 
-	Vector3 playerForward = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 playerRight = Vector3(0.0f, 0.0f, 0.0f);
 
 	Vector3 playerPos = Vector3(0.0f, 0.0f, 0.0f);

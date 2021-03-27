@@ -47,6 +47,8 @@ public:
 
 	void minusHP(UINT instance, UINT num);
 
+	void Damaged(UINT instance, bool bDamaged);
+
 private:
 	ModelAnimator* model = NULL;
 
@@ -62,7 +64,6 @@ private:
 	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);
 	bool isRender = false;
 
-
 public:
 	ColliderObjectDesc* collider[ENEMY_NUM];
 	ColliderObjectDesc* attackCollider[ENEMY_NUM];
@@ -73,6 +74,7 @@ public:
 	bool bAttack[ENEMY_NUM];
 	bool bMove[ENEMY_NUM];
 	bool bRotate[ENEMY_NUM];
+	bool bDamaged[ENEMY_NUM];
 
 	UINT hp[ENEMY_NUM];
 };
