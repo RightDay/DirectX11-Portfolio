@@ -15,7 +15,7 @@ Player::Player()
 
 	bAttack = true;
 
-	//HpBar
+	//Hp Bar
 	hp = 5;
 	minusHpScale = hpGaugeScale / hp;
 	minusHpPosition = hpGaugeScale / hp / 2.0f;
@@ -407,11 +407,4 @@ bool Player::IsIntersect(ColliderObjectDesc* other)
 void Player::playerGetHeight(Terrain* terrain)
 {
 	playerPos.y = terrain->GetHeight(playerPos) * 2.0f;
-}
-
-void Player::minusHP(UINT num)
-{
-	if (hp <= 0) return;
-
-	hp -= num;
 }

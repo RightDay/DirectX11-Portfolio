@@ -13,6 +13,8 @@ public:
 	virtual void Run() = 0;
 	virtual void Attack() = 0;
 
+	void minusHP(UINT num);
+
 public:
 	UINT hp;
 };

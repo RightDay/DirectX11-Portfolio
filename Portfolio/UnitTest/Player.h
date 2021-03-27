@@ -43,7 +43,6 @@ public:
 	void RotationAngle(float angle);
 	bool IsIntersect(ColliderObjectDesc* other);
 	void playerGetHeight(Terrain* terrain);
-	void minusHP(UINT num);
 
 public:
 	ModelAnimator* GetModel() { return model; }
