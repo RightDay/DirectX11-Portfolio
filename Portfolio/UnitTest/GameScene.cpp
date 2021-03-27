@@ -58,26 +58,25 @@ void GameScene::Update()
 	{
 		mutant->GetHeight(terrain, i);
 		warrok->GetHeight(terrain, i);
+
 		if (player->IsIntersect(mutant->collider[i]))
 		{
-			mutant->hp[i] -= 1;
-			ImGui::Text("Mutant[%d] hp : %d", i, mutant->hp[i]);
+			mutant->minusHP(1);
 		}
 		if (player->IsIntersect(warrok->collider[i]))
 		{
-			warrok->hp[i] -= 1;
+			warrok->minusHP(1);
 		}
 		if (mutant->IsIntersect(player->playerCollider, i))
 		{
 			player->minusHP(1);
 		}
-		
 		if (warrok->IsIntersect(player->playerCollider, i))
 		{
 			player->minusHP(1);
 		}
 	}
-	//cubePosition.y = terrain->GetHeight(cubePosition) + 0.5f;
+
 	player->playerGetHeight(terrain);
 
 	ImGui::Begin("TerrainLod");
@@ -87,7 +86,6 @@ void GameScene::Update()
 
 void GameScene::Render()
 {
-
 	sky->Render();
 	Pass(0, 1, 2);
 	terrain->Render();

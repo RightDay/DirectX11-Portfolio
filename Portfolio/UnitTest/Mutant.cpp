@@ -36,9 +36,8 @@ void Mutant::Update()
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		ImGui::Text("Mutant[%d] hp : %d", i, hp[i]);
-
-		if (bAttack[i] == true)
-			AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber);
+		
+		AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber);
 	}
 }
 

@@ -4,6 +4,8 @@
 
 void E_MovingState::Enter(Enemy& enemy, UINT instance)
 {
+	enemy.bMove = true;
+	enemy.bRotate = true;
 	enemy.bAttack[instance] = false;
 	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_RUNNING, 1.0f);
 }
@@ -36,6 +38,8 @@ void E_MovingState::Update(Enemy& enemy, UINT instance)
 
 void E_AttackState::Enter(Enemy& enemy, UINT instance)
 {
+	enemy.bMove = false;
+	enemy.bRotate = false;
 	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_ATTACK, 1.0f);
 }
 
@@ -61,10 +65,26 @@ EnemyState* E_AttackState::handleState(Enemy::eAnimState animState)
 
 void E_AttackState::Update(Enemy& enemy, UINT instance)
 {
-	if (enemy.GetModel()->StopAnim(instance, 1))
+	if (enemy.GetModel()->StopAnim(instance, 60))
 	{
+		enemy.bMove = false;
+		enemy.bRotate = false;
 		enemy.bAttack[instance] = true;
 	}
+	if (enemy.GetModel()->StopAnim(instance, 20))
+	{
+		enemy.bAttack[instance] = false;
+	}
+	if (enemy.GetModel()->StopAnim(instance, 1))
+	{
+		enemy.bMove = true;
+		enemy.bRotate = true;
+	}
+
+	ImGui::Begin("AttackState");
+	ImGui::Text("Attack : %d", attack);
+	ImGui::Text("bAttack[%d] : %d", instance, enemy.bAttack[instance]);
+	ImGui::End();
 }
 
 void E_DyingState::Enter(Enemy& enemy, UINT instance)

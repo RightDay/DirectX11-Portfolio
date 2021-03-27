@@ -58,8 +58,8 @@ private:
 	float velocity = 100.0f;
 	Vector3 forward = Vector3(0.0f, 0.0f, 0.0f);
 	Vector3 moveVertical = Vector3(0.0f, 0.0f, 0.0f);
-
 	bool isRender = false;
+
 
 public:
 	ColliderObjectDesc* collider[ENEMY_NUM];
@@ -69,6 +69,8 @@ public:
 
 	bool isLive[ENEMY_NUM];
 	bool bAttack[ENEMY_NUM];
+	bool bMove;
+	bool bRotate;
 
 	UINT hp[ENEMY_NUM];
 };

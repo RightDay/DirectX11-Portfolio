@@ -216,10 +216,12 @@ bool ModelAnimator::StopAnim(int instance, int cutFrameCount)
 {
 	TweenDesc& desc = tweenDesc[instance];
 	ModelClip* clip = model->ClipByIndex(desc.Curr.Clip);
-	if (desc.Curr.CurrFrame >= clip->FrameCount() - cutFrameCount)
+	if (desc.Curr.CurrFrame == clip->FrameCount() - cutFrameCount)
 		return true;
-
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
 void ModelAnimator::CreateTexture()

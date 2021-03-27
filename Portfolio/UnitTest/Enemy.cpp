@@ -25,7 +25,7 @@ void Enemy::Initialize(ModelAnimator* model)
 		CreateCollider(i, collider[i]);
 
 		isLive[i] = true;
-		bAttack[i] = true;
+		bAttack[i] = false;
 
 		hp[i] = 3;
 	}
@@ -34,9 +34,7 @@ void Enemy::Initialize(ModelAnimator* model)
 void Enemy::Update()
 {
 	if (isRender == false) return;
-	model->Update();
-	model->UpdateTransforms();
-	AttachCollider();
+
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
 		state[i]->Update(*this, i);
@@ -45,6 +43,9 @@ void Enemy::Update()
 			handleState(E_STATE_DYING, i);
 		}
 	}
+	model->Update();
+	model->UpdateTransforms();
+	AttachCollider();
 }
 
 void Enemy::Render()
@@ -103,7 +104,7 @@ bool Enemy::IsIntersect(ColliderObjectDesc* other, UINT instance)
 
 		return true;
 	}
-	ImGui::Text("Warrok[%d] bAttack : %d", instance, bAttack[instance]);
+
 	return false;
 }
 
@@ -220,7 +221,7 @@ void Enemy::rotateAccordingToDistance(UINT instance, float distance)
 
 void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 {
-	static bool isRotate = true;
+	
 	float dis = 0.0f;
 	static Vector3 thisPos, thisRot, targetPos;
 
@@ -230,28 +231,29 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 
 	dis = Math::Distance(thisPos, targetPos);
 	ImGui::Text("Distance : %f", dis);
-	ImGui::Text("isRotate : %d", isRotate);
+	ImGui::Text("isRotate : %d", bRotate);
 
 	if (dis < 30.0f)
 	{
-		isRotate = false;
+		bRotate = true;
 	}
-
 	else
 	{
-		isRotate = true;
+		bRotate = false;
 	}
 
 	if (dis < 15.0f)
 	{
 		handleState(E_STATE_ATTACK, instance);
 	}
-	else
+	else 
 	{
-		handleState(E_STATE_RUNNING, instance);
+		if (bMove)
+			handleState(E_STATE_RUNNING, instance);
 	}
 
-	if (isRotate == true) return;
+	if (bMove == false) return;
+	if (bRotate == false) return;
 
 	Vector3 enemyDIrZ;
 	enemyDIrZ = -model->GetTransform(instance)->Forward();

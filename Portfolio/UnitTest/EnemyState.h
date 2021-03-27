@@ -27,6 +27,8 @@ public:
 	void Enter(Enemy& enemy, UINT instance) override;
 	EnemyState* handleState(Enemy::eAnimState animState) override;
 	void Update(Enemy& enemy, UINT instance) override;
+private:
+	bool attack;
 };
 
 class E_DyingState : public EnemyState

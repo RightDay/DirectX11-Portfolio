@@ -37,8 +37,7 @@ void Warrok::Update()
 	{
 		ImGui::Text("Warrok[%d] hp : %d", i, hp[i]);
 
-		if (bAttack[i] == true)
-			AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber);
+		AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber);
 	}
 }
 
