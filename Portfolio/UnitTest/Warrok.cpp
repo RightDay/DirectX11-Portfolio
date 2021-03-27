@@ -81,7 +81,7 @@ void Warrok::CreateModel(UINT modelNum)
 			transform = model->AddTransform();
 
 			Vector3 randomVec3;
-			randomVec3 = Math::RandomVec3(-200.0f, 200.0f);
+			randomVec3 = Math::RandomVec3(0.0f, 512.0f);
 			randomVec3.y = 2.0f;
 
 			transform->Position(randomVec3);
