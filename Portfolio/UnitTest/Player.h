@@ -43,6 +43,7 @@ public:
 	void RotationAngle(float angle);
 	bool IsIntersect(ColliderObjectDesc* other);
 	void playerGetHeight(Terrain* terrain);
+	void minusHP(UINT num);
 
 public:
 	ModelAnimator* GetModel() { return model; }
@@ -87,4 +88,7 @@ private:
 
 	Render2D* hpBar;
 	Render2D* hpGauge;
+	float hpGaugeScale = 355.0f;
+	float minusHpScale = 0.0f;
+	float minusHpPosition = 0.0f;
 };

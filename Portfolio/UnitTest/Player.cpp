@@ -9,13 +9,16 @@ Player::Player()
 
 	model = archer;
 
-	playerPos = Vector3(256, 2.0f, 256);
+	playerPos = Vector3(256, 0.0f, 256);
 
 	attachBone = 73;
 
 	bAttack = true;
 
-	hp = 10;
+	//HpBar
+	hp = 5;
+	minusHpScale = hpGaugeScale / hp;
+	minusHpPosition = hpGaugeScale / hp / 2.0f;
 
 	//model->GetTransform(0)->Position(playerPos);
 	CreatePlayerCollider();
@@ -52,6 +55,9 @@ void Player::Update()
 	model->UpdateTransforms();
 
 	controlHpBar();
+
+	hpBar->Update();
+	hpGauge->Update();
 
 	ImGui::Text("HP : %d", hp);
 }
@@ -327,12 +333,14 @@ void Player::PlayerControl()
 
 void Player::controlHpBar()
 {
-	if (hp <= 0) return;
 	static Vector3 pos = Vector3(0, 0, 0);
 	static Vector3 sca = Vector3(0, 0, 0);
 
 	hpGauge->GetTransform()->Position(&pos);
 	hpGauge->GetTransform()->Scale(&sca);
+
+	if (hp < 0)
+		return;
 
 	ImGui::Begin("hp");
 
@@ -341,16 +349,13 @@ void Player::controlHpBar()
 	static UINT prevHP = hp;
 	if (prevHP > hp)
 	{
-		hpGauge->GetTransform()->Position(pos.x - 17.75f, pos.y, pos.z);
+		hpGauge->GetTransform()->Position(pos.x - minusHpPosition, pos.y, pos.z);
 
 		prevHP = hp;
 	}
 	ImGui::End();
 	//hpGauge->GetTransform()->Position(pos.x, pos.y, pos.z);
-	hpGauge->GetTransform()->Scale(35.5f * hp, sca.y, sca.z);
-
-	hpBar->Update();
-	hpGauge->Update();
+	hpGauge->GetTransform()->Scale(hp * minusHpScale, sca.y, sca.z);
 }
 
 void Player::CreateHpBar()
@@ -364,7 +369,7 @@ void Player::CreateHpBar()
 	Texture* T_hpGauge = new Texture(L"Red.png");
 	hpGauge = new Render2D();
 	hpGauge->GetTransform()->Position(200.0f, 650.5f, 0);
-	hpGauge->GetTransform()->Scale(hp * 35.5f, 20.0f, 1);
+	hpGauge->GetTransform()->Scale(hp * (hpGaugeScale / hp), 20.0f, 1);
 	hpGauge->SRV(T_hpGauge->SRV());
 }
 
@@ -402,4 +407,11 @@ bool Player::IsIntersect(ColliderObjectDesc* other)
 void Player::playerGetHeight(Terrain* terrain)
 {
 	playerPos.y = terrain->GetHeight(playerPos) * 2.0f;
+}
+
+void Player::minusHP(UINT num)
+{
+	if (hp <= 0) return;
+
+	hp -= num;
 }

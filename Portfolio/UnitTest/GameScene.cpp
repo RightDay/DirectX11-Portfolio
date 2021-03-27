@@ -19,11 +19,10 @@ void GameScene::Initialize()
 		terrain = new Terrain(shader, L"Terrain/Gray512.png");
 		terrain->BaseMap(L"Terrain/Dirt2.png");
 		terrain->LayerMap(L"Terrain/Forest Floor.jpg", L"Terrain/Gray512.png");
-		terrain->GetTransform()->Position(0, 0.5f, 0);
+		terrain->GetTransform()->Position(0, 0, 0);
 		terrain->Pass(0);
 		//terrain->Pass(1);
 	}
-
 	
 	mutant = new Mutant();
 	animators.push_back(mutant->GetModel());
@@ -70,12 +69,12 @@ void GameScene::Update()
 		}
 		if (mutant->IsIntersect(player->playerCollider, i))
 		{
-			player->hp -= 1;
+			player->minusHP(1);
 		}
 		
 		if (warrok->IsIntersect(player->playerCollider, i))
 		{
-			player->hp -= 1;
+			player->minusHP(1);
 		}
 	}
 	//cubePosition.y = terrain->GetHeight(cubePosition) + 0.5f;
@@ -93,10 +92,10 @@ void GameScene::Render()
 	Pass(0, 1, 2);
 	terrain->Render();
 
-	player->Render();
-
 	mutant->Render();
 	warrok->Render();
+
+	player->Render();
 }
 
 void GameScene::Pass(UINT mesh, UINT model, UINT anim)
