@@ -23,6 +23,7 @@ Player::Player()
 	//model->GetTransform(0)->Position(playerPos);
 	CreatePlayerCollider();
 	CreateHpBar();
+	AddPartcle();
 	state = new StandingState();
 }
 
@@ -50,8 +51,8 @@ void Player::Update()
 	Move();
 	Rotation();
 
-	static Vector3 thisPos = Vector3(0.0f, 0.0f, 0.0f);
-	model->GetTransform(0)->Position(&thisPos);
+	//static Vector3 thisPos = Vector3(0.0f, 0.0f, 0.0f);
+	//model->GetTransform(0)->Position(&thisPos);
 	model->UpdateTransforms();
 
 	controlHpBar();
@@ -60,6 +61,12 @@ void Player::Update()
 	hpGauge->Update();
 
 	ImGui::Text("HP : %d", hp);
+
+	if (particle != NULL)
+	{
+		particle->Add(playerPos);
+		particle->Update();
+	}
 }
 
 void Player::Render()
@@ -75,6 +82,9 @@ void Player::Render()
 
 	hpBar->Render();
 	hpGauge->Render();
+
+	if (bAttack)
+		particle->Render();
 }
 
 void Player::Jump()
@@ -358,6 +368,17 @@ void Player::controlHpBar()
 	ImGui::End();
 	//hpGauge->GetTransform()->Position(pos.x, pos.y, pos.z);
 	hpGauge->GetTransform()->Scale(hp * minusHpScale, sca.y, sca.z);
+}
+
+void Player::AddPartcle()
+{
+	particleTexture = L"Thunder";
+	particle = new ParticleSystem(particleTexture);
+	//particle->SetTexture(particleTexture);
+}
+
+void Player::AddParticleTexture()
+{
 }
 
 void Player::CreateHpBar()

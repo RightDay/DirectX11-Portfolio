@@ -7,6 +7,7 @@ public:
 	virtual void Enter(Player& player) {}
 	virtual PlayerState* handleInput(Player& player, Input input) { return this; }
 	virtual void Update(Player& player) {}
+	PlayerState* getState() { return this; };
 };
 
 class StandingState : public PlayerState
@@ -59,6 +60,5 @@ public:
 	void Update(Player& player) override;
 
 private:
-	float distance;
 	bool attackStop = false;
 };

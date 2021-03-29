@@ -178,8 +178,6 @@ void AttackState::Update(Player& player)
 
 void DashAttackState::Enter(Player& player)
 {
-	distance = 0.0f;
-
 	player.GetModel()->PlayClip(0, Player::STATE_DASH_ATTACK, 4.0f, 0.1f);
 }
 

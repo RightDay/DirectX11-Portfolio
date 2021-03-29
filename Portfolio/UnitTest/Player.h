@@ -38,6 +38,9 @@ private:
 
 	void controlHpBar();
 
+	void AddPartcle();
+	void AddParticleTexture();
+
 public:
 	void playerMovePos(Vector3 pos, bool plus);
 	void RotationAngle(float angle);
@@ -87,7 +90,11 @@ private:
 
 	Render2D* hpBar;
 	Render2D* hpGauge;
+
 	float hpGaugeScale = 355.0f;
 	float minusHpScale = 0.0f;
 	float minusHpPosition = 0.0f;
+
+	ParticleSystem* particle = NULL;
+	wstring particleTexture;
 };
