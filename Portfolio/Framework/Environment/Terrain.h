@@ -35,6 +35,7 @@ public:
 
 	UINT GetWidth() { return width; }
 	UINT GetHeight() { return height; }
+	TerrainVertex* Vertices() { return vertices; }
 
 private:
 	void CreateVertexData();

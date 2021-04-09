@@ -3,6 +3,7 @@
 
 enum class MapTypes { BASE_MAP, LAYER_MAP, NORMAL_MAP, HEIGHT_MAP };
 enum FillModes { NONE = 0, WIRE_FRAME };
+
 class Editor : public IExecute
 {
 public:

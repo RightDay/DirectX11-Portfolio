@@ -11,7 +11,9 @@ float4 PS(VertexTerrain input) : SV_Target
     float4 color = GetLayerColor(input.Uv);
     float NdotL = dot(-GlobalLight.Direction, normalize(input.Normal));
 
-    return (color * NdotL);
+    float4 brush = GetBrushColor(input.wPosition);
+
+    return (color * NdotL) + brush;
 }
 
 float4 PS_GridLine(VertexTerrain input) : SV_Target

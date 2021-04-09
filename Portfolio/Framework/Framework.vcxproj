@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Environment\Brush.cpp" />
     <ClCompile Include="Environment\Cloud.cpp" />
     <ClCompile Include="Environment\CubeSky.cpp" />
     <ClCompile Include="Environment\Dome.cpp" />
@@ -55,6 +56,7 @@
     <ClCompile Include="Objects\Refraction.cpp" />
     <ClCompile Include="Objects\Shadow.cpp" />
     <ClCompile Include="Particles\ParticleSystem.cpp" />
+    <ClCompile Include="Particles\Trail.cpp" />
     <ClCompile Include="PostEffects\PostEffect.cpp" />
     <ClCompile Include="Renders\Buffers.cpp" />
     <ClCompile Include="Renders\Context.cpp" />
@@ -91,6 +93,7 @@
     <ClCompile Include="Viewer\Viewport.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Environment\Brush.h" />
     <ClInclude Include="Environment\Cloud.h" />
     <ClInclude Include="Environment\CubeSky.h" />
     <ClInclude Include="Environment\Dome.h" />
@@ -126,6 +129,7 @@
     <ClInclude Include="Objects\Shadow.h" />
     <ClInclude Include="Particles\ParticleData.h" />
     <ClInclude Include="Particles\ParticleSystem.h" />
+    <ClInclude Include="Particles\Trail.h" />
     <ClInclude Include="PostEffects\PostEffect.h" />
     <ClInclude Include="Renders\Buffers.h" />
     <ClInclude Include="Renders\Context.h" />
