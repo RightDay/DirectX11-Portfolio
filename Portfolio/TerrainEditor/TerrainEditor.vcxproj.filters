@@ -5,11 +5,13 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Viewer.h" />
+    <ClInclude Include="Brush.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="Viewer.cpp" />
+    <ClCompile Include="Brush.cpp" />
   </ItemGroup>
 </Project>

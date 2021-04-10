@@ -57,4 +57,6 @@ private:
 
 	Billboard* billboard;
 	Shader* billboardShader;
+
+	class Brush* brush = NULL;
 };

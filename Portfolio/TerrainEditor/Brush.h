@@ -14,7 +14,7 @@ private:
 private:
 	struct BrushDesc
 	{
-		Color Color = D3DXCOLOR(0, 1, 0, 1);
+		Color Color = D3DXCOLOR(1, 0, 0, 1);
 		Vector3 Location;
 		UINT Type = 0;
 		UINT Range = 1;
@@ -23,7 +23,10 @@ private:
 
 
 private:
-	void RaiseHeight(UINT type, UINT range);
+	void RaiseHeight(UINT type, float intensity, bool bRaise);
+	void FlatHeight(UINT type, float targetHeight);
+	void SmoothHeight(UINT type);
+	void Paint(UINT type, UINT layer);
 
 private:
 	Vector3 location;
@@ -34,4 +37,6 @@ private:
 
 	ConstantBuffer* brushBuffer;
 	ID3DX11EffectConstantBuffer* sBrushBuffer;
+
+	float flatHeight = 0.0f;
 };

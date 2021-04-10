@@ -12,11 +12,8 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 	sHeightMap = shader->AsSRV("HeightMap");
 	sHeightMap->SetResource(heightMap->SRV());
 
-	buffer = new ConstantBuffer(&bufferDesc, sizeof(BufferDesc));
-	sBuffer = shader->AsConstantBuffer("CB_Terrain");
-
-	brushBuffer = new ConstantBuffer(&brushDesc, sizeof(BrushDesc));
-	sBrushBuffer = shader->AsConstantBuffer("CB_Brush");
+	//buffer = new ConstantBuffer(&bufferDesc, sizeof(BufferDesc));
+	//sBuffer = shader->AsConstantBuffer("CB_Terrain");
 
 	lineBuffer = new ConstantBuffer(&lineDesc, sizeof(LineDesc));
 	sLineBuffer = shader->AsConstantBuffer("CB_TerrainLine");
@@ -28,13 +25,12 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(TerrainVertex), 0, true);
 	indexBuffer = new IndexBuffer(indices, indexCount);
 
-	bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
-	bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
+	///bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
+	//bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
 }
 
 Terrain::~Terrain()
 {
-	SafeDelete(brushBuffer);
 	SafeDelete(lineBuffer);
 
 	SafeDelete(heightMap);
@@ -49,39 +45,35 @@ Terrain::~Terrain()
 void Terrain::Update()
 {
 	Super::Update();
+	//ImGui::InputInt("Type", (int *)&brushDesc.Type);
+	//brushDesc.Type %= 3;
 
-	ImGui::InputInt("Type", (int *)&brushDesc.Type);
-	brushDesc.Type %= 3;
+	//ImGui::InputInt("Range", (int *)&brushDesc.Range);
+	//brushDesc.Range %= 20;
 
-	ImGui::InputInt("Range", (int *)&brushDesc.Range);
-	brushDesc.Range %= 20;
+	//if (brushDesc.Type > 0)
+	//{
+	//	brushDesc.Location = GetPickedPosition();
 
-	if (brushDesc.Type > 0)
-	{
-		brushDesc.Location = GetPickedPosition();
+	//	if (Mouse::Get()->Press(0))
+	//		RaiseHeight(brushDesc.Location, brushDesc.Type, brushDesc.Range);
+	//}
 
-		if (Mouse::Get()->Press(0))
-			RaiseHeight(brushDesc.Location, brushDesc.Type, brushDesc.Range);
-	}
+	//ImGui::Separator();
+	////ImGui::ColorEdit3("Color", lineDesc.Color);
 
-	ImGui::Separator();
-	//ImGui::ColorEdit3("Color", lineDesc.Color);
+	//ImGui::InputInt("Visible", (int *)&lineDesc.Visible);
+	//lineDesc.Visible %= 2;
 
-	ImGui::InputInt("Visible", (int *)&lineDesc.Visible);
-	lineDesc.Visible %= 2;
+	//ImGui::InputFloat("Thickness", &lineDesc.Thickness, 0.001f);
+	//lineDesc.Thickness = Math::Clamp(lineDesc.Thickness, 0.01f, 0.9f);
 
-	ImGui::InputFloat("Thickness", &lineDesc.Thickness, 0.001f);
-	lineDesc.Thickness = Math::Clamp(lineDesc.Thickness, 0.01f, 0.9f);
-
-	ImGui::InputFloat("Size", &lineDesc.Size, 1.0f);
+	//ImGui::InputFloat("Size", &lineDesc.Size, 1.0f);
 }
 
 void Terrain::Render()
 {
 	Super::Render();
-
-	if (heightMap != NULL)
-		SetHeightMap();
 
 	if (baseMap != NULL)
 		sBaseMap->SetResource(baseMap->SRV());
@@ -91,11 +83,8 @@ void Terrain::Render()
 		sLayerMap->SetResource(layerMap->SRV());
 		sAlphaMap->SetResource(alphaMap->SRV());
 	}
-	buffer->Apply();
-	sBuffer->SetConstantBuffer(buffer->Buffer());
-
-	brushBuffer->Apply();
-	sBrushBuffer->SetConstantBuffer(brushBuffer->Buffer());
+	//buffer->Apply();
+	//sBuffer->SetConstantBuffer(buffer->Buffer());
 
 	lineBuffer->Apply();
 	sLineBuffer->SetConstantBuffer(lineBuffer->Buffer());
@@ -259,45 +248,6 @@ Vector3 Terrain::GetPickedPosition()
 	return Vector3(-1, FLT_MIN, -1);
 }
 
-void Terrain::RaiseHeight(Vector3 & position, UINT type, UINT range)
-{
-	D3D11_RECT rect;
-	rect.left = (LONG)position.x - range;
-	rect.top = (LONG)position.z + range;
-	rect.right = (LONG)position.x + range;
-	rect.bottom = (LONG)position.z - range;
-
-
-	if (rect.left < 0) rect.left = 0;
-	if (rect.top >= (LONG)height) rect.top = (LONG)height;
-	if (rect.right >= (LONG)width) rect.right = (LONG)width;
-	if (rect.bottom < 0) rect.bottom = 0;
-
-	for (LONG z = rect.bottom; z <= rect.top; z++)
-	{
-		for (LONG x = rect.left; x <= rect.right; x++)
-		{
-			UINT index = width * (UINT)z + (UINT)x;
-
-			vertices[index].Position.y += 5.0f * Time::Delta();
-		}
-	}
-	CreateNormalData();
-
-
-	//D3D::GetDC()->UpdateSubresource
-	//(
-	//	vertexBuffer->Buffer(), 0, NULL, vertices, sizeof(TerrainVertex) * vertexCount, 0
-	//);
-
-	D3D11_MAPPED_SUBRESOURCE subResource;
-	D3D::GetDC()->Map(vertexBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-	{
-		memcpy(subResource.pData, vertices, sizeof(TerrainVertex) * vertexCount);
-	}
-	D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
-}
-
 void Terrain::CreateVertexData()
 {
 	vector<Color> heights;
@@ -402,6 +352,16 @@ void Terrain::CreateNormalData()
 		
 }
 
+void Terrain::UpdateVertexData()
+{
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(vertexBuffer->Buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	{
+		memcpy(subResource.pData, vertices, sizeof(Terrain::TerrainVertex) * vertexCount);
+	}
+	D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
+}
+
 void Terrain::SetTerrainData()
 {
 	CreateVertexData();
@@ -413,6 +373,6 @@ void Terrain::SetTerrainData()
 		memcpy(subResource.pData, vertices, sizeof(TerrainVertex) * vertexCount);
 	}
 	D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
-	bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
-	bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
+	//bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
+	//bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
 }

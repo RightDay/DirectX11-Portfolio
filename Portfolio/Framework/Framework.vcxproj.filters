@@ -203,12 +203,6 @@
     <ClCompile Include="HpBar.cpp">
       <Filter>Meshes</Filter>
     </ClCompile>
-    <ClCompile Include="Particles\Trail.cpp">
-      <Filter>Particles</Filter>
-    </ClCompile>
-    <ClCompile Include="Environment\Brush.cpp">
-      <Filter>Environment</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Meshes\Mesh.h">
@@ -421,12 +415,6 @@
     </ClInclude>
     <ClInclude Include="HpBar.h">
       <Filter>Meshes</Filter>
-    </ClInclude>
-    <ClInclude Include="Particles\Trail.h">
-      <Filter>Particles</Filter>
-    </ClInclude>
-    <ClInclude Include="Environment\Brush.h">
-      <Filter>Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

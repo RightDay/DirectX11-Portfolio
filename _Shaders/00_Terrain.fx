@@ -9,6 +9,7 @@ struct VertexTerrain
     float3 wPosition : Position1;
     float2 Uv : Uv;
     float3 Normal : Normal;
+    float3 Color : Color;
 };
 
 cbuffer CB_Terrain
@@ -28,7 +29,7 @@ VertexTerrain VS_Terrain(VertexTextureNormal input)
     output.Normal = WorldNormal(input.Normal);
     output.Uv = input.Uv;
 
-    output.Position.y = HeightMap.SampleLevel(LinearSampler, output.Uv, 0).r * 255 / 5; // HeightRatio : 5
+    //output.Position.y = HeightMap.SampleLevel(LinearSampler, output.Uv, 0).r * 255 / 5; // HeightRatio : 5
 
     output.Position = mul(output.Position, View);
     output.Position = mul(output.Position, Projection);

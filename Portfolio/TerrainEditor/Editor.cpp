@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Editor.h"
+#include "Brush.h"
 
 void Editor::Initialize()
 {
@@ -15,15 +16,19 @@ void Editor::Initialize()
 	{
 		terrain = new Terrain(shader, L"Terrain/Gray256.png");
 		terrain->BaseMap(L"Terrain/Dirt.png");
-		terrain->LayerMap(L"Terrain/Forest Floor.jpg", L"Terrain/Gray512.png");
+		terrain->LayerMap(L"Terrain/Forest Floor.jpg", L"Terrain/Gray256.png");
 
-		terrain->Pass(NONE);
+		//terrain->Pass(NONE);
 	}
+
+
 	AddBillboard();
 
 	heightMapTexture = terrain->HeightMap();
 	baseMapTexture = terrain->BaseMap();
 	layerMapTexture = terrain->LayerMap();
+
+	brush = new Brush(shader, terrain);
 }
 
 void Editor::Destroy()
@@ -42,12 +47,14 @@ void Editor::Update()
 	
 	sky->Update();
 	terrain->Update();
+	brush->Update();
 	billboard->Update();
 }
 
 void Editor::Render()
 {
 	sky->Render();
+	brush->Render();
 	terrain->Render();
 	billboard->Render();
 }
