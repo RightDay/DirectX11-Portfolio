@@ -9,7 +9,7 @@ Player::Player()
 
 	model = archer;
 
-	playerPos = Vector3(256, 0.0f, 256);
+	playerPos = Vector3(512, 0.0f, 512);
 	
 	attachBone = 73;
 
@@ -372,7 +372,7 @@ void Player::controlHpBar()
 
 void Player::AddPartcle()
 {
-	particleTexture = L"Thunder";
+	particleTexture = L"Test";
 	particle = new ParticleSystem(particleTexture);
 	//particle->SetTexture(particleTexture);
 }
@@ -429,5 +429,5 @@ bool Player::IsIntersect(ColliderObjectDesc* other)
 
 void Player::playerGetHeight(Terrain* terrain)
 {
-	playerPos.y = terrain->GetHeight(playerPos) * 2.0f;
+	playerPos.y = terrain->GetHeight(playerPos);
 }

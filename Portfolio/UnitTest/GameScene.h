@@ -16,6 +16,8 @@ public:
 private:
 	void Pass(UINT mesh, UINT model, UINT anim);
 
+	void Trees(UINT num);
+
 private:
 	CubeSky* sky;
 
@@ -29,6 +31,7 @@ private:
 
 	class Mutant* mutant;
 	class Warrok* warrok;
+	ModelRender* trees = NULL;
 
 	vector<MeshRender*> meshes;
 	vector<ModelRender*> models;

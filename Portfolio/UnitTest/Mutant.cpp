@@ -82,7 +82,7 @@ void Mutant::CreateModel(UINT modelNum)
 			transform = model->AddTransform();
 
 			Vector3 randomVec3;
-			randomVec3 = Math::RandomVec3(0.0f, 512.0f);
+			randomVec3 = Math::RandomVec3(256.0f, 768.0f);
 			randomVec3.y = 0.0f;
 
 			transform->Position(randomVec3);

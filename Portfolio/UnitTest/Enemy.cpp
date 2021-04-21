@@ -132,7 +132,7 @@ void Enemy::CreateCollider(UINT instance, ColliderObjectDesc*& collider)
 	collider = new ColliderObjectDesc();
 	collider->Init = new Transform();
 	collider->Init->Position(position.x, position.y + 100.0f, position.z);
-	collider->Init->Scale(60.0f, 170.0f, 70.0f);
+	collider->Init->Scale(100.0f, 170.0f, 100.0f);
 
 	collider->Transform = new Transform();
 	collider->Collider = new Collider(collider->Transform, collider->Init);
@@ -300,7 +300,7 @@ void Enemy::GetHeight(Terrain* terrain, UINT instance)
 	static Vector3 enemyPos;
 	model->GetTransform(instance)->Position(&enemyPos);
 
-	enemyPos.y = terrain->GetHeight(enemyPos) * 2.0f;
+	enemyPos.y = terrain->GetHeight(enemyPos);
 
 	model->GetTransform(instance)->Position(enemyPos);
 	///position.y = terrain->GetHeight(position) * 2.0f;
