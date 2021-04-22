@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <Material>
+        <Name>Leaves</Name>
+        <DiffuseFile>LeafOld_2_Diffuse.png</DiffuseFile>
+        <SpecularFile>LeafOld_2_Spec.png</SpecularFile>
+        <NormalFile>LeafOld_2_Normal.png</NormalFile>
+        <Ambient R="0.2" G="0.2" B="0.2" A="1"/>
+        <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="20"/>
+        <Emissive R="0" G="0" B="0" A="1"/>
+    </Material>
+    <Material>
+        <Name>Branches2D</Name>
+        <DiffuseFile>Branches_1_Diffuse.png</DiffuseFile>
+        <SpecularFile>Branches_1_Spec.png</SpecularFile>
+        <NormalFile>Branches_1_Normal.png</NormalFile>
+        <Ambient R="0.2" G="0.2" B="0.2" A="1"/>
+        <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="20"/>
+        <Emissive R="0" G="0" B="0" A="1"/>
+    </Material>
+    <Material>
+        <Name>Branches</Name>
+        <DiffuseFile>BranchesDiffuse.jpg</DiffuseFile>
+        <SpecularFile>BranchesNormal.jpg</SpecularFile>
+        <NormalFile></NormalFile>
+        <Ambient R="0.2" G="0.2" B="0.2" A="1"/>
+        <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="20"/>
+        <Emissive R="0" G="0" B="0" A="1"/>
+    </Material>
+    <Material>
+        <Name>Trunk</Name>
+        <DiffuseFile>Trunk_BaseColorUntitled.png</DiffuseFile>
+        <SpecularFile>Trunk_OcclusionRoughnessMetallicUntitled.png</SpecularFile>
+        <NormalFile>Trunk_NormalUntitled.png</NormalFile>
+        <Ambient R="0.2" G="0.2" B="0.2" A="1"/>
+        <Diffuse R="0.80000001" G="0.80000001" B="0.80000001" A="1"/>
+        <Specular R="0.2" G="0.2" B="0.2" A="20"/>
+        <Emissive R="0" G="0" B="0" A="1"/>
+    </Material>
+</Materials>

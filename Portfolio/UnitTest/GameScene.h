@@ -18,12 +18,16 @@ private:
 
 	void Trees(UINT num);
 
+	void AddWater(float radius);
+
 private:
 	CubeSky* sky;
 
 	Shader* shader;
 	Terrain* terrain;
 	
+	Water* water;
+
 	class Player* player;
 
 	Vector3 playerPos = Vector3(0.0f, 0.0f, 0.0f);

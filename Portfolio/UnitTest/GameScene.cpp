@@ -113,7 +113,9 @@ void GameScene::Render()
 
 	player->Render();
 
-	//trees->Render();
+	//water->Pass(11);
+	//water->Render();
+	trees->Render();
 }
 
 void GameScene::Pass(UINT mesh, UINT model, UINT anim)
@@ -135,8 +137,8 @@ void GameScene::Trees(UINT num)
 
 	//trees->ReadMaterial(L"Trees/low_poly_tree");
 	//trees->ReadMesh(L"Trees/low_poly_tree");
-	trees->ReadMaterial(L"B787/Airplane");
-	trees->ReadMesh(L"B787/Airplane");
+	trees->ReadMaterial(L"Trees/DeadTree1");
+	trees->ReadMesh(L"Trees/DeadTree1");
 	{
 		Transform* transform = NULL;
 
@@ -156,4 +158,11 @@ void GameScene::Trees(UINT num)
 	trees->UpdateTransforms();
 
 	models.push_back(trees);
+}
+
+void GameScene::AddWater(float radius)
+{
+	shader = new Shader(L"43_Water.fxo");
+	water = new Water(shader, radius);
+	water->GetTransform()->Position(0, 5, 0);
 }

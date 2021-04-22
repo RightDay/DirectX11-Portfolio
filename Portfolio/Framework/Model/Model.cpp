@@ -22,7 +22,7 @@ Model::~Model()
 		SafeDelete(clip);
 }
 
-Material * Model::MaterialByName(wstring name)
+Material* Model::MaterialByName(wstring name)
 {
 	for (Material* material : materials)
 	{
@@ -33,7 +33,7 @@ Material * Model::MaterialByName(wstring name)
 	return NULL;
 }
 
-ModelBone * Model::BoneByName(wstring name)
+ModelBone* Model::BoneByName(wstring name)
 {
 	for (ModelBone* bone : bones)
 	{
@@ -44,7 +44,7 @@ ModelBone * Model::BoneByName(wstring name)
 	return NULL;
 }
 
-ModelMesh * Model::MeshByName(wstring name)
+ModelMesh* Model::MeshByName(wstring name)
 {
 	for (ModelMesh* mesh : meshes)
 	{
@@ -55,7 +55,7 @@ ModelMesh * Model::MeshByName(wstring name)
 	return NULL;
 }
 
-ModelClip * Model::ClipByName(wstring name)
+ModelClip* Model::ClipByName(wstring name)
 {
 	for (ModelClip* clip : clips)
 	{
@@ -66,7 +66,7 @@ ModelClip * Model::ClipByName(wstring name)
 	return NULL;
 }
 
-void Model::Attach(Shader * shader, Model * model, int parentBoneIndex, Transform * transform)
+void Model::Attach(Shader* shader, Model* model, int parentBoneIndex, Transform* transform)
 {
 	//Copy Material
 	for (Material* material : model->Materials())
@@ -191,7 +191,7 @@ void Model::ReadMaterial(wstring file)
 	{
 		Material* material = new Material();
 
-		
+
 		Xml::XMLElement* node = NULL;
 
 		node = materialNode->FirstChildElement();
@@ -296,7 +296,7 @@ void Model::ReadMesh(wstring file)
 			vector<Model::ModelVertex> vertices;
 			vertices.assign(count, Model::ModelVertex());
 
-			void* ptr = (void *)&(vertices[0]);
+			void* ptr = (void*)&(vertices[0]);
 			r->Byte(&ptr, sizeof(Model::ModelVertex) * count);
 
 
@@ -305,7 +305,7 @@ void Model::ReadMesh(wstring file)
 			copy
 			(
 				vertices.begin(), vertices.end(),
-				stdext::checked_array_iterator<Model::ModelVertex *>(mesh->vertices, count)
+				stdext::checked_array_iterator<Model::ModelVertex*>(mesh->vertices, count)
 			);
 		}
 
@@ -316,7 +316,7 @@ void Model::ReadMesh(wstring file)
 			vector<UINT> indices;
 			indices.assign(count, UINT());
 
-			void* ptr = (void *)&(indices[0]);
+			void* ptr = (void*)&(indices[0]);
 			r->Byte(&ptr, sizeof(UINT) * count);
 
 
@@ -325,7 +325,7 @@ void Model::ReadMesh(wstring file)
 			copy
 			(
 				indices.begin(), indices.end(),
-				stdext::checked_array_iterator<UINT *>(mesh->indices, count)
+				stdext::checked_array_iterator<UINT*>(mesh->indices, count)
 			);
 		}
 
@@ -392,7 +392,7 @@ void Model::ReadClip(wstring file)
 		{
 			keyframe->Transforms.assign(size, ModelKeyframeData());
 
-			void* ptr = (void *)&keyframe->Transforms[0];
+			void* ptr = (void*)&keyframe->Transforms[0];
 			r->Byte(&ptr, sizeof(ModelKeyframeData) * size);
 		}
 

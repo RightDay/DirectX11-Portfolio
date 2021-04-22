@@ -1,11 +1,11 @@
 #include "Framework.h"
 #include "ModelRender.h"
 
-ModelRender::ModelRender(Shader * shader)
+ModelRender::ModelRender(Shader* shader)
 	: shader(shader)
 {
 	model = new Model();
-	
+
 	for (UINT i = 0; i < MAX_MODEL_INSTANCE; i++)
 		D3DXMatrixIdentity(&worlds[i]);
 
@@ -16,7 +16,7 @@ ModelRender::~ModelRender()
 {
 	for (Transform* transform : transforms)
 		SafeDelete(transform);
-	
+
 	SafeRelease(texture);
 	SafeRelease(srv);
 
@@ -61,7 +61,7 @@ void ModelRender::Pass(UINT pass)
 		mesh->Pass(pass);
 }
 
-Transform * ModelRender::AddTransform()
+Transform* ModelRender::AddTransform()
 {
 	Transform* transform = new Transform();
 	transforms.push_back(transform);
@@ -82,7 +82,7 @@ void ModelRender::UpdateTransforms()
 	D3D::GetDC()->Unmap(instanceBuffer->Buffer(), 0);
 }
 
-void ModelRender::UpdateTransform(UINT instanceId, UINT boneIndex, Transform & transform)
+void ModelRender::UpdateTransform(UINT instanceId, UINT boneIndex, Transform& transform)
 {
 	Matrix destMatrix = transform.World();
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Materials xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <Material>
+        <Name>DeadTree_Bark1</Name>
+        <DiffuseFile>Dead_Tree_Bark1-diff.png</DiffuseFile>
+        <SpecularFile>Dead_Tree_Bark1-diff.png</SpecularFile>
+        <NormalFile>Dead_Tree_Bark1-diff.png</NormalFile>
+        <Ambient R="0.58823532" G="0.58823532" B="0.58823532" A="1"/>
+        <Diffuse R="0.58823532" G="0.58823532" B="0.58823532" A="1"/>
+        <Specular R="0.89999998" G="0.89999998" B="0.89999998" A="1.9999999"/>
+        <Emissive R="0" G="0" B="0" A="1"/>
+    </Material>
+</Materials>
