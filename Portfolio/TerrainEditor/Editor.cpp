@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Editor.h"
 #include "Brush.h"
+#include "Utilities/BinaryFile.h"
+#include "Utilities/Xml.h"
 
 void Editor::Initialize()
 {
@@ -29,6 +31,7 @@ void Editor::Initialize()
 	layerMapTexture = terrain->LayerMap();
 
 	brush = new Brush(shader, terrain);
+	dataMapFile = L"Gray256.dds";
 }
 
 void Editor::Destroy()
@@ -71,6 +74,9 @@ Texture * Editor::GetMapTexture(MapTypes mapTypes)
 		break;
 	case MapTypes::HEIGHT_MAP:
 		return terrain->HeightMap();
+		break;
+	case MapTypes::SPLATTING_LAYER_MAP:
+		return terrain->splattingLayerMap[0];
 		break;
 	default:
 		return NULL;
@@ -121,6 +127,30 @@ void Editor::AddSettingTypeCombobox()
 
 void Editor::NoneToolType()
 {
+	if (ImGui::Button("Save Map File")) 
+	{
+		D3DDesc desc = D3D::GetDesc();
+
+		Path::SaveFileDialog
+		(
+			file, L"Map file\0*.dds", L"../../_Textures/Terrain",
+			bind(&Editor::SaveMapFile, this, placeholders::_1),
+			desc.Handle
+		);
+	}
+
+	if (ImGui::Button("Open Map File"))
+	{
+		D3DDesc desc = D3D::GetDesc();
+
+		Path::OpenFileDialog
+		(
+			file, L"Map file\0*.dds", L"../../_Textures/Terrain",
+			bind(&Editor::OpenMapFile, this, placeholders::_1),
+			desc.Handle
+		);
+	}
+
 	if (ImGui::CollapsingHeader("Terrain Diffuse"))
 	{
 		if (ImGui::TreeNode("BaseMap"))
@@ -141,6 +171,17 @@ void Editor::NoneToolType()
 			GetTextureMap(layerMapTexture, MapTypes::LAYER_MAP);
 			GetImportTextureMapFunction(func, &Editor::ImportLayerMap);
 			AddMapButton(layerMapTexture, btnSize, func);
+
+			ImGui::TreePop();
+		}
+
+		if (ImGui::TreeNode("SplattingLayerMap"))
+		{
+			ImGui::Text("Terrain Splatting LayerMap");
+
+			GetTextureMap(splattingLayerMapTexture, MapTypes::SPLATTING_LAYER_MAP);
+			GetImportTextureMapFunction(func, &Editor::ImportSplattingLayerMap);
+			AddMapButton(splattingLayerMapTexture, btnSize, func);
 
 			ImGui::TreePop();
 		}
@@ -217,6 +258,14 @@ void Editor::ImportHeightMap(wstring files)
 	terrain->SetTerrainData();
 }
 
+void Editor::ImportSplattingLayerMap(wstring files)
+{
+	if (terrain->splattingLayerMap[0]->GetFile() == files) return;
+
+	terrain->SplattingLayerMap(files);
+	terrain->SetSplattingLayerMap();
+}
+
 function<void(wstring)> Editor::GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files))
 {
 	return func = bind(function, this, placeholders::_1);
@@ -269,4 +318,147 @@ void Editor::AddBillboard()
 
 		billboard->Add(position, scale);
 	}
+}
+
+void Editor::ExportMapFile()
+{
+	//if (heightMapFile == NULL) return;
+
+	ID3D11Texture2D* srcTexture = heightMapTexture->GetTexture();
+	D3D11_TEXTURE2D_DESC srcDesc;
+	srcTexture->GetDesc(&srcDesc);
+
+	ID3D11Texture2D* readTexture;
+	D3D11_TEXTURE2D_DESC readDesc;
+	ZeroMemory(&readDesc, sizeof(D3D11_TEXTURE2D_DESC));
+	readDesc.Width = srcDesc.Width;
+	readDesc.Height = srcDesc.Height;
+	readDesc.ArraySize = 1;
+	readDesc.Format = srcDesc.Format;
+	readDesc.MipLevels = 1;
+	readDesc.SampleDesc = srcDesc.SampleDesc;
+	readDesc.Usage = D3D11_USAGE_STAGING;
+	readDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+	Check(D3D::GetDevice()->CreateTexture2D(&readDesc, NULL, &readTexture));
+	D3D::GetDC()->CopyResource(readTexture, srcTexture);
+
+	UINT* pixels = new UINT[readDesc.Width * readDesc.Height];
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(readTexture, 0, D3D11_MAP_READ, 0, &subResource);
+	{
+		memcpy(pixels, subResource.pData, sizeof(UINT) * readDesc.Width * readDesc.Height);
+	}
+	D3D::GetDC()->Unmap(readTexture, 0);
+
+	UINT* heights = new UINT[readDesc.Width * readDesc.Height];
+
+	ID3D11Texture2D* saveTexture;
+	D3D11_TEXTURE2D_DESC saveDesc;
+	ZeroMemory(&saveDesc, sizeof(D3D11_TEXTURE2D_DESC));
+	saveDesc.Width = readDesc.Width;
+	saveDesc.Height = readDesc.Height;
+	saveDesc.ArraySize = 1;
+	saveDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	saveDesc.MipLevels = 1;
+	saveDesc.SampleDesc = readDesc.SampleDesc;
+	saveDesc.Usage = D3D11_USAGE_STAGING;
+	saveDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	D3D11_SUBRESOURCE_DATA saveSubResource;
+	saveSubResource.pSysMem = heights;
+	saveSubResource.SysMemPitch = sizeof(UINT) * readDesc.Width;
+	saveSubResource.SysMemSlicePitch = sizeof(UINT) * readDesc.Width * readDesc.Height;
+
+	Check(D3D::GetDevice()->CreateTexture2D(&readDesc, &saveSubResource, &saveTexture));
+
+	wstring fileName = Path::GetFileNameWithoutExtension(heightMapTexture->GetFile());
+	fileName = L"../../_Textures/Terrain/" + fileName + L".dds";
+
+	Check(D3DX11SaveTextureToFile(D3D::GetDC(), saveTexture, D3DX11_IFF_DDS, fileName.c_str()));
+
+	SafeRelease(srcTexture);
+	SafeRelease(readTexture);
+	SafeRelease(saveTexture);
+}
+
+void Editor::UpdateDataMapFile()
+{
+	dataMapFileList.clear();
+	Path::GetFiles(&dataMapFileList, L"../../_Textures/Terrain/", L"*.dds", false);
+
+	for (wstring& file : dataMapFileList)
+		file = Path::GetFileNameWithoutExtension(file);
+}
+
+void Editor::SaveMapFile(wstring file) {
+
+	Texture* texture = new Texture(L"Terrain/" + dataMapFile);
+
+	ID3D11Texture2D* srcTexture = texture->GetTexture();
+
+	D3D11_TEXTURE2D_DESC srcDesc;
+	srcTexture->GetDesc(&srcDesc);
+
+	UINT* pixels = new UINT[terrain->GetWidth() * terrain->GetHeight()];
+
+	UINT i = 0;
+
+	for (UINT z = terrain->GetHeight(); z > 0; z--) {
+		for (UINT x = 0; x < terrain->GetWidth(); x++) {
+			UINT index = terrain->GetWidth() * (z - 1) + x;
+			UINT r, g, b, a;
+
+			r = (UINT)(terrain->Vertices()[index].Color.x * 255) << 0;
+			g = (UINT)(terrain->Vertices()[index].Color.y * 255) << 8;
+			b = (UINT)(terrain->Vertices()[index].Color.z * 255) << 16;
+			if (terrain->Vertices()[index].Position.y * 10 > 0xFF)
+				a = 0xFF << 24;
+			else if (terrain->Vertices()[index].Position.y < 0)
+				a = 0x00 << 24;
+			else
+				a = (UINT)(terrain->Vertices()[index].Position.y * 10) << 24;
+
+			pixels[i] = r + g + b + a;
+			i++;
+		}
+	}
+
+	ID3D11Texture2D* saveTexture;
+	D3D11_TEXTURE2D_DESC saveDesc;
+	ZeroMemory(&saveDesc, sizeof(D3D11_TEXTURE2D_DESC));
+	saveDesc.Width = terrain->GetWidth();
+	saveDesc.Height = terrain->GetHeight();
+	saveDesc.ArraySize = 1;
+	saveDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	saveDesc.MipLevels = 1;
+	saveDesc.SampleDesc = srcDesc.SampleDesc;
+	saveDesc.Usage = D3D11_USAGE_STAGING;
+	saveDesc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	D3D11_SUBRESOURCE_DATA saveSubResource;
+	saveSubResource.pSysMem = pixels;
+	saveSubResource.SysMemPitch = sizeof(UINT) * terrain->GetWidth();
+	saveSubResource.SysMemSlicePitch = sizeof(UINT) * terrain->GetWidth() * terrain->GetHeight();
+
+	Check(D3D::GetDevice()->CreateTexture2D(&saveDesc, &saveSubResource, &saveTexture));
+
+	wstring fileName = Path::GetFileNameWithoutExtension(file);
+
+	wstring filePath = L"../../_Textures/Terrain/" + fileName + L".dds";
+
+	Check(D3DX11SaveTextureToFile(D3D::GetDC(), saveTexture, D3DX11_IFF_DDS, filePath.c_str()));
+
+	BinaryWriter* w = new BinaryWriter();
+	w->Open(L"../../_Textures/Terrain/" + fileName);
+
+	SafeDelete(w);
+
+	SafeRelease(saveTexture);
+}
+
+void Editor::OpenMapFile(wstring file)
+{
+	dataMapFile = file;
+	wstring path = L"Terrain/" + dataMapFile + L".dds";
+	terrain = new Terrain(shader, path);
 }

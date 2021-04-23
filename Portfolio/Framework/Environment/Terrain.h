@@ -14,6 +14,7 @@ private:
 
 public:
 	Terrain(Shader* shader, wstring heightFile);
+	Terrain(Shader* shader, wstring file, bool bDDS);
 	~Terrain();
 
 	void Update();
@@ -32,14 +33,22 @@ public:
 	void HeightMap(wstring file);
 	void SetHeightMap() { sHeightMap->SetResource(heightMap->SRV()); }
 
+	Texture* splattingLayerMap[2];
+	ID3DX11EffectShaderResourceVariable* sSplattingLayerMap[2];
+	void SplattingLayerMap(wstring layer);
+	void SetSplattingLayerMap() { sSplattingLayerMap[0]->SetResource(splattingLayerMap[0]->SRV()); }
+
 	float GetHeight(Vector3& position);
 	float GetHeightPick(Vector3& position);
 	Vector3 GetPickedPosition();
 
 	UINT GetWidth() { return width; }
 	UINT GetHeight() { return height; }
+
 	TerrainVertex* Vertices() { return vertices; }
-	void SetVerticesY(UINT index, float y) { vertices[index].Position.y += y; }
+	//void SetVerticesY(UINT index, float y) { vertices[index].Position.y += y; }
+	void SetLayer1(wstring file);
+	void ReadTextreData(wstring imageFile);
 
 public:
 	void CreateVertexData();
@@ -48,6 +57,7 @@ public:
 
 public:
 	void UpdateVertexData();
+	void SetVertexData();
 
 public:
 	void SetTerrainData();
@@ -94,4 +104,29 @@ private:
 
 	ConstantBuffer* lineBuffer;
 	ID3DX11EffectConstantBuffer* sLineBuffer;
+
+public:
+	Color* pixels;
+};
+
+class Layer
+{
+public:
+	Layer(Shader* shader, wstring file, wstring sSRV, wstring sMap);
+	~Layer();
+
+	void Render();
+	void ReadData(wstring imagFile);
+
+private:
+	wstring file = L"";
+	float* Data = NULL;
+	Shader* shader;
+
+	ID3D11Texture2D* Texture2D = NULL;
+	ID3D11ShaderResourceView* SRV = NULL;
+	ID3DX11EffectShaderResourceVariable* sSRV;
+
+	Texture* Map = NULL;
+	ID3DX11EffectShaderResourceVariable* sMap;
 };

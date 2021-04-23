@@ -6,6 +6,8 @@ Brush::Brush(Shader* shader, Terrain* terrain)
 {
 	brushBuffer = new ConstantBuffer(&brushDesc, sizeof(BrushDesc));
 	sBrushBuffer = shader->AsConstantBuffer("CB_Brush");
+
+	GetTerrainList();
 }
 
 Brush::~Brush()
@@ -52,6 +54,11 @@ void Brush::Update()
 		else if (Keyboard::Get()->Press('X'))
 		{
 			RaiseHeight(brushDesc.Type, 0.5f, true);
+		}
+
+		if (Keyboard::Get()->Press('C'))
+		{
+			Paint(brushDesc.Type, 1);
 		}
 	}
 
@@ -277,104 +284,39 @@ void Brush::Paint(UINT type, UINT layer)
 	if (bottom < 0) bottom = 0;
 	if (top >= terrain->GetHeight()) top = terrain->GetHeight();
 
-	for (UINT z = bottom; z <= top; z++) {
-		for (UINT x = left; x <= right; x++) {
+	for (UINT z = bottom; z <= top; z++) 
+	{
+		for (UINT x = left; x <= right; x++) 
+		{
 			UINT index = terrain->GetWidth() * z + x;
 
-			if (index < terrain->GetWidth() * terrain->GetHeight()) {
-
-				switch (layer) {
-				case 0:
-					if (type == 1) {
-						terrain->Vertices()[index].Color.x += 5.0f * Time::Delta();
-						if (terrain->Vertices()[index].Color.x > 1.0f)
-							terrain->Vertices()[index].Color.x = 1.0f;
-					}
-					else if (type == 2) {
-						Vector2 temp = Vector2(terrain->Vertices()[index].Position.x, terrain->Vertices()[index].Position.z);
-
-						float distance = D3DXVec2Length(&(Vector2(location.x, location.z) - temp));
-
-						if (distance < brushDesc.Range) {
-							terrain->Vertices()[index].Color.x += cos(Math::PI * 0.5f * distance / brushDesc.Range) * 5.0f * Time::Delta();
-							if (terrain->Vertices()[index].Color.x > 1.0f)
-								terrain->Vertices()[index].Color.x = 1.0f;
-						}
-					}
-					break;
-				case 1:
-					if (type == 1) {
-						terrain->Vertices()[index].Color.y += 5.0f * Time::Delta();
-						if (terrain->Vertices()[index].Color.y > 1.0f)
-							terrain->Vertices()[index].Color.y = 1.0f;
-					}
-					else if (type == 2) {
-						Vector2 temp = Vector2(terrain->Vertices()[index].Position.x, terrain->Vertices()[index].Position.z);
-
-						float distance = D3DXVec2Length(&(Vector2(location.x, location.z) - temp));
-
-						if (distance < brushDesc.Range) {
-							terrain->Vertices()[index].Color.y += cos(Math::PI * 0.5f * distance / brushDesc.Range) * 5.0f * Time::Delta();
-							if (terrain->Vertices()[index].Color.y > 1.0f)
-								terrain->Vertices()[index].Color.y = 1.0f;
-						}
-					}
-					break;
-				case 2:
-					if (type == 1) {
-						terrain->Vertices()[index].Color.z += 5.0f * Time::Delta();
-						if (terrain->Vertices()[index].Color.z > 1.0f)
-							terrain->Vertices()[index].Color.z = 1.0f;
-					}
-					else if (type == 2) {
-						Vector2 temp = Vector2(terrain->Vertices()[index].Position.x, terrain->Vertices()[index].Position.z);
-
-						float distance = D3DXVec2Length(&(Vector2(location.x, location.z) - temp));
-
-						if (distance < brushDesc.Range) {
-							terrain->Vertices()[index].Color.z += cos(Math::PI * 0.5f * distance / brushDesc.Range) * 5.0f * Time::Delta();
-							if (terrain->Vertices()[index].Color.z > 1.0f)
-								terrain->Vertices()[index].Color.z = 1.0f;
-						}
-					}
-					break;
-				case 3:
-					if (type == 1) {
-						terrain->Vertices()[index].Color.x -= 5.0f * Time::Delta();
-						terrain->Vertices()[index].Color.y -= 5.0f * Time::Delta();
-						terrain->Vertices()[index].Color.z -= 5.0f * Time::Delta();
-
-						if (terrain->Vertices()[index].Color.x < 1.0f)
-							terrain->Vertices()[index].Color.x = 0.0f;
-						if (terrain->Vertices()[index].Color.y < 1.0f)
-							terrain->Vertices()[index].Color.y = 0.0f;
-						if (terrain->Vertices()[index].Color.z < 1.0f)
-							terrain->Vertices()[index].Color.z = 0.0f;
-					}
-					else if (type == 2) {
-						Vector2 temp = Vector2(terrain->Vertices()[index].Position.x, terrain->Vertices()[index].Position.z);
-
-						float distance = D3DXVec2Length(&(Vector2(location.x, location.z) - temp));
-
-						if (distance < brushDesc.Range) {
-							terrain->Vertices()[index].Color.x -= cos(Math::PI * 0.5f * distance / brushDesc.Range) * 5.0f * Time::Delta();
-							terrain->Vertices()[index].Color.y -= cos(Math::PI * 0.5f * distance / brushDesc.Range) * 5.0f * Time::Delta();
-							terrain->Vertices()[index].Color.z -= cos(Math::PI * 0.5f * distance / brushDesc.Range) * 5.0f * Time::Delta();
-
-							if (terrain->Vertices()[index].Color.x < 0.0f)
-								terrain->Vertices()[index].Color.x = 0.0f;
-							if (terrain->Vertices()[index].Color.y < 0.0f)
-								terrain->Vertices()[index].Color.y = 0.0f;
-							if (terrain->Vertices()[index].Color.z < 0.0f)
-								terrain->Vertices()[index].Color.z = 0.0f;
-						}
-					}
-					break;
-				default: break;
+			if (index < terrain->GetWidth() * terrain->GetHeight()) 
+			{
+				if (type == 1) 
+				{
+					terrain->pixels[index].g += 3.0 * Time::Delta();
+					terrain->pixels[index].r += 3.0 * Time::Delta();
 				}
 			}
 		}
 	}
 	terrain->CreateNormalData();
-	terrain->UpdateVertexData();
+
+	terrain->SetVertexData();
+}
+
+void Brush::Splatting()
+{
+}
+
+void Brush::GetTerrainList()
+{
+	terrainFiles.clear();
+	Path::GetFiles(&terrainFiles, L"../../_Textures/Terrain/", L"*.jpg", false);
+
+	for (wstring& file : terrainFiles)
+	{
+		file = L"Terrain/" + Path::GetFileNameWithoutExtension(file) + L".jpg";
+		terrainTextures.push_back(new Texture(file));
+	}
 }

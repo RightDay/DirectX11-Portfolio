@@ -27,6 +27,9 @@ private:
 	void FlatHeight(UINT type, float targetHeight);
 	void SmoothHeight(UINT type);
 	void Paint(UINT type, UINT layer);
+	void Splatting();
+
+	void GetTerrainList();
 
 private:
 	Vector3 location;
@@ -37,6 +40,9 @@ private:
 
 	ConstantBuffer* brushBuffer;
 	ID3DX11EffectConstantBuffer* sBrushBuffer;
+
+	vector<wstring> terrainFiles;
+	vector<Texture*> terrainTextures;
 
 	float flatHeight = 0.0f;
 };

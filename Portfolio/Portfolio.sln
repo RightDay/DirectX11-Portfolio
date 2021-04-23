@@ -32,6 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shader", "Shader", "{0A9282
 		..\_Shaders\27_Mesh.fx = ..\_Shaders\27_Mesh.fx
 		..\_Shaders\27_Model.fx = ..\_Shaders\27_Model.fx
 		..\_Shaders\29_Render2D.fx = ..\_Shaders\29_Render2D.fx
+		..\_Shaders\43_Water.fx = ..\_Shaders\43_Water.fx
 		..\_Shaders\47_TerrainLod.fx = ..\_Shaders\47_TerrainLod.fx
 		..\_Shaders\Trail.fx = ..\_Shaders\Trail.fx
 	EndProjectSection

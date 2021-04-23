@@ -12,6 +12,9 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 	sHeightMap = shader->AsSRV("HeightMap");
 	sHeightMap->SetResource(heightMap->SRV());
 
+	sSplattingLayerMap[0] = shader->AsSRV("SplattingLayerMap1");
+	sSplattingLayerMap[1] = shader->AsSRV("SplattingLayerMap2");
+	
 	//buffer = new ConstantBuffer(&bufferDesc, sizeof(BufferDesc));
 	//sBuffer = shader->AsConstantBuffer("CB_Terrain");
 
@@ -25,8 +28,20 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(TerrainVertex), 0, true);
 	indexBuffer = new IndexBuffer(indices, indexCount);
 
-	///bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
-	//bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
+	pixels = new Color[width * height];
+
+	vector<Color> colors;
+	heightMap->ReadPixel(DXGI_FORMAT_R8G8B8A8_UNORM, &colors);
+
+	for (int i = 0; i < colors.size(); i++)
+		pixels[i] = colors[i];
+
+	splattingLayerMap[0] = new Texture(L"Terrain/Dirt.png");
+	splattingLayerMap[1] = new Texture(L"Terrain/Rock (Basic).jpg");
+}
+
+Terrain::Terrain(Shader* shader, wstring file, bool bDDS)
+{
 }
 
 Terrain::~Terrain()
@@ -37,38 +52,17 @@ Terrain::~Terrain()
 	SafeDelete(baseMap);
 	SafeDelete(layerMap);
 	SafeDelete(alphaMap);
+	SafeDelete(splattingLayerMap[0]);
+	SafeDelete(splattingLayerMap[1]);
 
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
+	SafeDeleteArray(pixels);
 }
 
 void Terrain::Update()
 {
 	Super::Update();
-	//ImGui::InputInt("Type", (int *)&brushDesc.Type);
-	//brushDesc.Type %= 3;
-
-	//ImGui::InputInt("Range", (int *)&brushDesc.Range);
-	//brushDesc.Range %= 20;
-
-	//if (brushDesc.Type > 0)
-	//{
-	//	brushDesc.Location = GetPickedPosition();
-
-	//	if (Mouse::Get()->Press(0))
-	//		RaiseHeight(brushDesc.Location, brushDesc.Type, brushDesc.Range);
-	//}
-
-	//ImGui::Separator();
-	////ImGui::ColorEdit3("Color", lineDesc.Color);
-
-	//ImGui::InputInt("Visible", (int *)&lineDesc.Visible);
-	//lineDesc.Visible %= 2;
-
-	//ImGui::InputFloat("Thickness", &lineDesc.Thickness, 0.001f);
-	//lineDesc.Thickness = Math::Clamp(lineDesc.Thickness, 0.01f, 0.9f);
-
-	//ImGui::InputFloat("Size", &lineDesc.Size, 1.0f);
 }
 
 void Terrain::Render()
@@ -83,6 +77,13 @@ void Terrain::Render()
 		sLayerMap->SetResource(layerMap->SRV());
 		sAlphaMap->SetResource(alphaMap->SRV());
 	}
+
+	if (splattingLayerMap[0] != NULL)
+		sSplattingLayerMap[0]->SetResource(splattingLayerMap[0]->SRV());
+
+	if (splattingLayerMap[1] != NULL)
+		sSplattingLayerMap[1]->SetResource(splattingLayerMap[1]->SRV());
+
 	//buffer->Apply();
 	//sBuffer->SetConstantBuffer(buffer->Buffer());
 
@@ -106,6 +107,13 @@ void Terrain::LayerMap(wstring layer)
 
 	layerMap = new Texture(layer);
 	alphaMap = new Texture(heightMap->GetFile());
+}
+
+void Terrain::SplattingLayerMap(wstring layer)
+{
+	SafeDelete(layerMap);
+
+	splattingLayerMap[0] = new Texture(layer);
 }
 
 void Terrain::LayerMap(wstring layer, wstring alpha)
@@ -248,6 +256,12 @@ Vector3 Terrain::GetPickedPosition()
 	return Vector3(-1, FLT_MIN, -1);
 }
 
+void Terrain::ReadTextreData(wstring imageFile)
+{
+	wstring ext = Path::GetExtension(imageFile);
+	std::transform(ext.begin(), ext.end(), ext.begin(), toupper);
+}
+
 void Terrain::CreateVertexData()
 {
 	vector<Color> heights;
@@ -267,7 +281,7 @@ void Terrain::CreateVertexData()
 			UINT pixel = width * (height - 1 - z) + x;
 
 			vertices[index].Position.x = (float)x;
-			vertices[index].Position.y = (heights[pixel].r * 255.0f) / 10.0f;
+			vertices[index].Position.y = (heights[pixel].r * 255.0f) / 5.0f;
 			vertices[index].Position.z = (float)z;
 
 			vertices[index].Uv.x = (float)x / (float)width;
@@ -362,6 +376,38 @@ void Terrain::UpdateVertexData()
 	D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
 }
 
+void Terrain::SetVertexData()
+{
+	ID3D11Texture2D* tex = heightMap->GetTexture();
+	D3D11_TEXTURE2D_DESC texDesc; tex->GetDesc(&texDesc);
+
+	D3D11_TEXTURE2D_DESC desc;
+	ZeroMemory(&desc, sizeof(D3D11_TEXTURE2D_DESC));
+	desc.Width = texDesc.Width;
+	desc.Height = texDesc.Height;
+	desc.MipLevels = 1;
+	desc.ArraySize = 1;
+	desc.Format = texDesc.Format;
+	desc.SampleDesc = texDesc.SampleDesc;
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	desc.Usage = D3D11_USAGE_STAGING;
+
+	ID3D11Texture2D* tempTexture;
+	Check(D3D::GetDevice()->CreateTexture2D(&desc, NULL, &tempTexture));
+	Check(D3DX11LoadTextureFromTexture(D3D::GetDC(), tex, NULL, tempTexture));
+
+	UINT* colors = new UINT[desc.Width * desc.Height];
+	for (int i = 0; i < desc.Width * desc.Height; i++)
+		colors[i] = pixels[i];
+
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	D3D::GetDC()->Map(tempTexture, 0, D3D11_MAP_WRITE, NULL, &subResource);
+	{
+		memcpy(subResource.pData, colors, sizeof(UINT) * desc.Width * desc.Height);
+	}
+	D3D::GetDC()->Unmap(tempTexture, 0);
+}
+
 void Terrain::SetTerrainData()
 {
 	CreateVertexData();
@@ -375,4 +421,31 @@ void Terrain::SetTerrainData()
 	D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
 	//bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
 	//bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
+}
+
+Layer::Layer(Shader* shader, wstring file, wstring sSRV, wstring sMap)
+	: shader(shader)
+{
+	Map = new Texture(file);
+
+	this->sSRV = shader->AsSRV(String::ToString(sSRV));
+	this->sMap = shader->AsSRV(String::ToString(sMap));
+}
+
+Layer::~Layer()
+{
+	SafeDeleteArray(Data);
+	SafeRelease(Texture2D);
+	SafeRelease(SRV);
+	SafeDelete(Map);
+}
+
+void Layer::Render()
+{
+	sSRV->SetResource(SRV);
+	sMap->SetResource(Map->SRV());
+}
+
+void Layer::ReadData(wstring imageFile)
+{
 }

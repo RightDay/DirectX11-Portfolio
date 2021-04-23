@@ -1,7 +1,7 @@
 #pragma once
 #include "Systems/IExecute.h"
 
-enum class MapTypes { BASE_MAP, LAYER_MAP, NORMAL_MAP, HEIGHT_MAP };
+enum class MapTypes { BASE_MAP, LAYER_MAP, NORMAL_MAP, HEIGHT_MAP, SPLATTING_LAYER_MAP };
 enum FillModes { NONE = 0, WIRE_FRAME };
 
 class Editor : public IExecute
@@ -28,6 +28,7 @@ private:
 	void ImportBaseMap(wstring files);
 	void ImportLayerMap(wstring files);
 	void ImportHeightMap(wstring files);
+	void ImportSplattingLayerMap(wstring files);
 
 	function<void(wstring)> GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files));
 	Texture* GetTextureMap(Texture *& mapTexture, MapTypes mapTypes);
@@ -37,6 +38,11 @@ private:
 	void ChangeFillMode(int fillmode) { terrain->Pass(fillmode); }
 
 	void AddBillboard();
+
+	void ExportMapFile();
+	void UpdateDataMapFile();
+	void SaveMapFile(wstring file);
+	void OpenMapFile(wstring file);
 
 private:
 	bool showTerrainEditor = true;
@@ -51,6 +57,7 @@ private:
 	Texture* layerMapTexture = NULL;
 	Texture* normalMapTexture = NULL;
 	Texture* heightMapTexture = NULL;
+	Texture* splattingLayerMapTexture = NULL;
 
 	function<void(wstring)> func = NULL;
 	ImVec2 btnSize = ImVec2(100.0f, 100.0f);
@@ -59,4 +66,8 @@ private:
 	Shader* billboardShader;
 
 	class Brush* brush = NULL;
+
+	wstring file;
+	wstring dataMapFile;
+	vector<wstring> dataMapFileList;
 };

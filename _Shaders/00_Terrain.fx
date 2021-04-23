@@ -3,6 +3,9 @@ Texture2D AlphaMap;
 Texture2D LayerMap;
 Texture2D HeightMap;
 
+Texture2D SplattingLayerMap1;
+Texture2D SplattingLayerMap2;
+
 struct VertexTerrain
 {
     float4 Position : SV_Position;
@@ -44,7 +47,12 @@ float4 GetLayerColor(SamplerState samp, float2 uv)
     float4 base = BaseMap.Sample(samp, uv);
     float4 layer = LayerMap.Sample(samp, uv);
     float alpha = AlphaMap.Sample(samp, uv).r;
-    
+    float4 slayer1 = SplattingLayerMap1.Sample(samp, uv);
+    float4 slayer2 = SplattingLayerMap2.Sample(samp, uv);
+
+    //return lerp(lerp(base, layer, alpha.g), layer2, alpha.b);
+    //return lerp(lerp(base, slayer1, alpha.g), slayer2, alphab);
+    //return lerp(lerp(base, slayer1, alpha.g), layer, (1 - alpha) * 0.4f);
     return lerp(base, layer, (1 - alpha) * 0.4f);
 }
 
@@ -357,3 +365,27 @@ float4 PS_TerrainLod(DomainOutput_TerrainLod input) : SV_Target
     
     return Material.Diffuse;
 }
+
+
+
+//float4 PS_Terrain(VertexTerrain input) : SV_Target
+//{
+//    float4 color = BaseMap.Sample(LinearSampler, input.Uv);
+//
+//    float alphaMap = Layer1AlphaMap.Sample(LinearSampler, input.Uv).r;
+//    float4 colorMap = Layer1ColorMap.Sample(LinearSampler, input.Uv);
+//
+//    if (alphaMap > 0.0f)
+//        color = lerp(color, colorMap, alphaMap);
+//
+//    Material.Diffuse = color;
+//    color = CalculateFogColor(PS_Shadow(input.Position, PS_AllLight(input)), input.wPosition);
+//    color = dot(-GlobalLight.Direction, normalize(input.Normal));
+//
+//    color += GetBrushColor(input.wPosition);
+//    color += GetLineColor(input.wPosition);
+//
+//    //color = GetLineColor(input.wPosition);
+//
+//    return color;
+//}
