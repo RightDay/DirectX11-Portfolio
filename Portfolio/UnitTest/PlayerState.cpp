@@ -216,7 +216,7 @@ void DashAttackState::Update(Player& player)
 		player.playerMovePos(player.moveVertical * 2.0f, false);
 	}
 
-	if (player.GetModel()->StopAnim(0, 70))
+	if (player.GetModel()->StopAnim(0, 50))
 	{
 		player.bAttack = true;
 	}

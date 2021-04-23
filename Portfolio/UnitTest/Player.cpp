@@ -113,7 +113,7 @@ void Player::handleInput(Input input)
 
 void Player::CreateArcherModel()
 {
-	modelShader = new Shader(L"27_Animation.fxo");
+	modelShader = new Shader(L"43_Water.fx");
 	archer = new ModelAnimator(modelShader);
 
 	archer->ReadMaterial(L"Archer/Archer");
@@ -122,7 +122,7 @@ void Player::CreateArcherModel()
 	archer->ReadClip(L"Archer/Idle");
 	archer->ReadClip(L"Archer/Running");
 	archer->ReadClip(L"Archer/Attack");
-	archer->ReadClip(L"Archer/Dash_Attack");
+	archer->ReadClip(L"Archer/Dash_Attack1");
 	archer->ReadClip(L"Archer/Jump");
 	archer->ReadClip(L"Archer/Hip_Hop_Dancing");
 
@@ -372,7 +372,7 @@ void Player::controlHpBar()
 
 void Player::AddPartcle()
 {
-	particleTexture = L"Test";
+	particleTexture = L"Slash3";
 	particle = new ParticleSystem(particleTexture);
 	//particle->SetTexture(particleTexture);
 }

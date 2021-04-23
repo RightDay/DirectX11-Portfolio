@@ -8,7 +8,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 float4 PS(MeshOutput input) : SV_Target
 {
-    return PS_Shadow(input.sPosition, PS_AllLight(input));
+    float3 diffuse = DiffuseMap.Sample(LinearSampler, input.Uv);
+    float NdotL = dot(normalize(input.Normal), -GlobalLight.Direction);
+
+    return float4(diffuse * NdotL, 1);
+    //return PS_Shadow(input.sPosition, PS_AllLight(input));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

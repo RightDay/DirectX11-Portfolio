@@ -64,7 +64,7 @@ void Mutant::Attack()
 
 void Mutant::CreateModel(UINT modelNum)
 {
-	modelShader = new Shader(L"27_Animation.fxo");
+	modelShader = new Shader(L"43_Water.fx");
 	model = new ModelAnimator(modelShader);
 
 	model->ReadMaterial(L"Enemy/Mutant");

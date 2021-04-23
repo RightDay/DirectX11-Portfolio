@@ -12,13 +12,11 @@ void GameScene::Initialize()
 	((Freedom*)Context::Get()->GetCamera())->Speed(100, 2);
 	shader = new Shader(L"19_Terrain_Splatting.fx");
 
-	sky = new CubeSky(L"Environment/GrassCube1024.dds");
-
 	//Terrain
 	{
 		terrain = new Terrain(shader, L"Terrain/terrain_height.png");
-		terrain->BaseMap(L"Terrain/Dirt2.png");
-		terrain->LayerMap(L"Terrain/Forest Floor.jpg", L"Terrain/terrain_height.png");
+		terrain->BaseMap(L"Terrain/Snow.jpg");
+		terrain->LayerMap(L"Terrain/Rock (Basic).jpg", L"Terrain/terrain_height.png");
 		terrain->GetTransform()->Position(0, 0, 0);
 		terrain->Pass(0);
 		//terrain->Pass(1);
@@ -33,8 +31,11 @@ void GameScene::Initialize()
 	player = new Player();
 	animators.push_back(player->GetModel());
 
-	Trees(5);
+	Trees(20);
 	
+	AddWater(100.0f);
+	sky = new CubeSky(L"Environment/SnowCube1024.dds", shader);
+
 	((OrbitCamera*)Context::Get()->GetCamera())->SetTarget(player->GetPlayerPos());
 }
 
@@ -95,6 +96,20 @@ void GameScene::Update()
 		}
 	}
 
+	static Vector3 waterPos = Vector3(0, 0, 0);
+	static Vector3 waterScale = Vector3(0, 0, 0);
+
+	ImGui::SliderFloat3("waterPos", waterPos, -500, 1000);
+	ImGui::SliderFloat3("waterScale", waterScale, -500, 1000);
+	//ImGui::InputFloat("waterPos.x", &waterPos.x);
+	//ImGui::InputFloat("waterPos.y", &waterPos.y);
+	//ImGui::InputFloat("waterPos.z", &waterPos.z);
+
+	water->GetTransform()->Position(waterPos);
+	water->GetTransform()->Scale(waterScale);
+
+	water->Update();
+
 	player->playerGetHeight(terrain);
 
 	ImGui::Begin("TerrainLod");
@@ -102,10 +117,47 @@ void GameScene::Update()
 	ImGui::End();
 }
 
+void GameScene::PreRender()
+{
+	//Reflaction
+	{
+		water->PreRender_Reflection();
+
+		sky->Pass(7);
+		sky->Render();
+
+		Pass(8, 9, 10);
+
+		mutant->Render();
+		warrok->Render();
+
+		player->Render();
+
+		trees->Render();
+	}
+
+	//Refraction
+	{
+		water->PreRender_Refraction();
+
+		sky->Pass(0);
+		sky->Render();
+
+		Pass(4, 5, 6);
+
+		mutant->Render();
+		warrok->Render();
+
+		player->Render();
+
+		trees->Render();
+	}
+}
+
 void GameScene::Render()
 {
 	sky->Render();
-	Pass(0, 1, 2);
+	Pass(4, 5, 6);
 	terrain->Render();
 
 	mutant->Render();
@@ -113,9 +165,10 @@ void GameScene::Render()
 
 	player->Render();
 
-	//water->Pass(11);
-	//water->Render();
 	trees->Render();
+
+	water->Pass(11);
+	water->Render();
 }
 
 void GameScene::Pass(UINT mesh, UINT model, UINT anim)
@@ -132,7 +185,7 @@ void GameScene::Pass(UINT mesh, UINT model, UINT anim)
 
 void GameScene::Trees(UINT num)
 {
-	shader = new Shader(L"27_Model.fxo");
+	shader = new Shader(L"43_Water.fx");
 	trees = new ModelRender(shader);
 
 	//trees->ReadMaterial(L"Trees/low_poly_tree");
@@ -147,8 +200,8 @@ void GameScene::Trees(UINT num)
 			transform = trees->AddTransform();
 
 			Vector3 randomVec3;
-			randomVec3 = Math::RandomVec3(0.0f, 512.0f);
-			randomVec3.y = 20.0f;
+			randomVec3 = Math::RandomVec3(256.0f, 768.0f);
+			randomVec3.y = 0.0f;
 
 			transform->Position(randomVec3);
 			transform->Scale(0.1f, 0.1f, 0.1f);
@@ -164,5 +217,5 @@ void GameScene::AddWater(float radius)
 {
 	shader = new Shader(L"43_Water.fxo");
 	water = new Water(shader, radius);
-	water->GetTransform()->Position(0, 5, 0);
+	water->GetTransform()->Position(512.0f, -1.0f, 512.0f);
 }
