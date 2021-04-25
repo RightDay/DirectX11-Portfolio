@@ -62,9 +62,6 @@ void ModelAnimator::Update()
 				desc.Curr.NextFrame = (desc.Curr.CurrFrame + 1) % clip->FrameCount();
 			}
 			desc.Curr.Time = desc.Curr.RunningTime / time;
-			ImGui::Text("desc.Curr.CurrFrame : %d ", desc.Curr.CurrFrame);
-			ImGui::Text("desc.Curr.CurrFrame : %d ", desc.Curr.NextFrame);
-			ImGui::Text("Frame : %d ", clip->FrameCount());
 		}
 
 		//다음 애니메이션
@@ -121,7 +118,6 @@ void ModelAnimator::Update()
 
 	for (ModelMesh* mesh : model->Meshes())
 		mesh->Update();
-	ImGui::Text("tweenDesc[0].Curr.CurrFrame : %d ", tweenDesc[0].Curr.CurrFrame);
 }
 
 void ModelAnimator::Render()

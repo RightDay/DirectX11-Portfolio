@@ -62,7 +62,9 @@ public:
 	Vector3 moveHorizontal = Vector3(0.0f, 0.0f, 0.0f);
 
 	bool bAttack;
+	bool isDashAttack;
 	Vector3 playerForward = Vector3(0.0f, 0.0f, 0.0f);
+	bool bRenderHP;
 
 private:
 	ModelAnimator* model = NULL;

@@ -115,10 +115,10 @@ void MovingState::Update(Player& player)
 {
 	player.playerMovePos(player.moveVertical, false);
 
-	ImGui::Begin("MovingState");
-	ImGui::Text("bMove : %d", bMove);
-	ImGui::Text("InputDir : %f, %f", inputDir.x, inputDir.y);
-	ImGui::End();
+	//ImGui::Begin("MovingState");
+	//ImGui::Text("bMove : %d", bMove);
+	//ImGui::Text("InputDir : %f, %f", inputDir.x, inputDir.y);
+	//ImGui::End();
 }
 
 void MovingState::CalcurateDirection()
@@ -218,11 +218,13 @@ void DashAttackState::Update(Player& player)
 
 	if (player.GetModel()->StopAnim(0, 50))
 	{
+		player.isDashAttack = true;
 		player.bAttack = true;
 	}
 
 	if (player.GetModel()->StopAnim(0, 20))
 	{
+		player.isDashAttack = false;
 		player.bAttack = false;
 		attackStop = true;
 	}

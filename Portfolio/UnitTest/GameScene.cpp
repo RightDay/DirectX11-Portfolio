@@ -14,12 +14,11 @@ void GameScene::Initialize()
 
 	//Terrain
 	{
-		terrain = new Terrain(shader, L"Terrain/terrain_height.png");
-		terrain->BaseMap(L"Terrain/Snow.jpg");
-		terrain->LayerMap(L"Terrain/Rock (Basic).jpg", L"Terrain/terrain_height.png");
+		terrain = new Terrain(shader, L"Terrain/island1.jpg");
+		terrain->BaseMap(L"Terrain/Dirt3.png");
+		terrain->LayerMap(L"Terrain/grass1024.png", L"Terrain/terrain_height.png");
 		terrain->GetTransform()->Position(0, 0, 0);
 		terrain->Pass(0);
-		//terrain->Pass(1);
 	}
 	
 	mutant = new Mutant();
@@ -33,8 +32,8 @@ void GameScene::Initialize()
 
 	Trees(20);
 	
-	AddWater(100.0f);
-	sky = new CubeSky(L"Environment/SnowCube1024.dds", shader);
+	//AddWater(100.0f);
+	sky = new CubeSky(L"Environment/GrassCube1024.dds", shader);
 
 	((OrbitCamera*)Context::Get()->GetCamera())->SetTarget(player->GetPlayerPos());
 }
@@ -42,6 +41,10 @@ void GameScene::Initialize()
 void GameScene::Destroy()
 {
 	SafeDelete(terrain);
+	for (int i = 0; i < 40; i++)
+	{
+		SafeDelete(trees);
+	}
 }
 
 void GameScene::Update()
@@ -96,66 +99,68 @@ void GameScene::Update()
 		}
 	}
 
-	static Vector3 waterPos = Vector3(0, 0, 0);
-	static Vector3 waterScale = Vector3(0, 0, 0);
+	static Vector3 waterPos = Vector3(512.0f, -0.5f, 512.0f);
+	static Vector3 waterScale = Vector3(10.0f, 1.0f, 10.0f);
 
-	ImGui::SliderFloat3("waterPos", waterPos, -500, 1000);
-	ImGui::SliderFloat3("waterScale", waterScale, -500, 1000);
+	//ImGui::SliderFloat3("waterPos", waterPos, -500, 1000);
+	//ImGui::SliderFloat3("waterScale", waterScale, -500, 1000);
 	//ImGui::InputFloat("waterPos.x", &waterPos.x);
 	//ImGui::InputFloat("waterPos.y", &waterPos.y);
 	//ImGui::InputFloat("waterPos.z", &waterPos.z);
 
-	water->GetTransform()->Position(waterPos);
-	water->GetTransform()->Scale(waterScale);
+	//water->GetTransform()->Position(waterPos);
+	//water->GetTransform()->Scale(waterScale);
 
-	water->Update();
+	//water->Update();
 
 	player->playerGetHeight(terrain);
 
-	ImGui::Begin("TerrainLod");
-	ImGui::Text("TerrainHeight : %f", terrain->GetHeight(player->GetModel()->GetTransform(0)->Position()));
-	ImGui::End();
+	////ImGui::Begin("TerrainLod");
+	////ImGui::Text("TerrainHeight : %f", terrain->GetHeight(player->GetModel()->GetTransform(0)->Position()));
+	////ImGui::End();
 }
 
 void GameScene::PreRender()
 {
-	//Reflaction
-	{
-		water->PreRender_Reflection();
+	////Reflaction
+	//player->bRenderHP = false;
+	//{
+	//	water->PreRender_Reflection();
 
-		sky->Pass(7);
-		sky->Render();
+	//	sky->Pass(7);
+	//	sky->Render();
 
-		Pass(8, 9, 10);
+	//	Pass(8, 9, 10);
 
-		mutant->Render();
-		warrok->Render();
+	//	mutant->Render();
+	//	warrok->Render();
 
-		player->Render();
+	//	trees->Render();
 
-		trees->Render();
-	}
+	//	player->Render();
+	//}
 
-	//Refraction
-	{
-		water->PreRender_Refraction();
+	////Refraction
+	//{
+	//	water->PreRender_Refraction();
 
-		sky->Pass(0);
-		sky->Render();
+	//	sky->Pass(0);
+	//	sky->Render();
 
-		Pass(4, 5, 6);
+	//	Pass(4, 5, 6);
 
-		mutant->Render();
-		warrok->Render();
+	//	mutant->Render();
+	//	warrok->Render();
 
-		player->Render();
+	//	trees->Render();
 
-		trees->Render();
-	}
+	//	player->Render();
+	//}
 }
 
 void GameScene::Render()
 {
+	player->bRenderHP = true;
 	sky->Render();
 	Pass(4, 5, 6);
 	terrain->Render();
@@ -163,12 +168,13 @@ void GameScene::Render()
 	mutant->Render();
 	warrok->Render();
 
-	player->Render();
 
 	trees->Render();
 
-	water->Pass(11);
-	water->Render();
+	//water->Pass(11);
+	//water->Render();
+
+	player->Render();
 }
 
 void GameScene::Pass(UINT mesh, UINT model, UINT anim)
@@ -201,10 +207,12 @@ void GameScene::Trees(UINT num)
 
 			Vector3 randomVec3;
 			randomVec3 = Math::RandomVec3(256.0f, 768.0f);
-			randomVec3.y = 0.0f;
-
+			randomVec3.y = Math::Random(-3.0f, -5.0f);
+			
 			transform->Position(randomVec3);
-			transform->Scale(0.1f, 0.1f, 0.1f);
+
+			randomVec3 = Math::RandomVec3(0.05f, 0.1f);
+			transform->Scale(randomVec3);
 			//transform->Scale(20.0f, 20.0f, 20.0f);
 		}
 	}

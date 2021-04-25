@@ -6,8 +6,8 @@
 
 void Editor::Initialize()
 {
-	Context::Get()->GetCamera()->RotationDegree(40, 0, 0);
-	Context::Get()->GetCamera()->Position(240, 560, -300);
+	Context::Get()->GetCamera()->RotationDegree(45, 0, 0);
+	Context::Get()->GetCamera()->Position(131, 419, -180);
 	((Freedom*)Context::Get()->GetCamera())->Speed(150, 2);
 
 	shader = new Shader(L"19_Terrain_Splatting.fx");
@@ -127,29 +127,29 @@ void Editor::AddSettingTypeCombobox()
 
 void Editor::NoneToolType()
 {
-	if (ImGui::Button("Save Map File")) 
-	{
-		D3DDesc desc = D3D::GetDesc();
+	//if (ImGui::Button("Save Map File")) 
+	//{
+	//	D3DDesc desc = D3D::GetDesc();
 
-		Path::SaveFileDialog
-		(
-			file, L"Map file\0*.dds", L"../../_Textures/Terrain",
-			bind(&Editor::SaveMapFile, this, placeholders::_1),
-			desc.Handle
-		);
-	}
+	//	Path::SaveFileDialog
+	//	(
+	//		file, L"Map file\0*.dds", L"../../_Textures/Terrain",
+	//		bind(&Editor::SaveMapFile, this, placeholders::_1),
+	//		desc.Handle
+	//	);
+	//}
 
-	if (ImGui::Button("Open Map File"))
-	{
-		D3DDesc desc = D3D::GetDesc();
+	//if (ImGui::Button("Open Map File"))
+	//{
+	//	D3DDesc desc = D3D::GetDesc();
 
-		Path::OpenFileDialog
-		(
-			file, L"Map file\0*.dds", L"../../_Textures/Terrain",
-			bind(&Editor::OpenMapFile, this, placeholders::_1),
-			desc.Handle
-		);
-	}
+	//	Path::OpenFileDialog
+	//	(
+	//		file, L"Map file\0*.dds", L"../../_Textures/Terrain",
+	//		bind(&Editor::OpenMapFile, this, placeholders::_1),
+	//		desc.Handle
+	//	);
+	//}
 
 	if (ImGui::CollapsingHeader("Terrain Diffuse"))
 	{
@@ -175,16 +175,16 @@ void Editor::NoneToolType()
 			ImGui::TreePop();
 		}
 
-		if (ImGui::TreeNode("SplattingLayerMap"))
-		{
-			ImGui::Text("Terrain Splatting LayerMap");
+		//if (ImGui::TreeNode("SplattingLayerMap"))
+		//{
+		//	ImGui::Text("Terrain Splatting LayerMap");
 
-			GetTextureMap(splattingLayerMapTexture, MapTypes::SPLATTING_LAYER_MAP);
-			GetImportTextureMapFunction(func, &Editor::ImportSplattingLayerMap);
-			AddMapButton(splattingLayerMapTexture, btnSize, func);
+		//	GetTextureMap(splattingLayerMapTexture, MapTypes::SPLATTING_LAYER_MAP);
+		//	GetImportTextureMapFunction(func, &Editor::ImportSplattingLayerMap);
+		//	AddMapButton(splattingLayerMapTexture, btnSize, func);
 
-			ImGui::TreePop();
-		}
+		//	ImGui::TreePop();
+		//}
 	}
 }
 
@@ -209,7 +209,7 @@ void Editor::DetailTerrainToolType()
 		ImGui::Text("Terrain FillMode");
 
 		static bool isWireFrameCheck = false;
-		ImGui::Checkbox("checkbox", &isWireFrameCheck);
+		ImGui::Checkbox("WireFrame", &isWireFrameCheck);
 
 		if (isWireFrameCheck)
 		{
@@ -284,7 +284,7 @@ void Editor::AddMapButton(Texture * mapTexture, ImVec2 size, function<void(wstri
 		Path::OpenFileDialog(
 			L"",
 			L"Every File(*.*)\0*.*\0Text File\0*.txt;*.doc\0",
-			L"../../_Textures/",
+			L"../../_Textures/Terrain",
 			func,
 			D3D::GetDesc().Handle
 		);
@@ -460,5 +460,5 @@ void Editor::OpenMapFile(wstring file)
 {
 	dataMapFile = file;
 	wstring path = L"Terrain/" + dataMapFile + L".dds";
-	terrain = new Terrain(shader, path);
+	terrain = new Terrain(shader, path, true);
 }

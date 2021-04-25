@@ -19,11 +19,19 @@ Brush::~Brush()
 void Brush::Update()
 {
 	ImGui::Begin("Brush");
+	
+	//ImGui::InputInt("Type", (int*)&brushDesc.Type);
+	//brushDesc.Type %= 3;
+	ImGui::RadioButton("None", (int*)&brushDesc.Type, 0); ImGui::SameLine();
+	ImGui::RadioButton("Square", (int*)&brushDesc.Type, 1); ImGui::SameLine();
+	ImGui::RadioButton("Circle", (int*)&brushDesc.Type, 2);
 
-	ImGui::InputInt("Type", (int*)&brushDesc.Type);
-	brushDesc.Type %= 3;
+	static bool bStay = false;
+	ImGui::Checkbox("Fixed Position", &bStay);
 
-	if (Mouse::Get()->Down(0))
+	ImGui::SliderInt("Range", (int*)&brushDesc.Range, 0, 20);
+	brushDesc.Range %= 20;
+	if (bStay && Mouse::Get()->Press(0))
 	{
 		location = brushDesc.Location;
 		brushDesc.Location = location;
@@ -31,40 +39,37 @@ void Brush::Update()
 	else
 	{
 		brushDesc.Location = terrain->GetPickedPosition();
+		location = brushDesc.Location;
 	}
 
 	ImGui::InputFloat("Flat Height", &flatHeight);
 	ImGui::InputFloat3("Location", brushDesc.Location);
+
+	ImGui::RadioButton("Raise Up", &brushOption, 0);
+	ImGui::RadioButton("Raise Down", &brushOption, 1);
+	ImGui::RadioButton("Flat", &brushOption, 2);
+	ImGui::RadioButton("Smooth", &brushOption, 3);
+
 	if (Mouse::Get()->Press(0))
 	{
-		if (Keyboard::Get()->Press(VK_LSHIFT))
+		switch (brushOption)
 		{
-			FlatHeight(brushDesc.Type, flatHeight);
-		}
-
-		if (Keyboard::Get()->Press('Z'))
-		{
-			SmoothHeight(brushDesc.Type);
-		}
-
-		if (Keyboard::Get()->Press(VK_LCONTROL))
-		{
-			RaiseHeight(brushDesc.Type, 0.5f, false);
-		}
-		else if (Keyboard::Get()->Press('X'))
-		{
+		case 0:
 			RaiseHeight(brushDesc.Type, 0.5f, true);
-		}
-
-		if (Keyboard::Get()->Press('C'))
-		{
-			Paint(brushDesc.Type, 1);
+			break;
+		case 1:
+			RaiseHeight(brushDesc.Type, 0.5f, false);
+			break;
+		case 2:
+			FlatHeight(brushDesc.Type, flatHeight);
+			break;
+		case 3:
+			SmoothHeight(brushDesc.Type);
+			break;
+		default:
+			break;
 		}
 	}
-
-	ImGui::InputInt("Range", (int*)&brushDesc.Range);
-	brushDesc.Range %= 20;
-
 
 	ImGui::End();
 }
@@ -305,6 +310,23 @@ void Brush::Paint(UINT type, UINT layer)
 	terrain->SetVertexData();
 }
 
+void Brush::AddModel(UINT num)
+{
+	UINT left = (UINT)location.x - brushDesc.Range;
+	UINT right = (UINT)location.x + brushDesc.Range;
+	UINT bottom = (UINT)location.z - brushDesc.Range;
+	UINT top = (UINT)location.z + brushDesc.Range;
+
+	if (left < 0) left = 0;
+	if (right >= terrain->GetWidth()) right = terrain->GetWidth();
+	if (bottom < 0) bottom = 0;
+	if (top >= terrain->GetHeight()) top = terrain->GetHeight();
+
+	float* GetHeights = new float[terrain->GetWidth() * terrain->GetHeight()];
+
+
+}
+
 void Brush::Splatting()
 {
 }
@@ -319,4 +341,42 @@ void Brush::GetTerrainList()
 		file = L"Terrain/" + Path::GetFileNameWithoutExtension(file) + L".jpg";
 		terrainTextures.push_back(new Texture(file));
 	}
+}
+
+void Brush::OpenMesh()
+{
+	Path::OpenFileDialog(
+		L"",
+		L"mesh File\0*.mesh",
+		L"../../_Models/",
+		bind(&Brush::LoadMesh, this, placeholders::_1),
+		D3D::GetDesc().Handle
+	);
+}
+
+void Brush::LoadMesh(wstring file)
+{
+	//String::Replace(&file, L"\\", L"/");
+
+	//size_t index = file.find(L"/_Models/");
+
+	//file = file.substr(index + 9, file.length());
+
+	//String::Replace(&file, L"." + Path::GetExtension(file), L"");
+
+
+	//ModelRender* modelRender = new ModelRender(shader);
+	//modelRender->ReadMesh(file);
+	//modelRender->ReadMaterial(file);
+	//modelRender->AddTransform();
+	//modelRender->Pass(static_cast<UINT>(PASS::PASS_MODEL));
+
+	//ModelClass* modelClass = new ModelClass();
+	//modelClass->modelRender = modelRender;
+	//modelClass->Path = file;
+	//modelClass->ModelName = file.substr(file.find_last_of(L"/") + 1, file.length());
+	////modelClass->originBoneCount = modelRender->GetModel()->BoneCount();
+	//modelClass->Spheres = CreateSpheres(modelClass->modelRender);
+
+	//models.emplace_back(modelClass);
 }

@@ -82,15 +82,15 @@ void E_AttackState::Update(Enemy& enemy, UINT instance)
 		enemy.bRotate[instance] = true;
 	}
 
-	ImGui::Begin("AttackState");
-	ImGui::Text("Attack : %d", attack);
-	ImGui::Text("bAttack[%d] : %d", instance, enemy.bAttack[instance]);
-	ImGui::End();
+	//ImGui::Begin("AttackState");
+	//ImGui::Text("Attack : %d", attack);
+	//ImGui::Text("bAttack[%d] : %d", instance, enemy.bAttack[instance]);
+	//ImGui::End();
 }
 
 void E_DyingState::Enter(Enemy& enemy, UINT instance)
 {
-	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_DYING, 1.5f);
+	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_DYING, 2.0f);
 }
 
 EnemyState* E_DyingState::handleState(Enemy::eAnimState animState)

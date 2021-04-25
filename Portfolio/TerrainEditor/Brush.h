@@ -27,9 +27,13 @@ private:
 	void FlatHeight(UINT type, float targetHeight);
 	void SmoothHeight(UINT type);
 	void Paint(UINT type, UINT layer);
+	void AddModel(UINT num);
 	void Splatting();
 
 	void GetTerrainList();
+
+	void OpenMesh();
+	void LoadMesh(wstring file);
 
 private:
 	Vector3 location;
@@ -44,5 +48,9 @@ private:
 	vector<wstring> terrainFiles;
 	vector<Texture*> terrainTextures;
 
+	vector<wstring> modelFileList;
+
 	float flatHeight = 0.0f;
+
+	int brushOption = 0;
 };

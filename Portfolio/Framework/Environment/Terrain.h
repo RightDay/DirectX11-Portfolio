@@ -48,7 +48,7 @@ public:
 	TerrainVertex* Vertices() { return vertices; }
 	//void SetVerticesY(UINT index, float y) { vertices[index].Position.y += y; }
 	void SetLayer1(wstring file);
-	void ReadTextreData(wstring imageFile);
+	void ReadTextureData(wstring imageFile);
 
 public:
 	void CreateVertexData();
@@ -105,6 +105,8 @@ private:
 	ConstantBuffer* lineBuffer;
 	ID3DX11EffectConstantBuffer* sLineBuffer;
 
+	wstring imageFile;
+
 public:
 	Color* pixels;
 };
@@ -116,7 +118,7 @@ public:
 	~Layer();
 
 	void Render();
-	void ReadData(wstring imagFile);
+	void ReadData(wstring imageFile);
 
 private:
 	wstring file = L"";

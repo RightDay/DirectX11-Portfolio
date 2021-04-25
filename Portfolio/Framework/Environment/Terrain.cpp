@@ -41,7 +41,9 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 }
 
 Terrain::Terrain(Shader* shader, wstring file, bool bDDS)
+	: Renderer(shader), imageFile(file)
 {
+	ReadTextureData(imageFile);
 }
 
 Terrain::~Terrain()
@@ -256,10 +258,66 @@ Vector3 Terrain::GetPickedPosition()
 	return Vector3(-1, FLT_MIN, -1);
 }
 
-void Terrain::ReadTextreData(wstring imageFile)
+void Terrain::ReadTextureData(wstring imageFile)
 {
 	wstring ext = Path::GetExtension(imageFile);
 	std::transform(ext.begin(), ext.end(), ext.begin(), toupper);
+
+	if (ext == L"DDS") {
+		Texture* texture = new Texture(imageFile);
+		ID3D11Texture2D* srcTexture = texture->GetTexture();
+
+		D3D11_TEXTURE2D_DESC srcDesc;
+		srcTexture->GetDesc(&srcDesc);
+
+		ID3D11Texture2D* readTexture;
+		D3D11_TEXTURE2D_DESC readDesc;
+		ZeroMemory(&readDesc, sizeof(D3D11_TEXTURE2D_DESC));
+		readDesc.Width = srcDesc.Width;
+		readDesc.Height = srcDesc.Height;
+		readDesc.ArraySize = 1;
+		readDesc.Format = srcDesc.Format;
+		readDesc.MipLevels = 1;
+		readDesc.SampleDesc = srcDesc.SampleDesc;
+		readDesc.Usage = D3D11_USAGE_STAGING;
+		readDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		Check(D3D::GetDevice()->CreateTexture2D(&readDesc, NULL, &readTexture));
+		D3D::GetDC()->CopyResource(readTexture, srcTexture);
+
+		UINT* pixels = new UINT[readDesc.Width * readDesc.Height];
+
+		D3D11_MAPPED_SUBRESOURCE subResource;
+		D3D::GetDC()->Map(readTexture, 0, D3D11_MAP_READ, 0, &subResource);
+		{
+			memcpy(pixels, subResource.pData, sizeof(UINT) * readDesc.Width * readDesc.Height);
+		}
+		D3D::GetDC()->Unmap(readTexture, 0);
+
+		width = texture->GetWidth();
+		height = texture->GetHeight();
+
+		//heights = new float[width * height];
+		//for (UINT i = 0; i < width * height; i++) {
+		//	UINT temp = (pixels[i] & 0xFF000000) >> 24;
+		//	heights[i] = (float)temp / 255.0f;
+		//}
+
+		SafeDelete(texture);
+		SafeRelease(readTexture);
+	}
+
+	Texture* heightMap = new Texture(imageFile);
+
+	heightMap->SaveFile(imageFile);
+
+	width = heightMap->GetWidth();
+	height = heightMap->GetHeight();
+
+	//heights = new float[width * height];
+	//for (UINT i = 0; i < pixels.size(); i++)
+	//	heights[i] = pixels[i].r;
+
+	SafeDelete(heightMap);
 }
 
 void Terrain::CreateVertexData()
@@ -281,7 +339,7 @@ void Terrain::CreateVertexData()
 			UINT pixel = width * (height - 1 - z) + x;
 
 			vertices[index].Position.x = (float)x;
-			vertices[index].Position.y = (heights[pixel].r * 255.0f) / 5.0f;
+			vertices[index].Position.y = (heights[pixel].r * 255.0f) / 3.0f;
 			vertices[index].Position.z = (float)z;
 
 			vertices[index].Uv.x = (float)x / (float)width;

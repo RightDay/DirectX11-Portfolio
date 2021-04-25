@@ -35,7 +35,6 @@ void Warrok::Update()
 
 	for (int i = 0; i < ENEMY_NUM; i++)
 	{
-		ImGui::Text("Warrok[%d] hp : %d", i, hp[i]);
 
 		AttachAttackCollider(attackCollider[i], i, lefthandBoneNumber);
 	}
