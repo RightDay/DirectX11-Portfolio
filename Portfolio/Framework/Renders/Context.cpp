@@ -31,8 +31,8 @@ Context::Context()
 
 	perspective = new Perspective(desc.Width, desc.Height);
 	viewport = new Viewport(desc.Width, desc.Height);
-	camera = new OrbitCamera();
-	//camera = new Freedom();
+	//camera = new OrbitCamera();
+	camera = new Freedom();
 }
 
 Context::~Context()

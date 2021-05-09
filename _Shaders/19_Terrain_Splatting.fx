@@ -4,10 +4,6 @@
 
 float4 PS(VertexTerrain input) : SV_Target
 {
-    //float4 base = BaseMap.Sample(LinearSampler, input.Uv);
-    //float4 layer = LayerMap.Sample(LinearSampler, input.Uv);
-    //float4 color = lerp(base, layer, input.Uv.x);
-
     float4 color = GetLayerColor(input.Uv);
     float NdotL = dot(-GlobalLight.Direction, normalize(input.Normal));
 
@@ -18,10 +14,6 @@ float4 PS(VertexTerrain input) : SV_Target
 
 float4 PS_GridLine(VertexTerrain input) : SV_Target
 {
-    //float4 base = BaseMap.Sample(LinearSampler, input.Uv);
-    //float4 layer = LayerMap.Sample(LinearSampler, input.Uv);
-    //float4 color = lerp(base, layer, input.Uv.x);
-    
     float4 color = GetLayerColor(input.Uv);
     
     float NdotL = dot(-GlobalLight.Direction, normalize(input.Normal));
@@ -30,7 +22,6 @@ float4 PS_GridLine(VertexTerrain input) : SV_Target
     float4 lineColor = GetLineColor(input.wPosition);
     
     return (color * NdotL) + brushColor + lineColor;
-    //return lineColor;
 }
 
 technique11 T0

@@ -75,9 +75,6 @@ Texture * Editor::GetMapTexture(MapTypes mapTypes)
 	case MapTypes::HEIGHT_MAP:
 		return terrain->HeightMap();
 		break;
-	case MapTypes::SPLATTING_LAYER_MAP:
-		return terrain->splattingLayerMap[0];
-		break;
 	default:
 		return NULL;
 	}
@@ -127,30 +124,6 @@ void Editor::AddSettingTypeCombobox()
 
 void Editor::NoneToolType()
 {
-	//if (ImGui::Button("Save Map File")) 
-	//{
-	//	D3DDesc desc = D3D::GetDesc();
-
-	//	Path::SaveFileDialog
-	//	(
-	//		file, L"Map file\0*.dds", L"../../_Textures/Terrain",
-	//		bind(&Editor::SaveMapFile, this, placeholders::_1),
-	//		desc.Handle
-	//	);
-	//}
-
-	//if (ImGui::Button("Open Map File"))
-	//{
-	//	D3DDesc desc = D3D::GetDesc();
-
-	//	Path::OpenFileDialog
-	//	(
-	//		file, L"Map file\0*.dds", L"../../_Textures/Terrain",
-	//		bind(&Editor::OpenMapFile, this, placeholders::_1),
-	//		desc.Handle
-	//	);
-	//}
-
 	if (ImGui::CollapsingHeader("Terrain Diffuse"))
 	{
 		if (ImGui::TreeNode("BaseMap"))
@@ -174,17 +147,6 @@ void Editor::NoneToolType()
 
 			ImGui::TreePop();
 		}
-
-		//if (ImGui::TreeNode("SplattingLayerMap"))
-		//{
-		//	ImGui::Text("Terrain Splatting LayerMap");
-
-		//	GetTextureMap(splattingLayerMapTexture, MapTypes::SPLATTING_LAYER_MAP);
-		//	GetImportTextureMapFunction(func, &Editor::ImportSplattingLayerMap);
-		//	AddMapButton(splattingLayerMapTexture, btnSize, func);
-
-		//	ImGui::TreePop();
-		//}
 	}
 }
 
@@ -258,14 +220,6 @@ void Editor::ImportHeightMap(wstring files)
 	terrain->SetTerrainData();
 }
 
-void Editor::ImportSplattingLayerMap(wstring files)
-{
-	if (terrain->splattingLayerMap[0]->GetFile() == files) return;
-
-	terrain->SplattingLayerMap(files);
-	terrain->SetSplattingLayerMap();
-}
-
 function<void(wstring)> Editor::GetImportTextureMapFunction(function<void(wstring)>& func, void(Editor::* function)(wstring files))
 {
 	return func = bind(function, this, placeholders::_1);
@@ -301,20 +255,12 @@ void Editor::AddBillboard()
 	billboard->AddTexture(L"Terrain/Tree3.png");
 	billboard->AddTexture(L"Terrain/Tree4.png");
 
-	//billboard->AddTexture(L"White.png");
-	//billboard->AddTexture(L"Red.png");
-	//billboard->AddTexture(L"Blue.png");
-	//billboard->AddTexture(L"Green.png");
-	//billboard->AddTexture(L"Box.png");
-	//billboard->AddTexture(L"Bricks.png");
-
 	UINT terrainWidth = terrain->GetWidth() - 3;
 	for (UINT i = 0; i < 20; i++)
 	{
-		//Vector2 scale = Math::RandomVec2(50.0f, 100.0f);
 		Vector2 scale = Math::RandomVec2(5.0f, 10.0f);
 		Vector3 position = Math::RandomVec3(0.0f, terrainWidth);
-		position.y = (terrain->GetHeight(position) + (scale.y * 0.5f));	//TODO : 2곱해야하는 이유 찾기
+		position.y = (terrain->GetHeight(position) + (scale.y * 0.5f));
 
 		billboard->Add(position, scale);
 	}
@@ -322,8 +268,6 @@ void Editor::AddBillboard()
 
 void Editor::ExportMapFile()
 {
-	//if (heightMapFile == NULL) return;
-
 	ID3D11Texture2D* srcTexture = heightMapTexture->GetTexture();
 	D3D11_TEXTURE2D_DESC srcDesc;
 	srcTexture->GetDesc(&srcDesc);
@@ -454,11 +398,4 @@ void Editor::SaveMapFile(wstring file) {
 	SafeDelete(w);
 
 	SafeRelease(saveTexture);
-}
-
-void Editor::OpenMapFile(wstring file)
-{
-	dataMapFile = file;
-	wstring path = L"Terrain/" + dataMapFile + L".dds";
-	terrain = new Terrain(shader, path, true);
 }

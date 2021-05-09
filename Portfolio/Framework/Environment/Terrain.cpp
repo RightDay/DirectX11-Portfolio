@@ -12,12 +12,6 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 	sHeightMap = shader->AsSRV("HeightMap");
 	sHeightMap->SetResource(heightMap->SRV());
 
-	sSplattingLayerMap[0] = shader->AsSRV("SplattingLayerMap1");
-	sSplattingLayerMap[1] = shader->AsSRV("SplattingLayerMap2");
-	
-	//buffer = new ConstantBuffer(&bufferDesc, sizeof(BufferDesc));
-	//sBuffer = shader->AsConstantBuffer("CB_Terrain");
-
 	lineBuffer = new ConstantBuffer(&lineDesc, sizeof(LineDesc));
 	sLineBuffer = shader->AsConstantBuffer("CB_TerrainLine");
 
@@ -27,23 +21,6 @@ Terrain::Terrain(Shader * shader, wstring heightFile)
 
 	vertexBuffer = new VertexBuffer(vertices, vertexCount, sizeof(TerrainVertex), 0, true);
 	indexBuffer = new IndexBuffer(indices, indexCount);
-
-	pixels = new Color[width * height];
-
-	vector<Color> colors;
-	heightMap->ReadPixel(DXGI_FORMAT_R8G8B8A8_UNORM, &colors);
-
-	for (int i = 0; i < colors.size(); i++)
-		pixels[i] = colors[i];
-
-	splattingLayerMap[0] = new Texture(L"Terrain/Dirt.png");
-	splattingLayerMap[1] = new Texture(L"Terrain/Rock (Basic).jpg");
-}
-
-Terrain::Terrain(Shader* shader, wstring file, bool bDDS)
-	: Renderer(shader), imageFile(file)
-{
-	ReadTextureData(imageFile);
 }
 
 Terrain::~Terrain()
@@ -54,12 +31,9 @@ Terrain::~Terrain()
 	SafeDelete(baseMap);
 	SafeDelete(layerMap);
 	SafeDelete(alphaMap);
-	SafeDelete(splattingLayerMap[0]);
-	SafeDelete(splattingLayerMap[1]);
 
 	SafeDeleteArray(vertices);
 	SafeDeleteArray(indices);
-	SafeDeleteArray(pixels);
 }
 
 void Terrain::Update()
@@ -79,15 +53,6 @@ void Terrain::Render()
 		sLayerMap->SetResource(layerMap->SRV());
 		sAlphaMap->SetResource(alphaMap->SRV());
 	}
-
-	if (splattingLayerMap[0] != NULL)
-		sSplattingLayerMap[0]->SetResource(splattingLayerMap[0]->SRV());
-
-	if (splattingLayerMap[1] != NULL)
-		sSplattingLayerMap[1]->SetResource(splattingLayerMap[1]->SRV());
-
-	//buffer->Apply();
-	//sBuffer->SetConstantBuffer(buffer->Buffer());
 
 	lineBuffer->Apply();
 	sLineBuffer->SetConstantBuffer(lineBuffer->Buffer());
@@ -109,13 +74,6 @@ void Terrain::LayerMap(wstring layer)
 
 	layerMap = new Texture(layer);
 	alphaMap = new Texture(heightMap->GetFile());
-}
-
-void Terrain::SplattingLayerMap(wstring layer)
-{
-	SafeDelete(layerMap);
-
-	splattingLayerMap[0] = new Texture(layer);
 }
 
 void Terrain::LayerMap(wstring layer, wstring alpha)
@@ -477,33 +435,4 @@ void Terrain::SetTerrainData()
 		memcpy(subResource.pData, vertices, sizeof(TerrainVertex) * vertexCount);
 	}
 	D3D::GetDC()->Unmap(vertexBuffer->Buffer(), 0);
-	//bufferDesc.TerrainCellSpaceU = 1.0f / (float)heightMap->GetWidth() - 1;
-	//bufferDesc.TerrainCellSpaceV = 1.0f / (float)heightMap->GetHeight() - 1;
-}
-
-Layer::Layer(Shader* shader, wstring file, wstring sSRV, wstring sMap)
-	: shader(shader)
-{
-	Map = new Texture(file);
-
-	this->sSRV = shader->AsSRV(String::ToString(sSRV));
-	this->sMap = shader->AsSRV(String::ToString(sMap));
-}
-
-Layer::~Layer()
-{
-	SafeDeleteArray(Data);
-	SafeRelease(Texture2D);
-	SafeRelease(SRV);
-	SafeDelete(Map);
-}
-
-void Layer::Render()
-{
-	sSRV->SetResource(SRV);
-	sMap->SetResource(Map->SRV());
-}
-
-void Layer::ReadData(wstring imageFile)
-{
 }
