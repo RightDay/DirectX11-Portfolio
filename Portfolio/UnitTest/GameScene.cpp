@@ -102,27 +102,12 @@ void GameScene::Update()
 	static Vector3 waterPos = Vector3(512.0f, -0.5f, 512.0f);
 	static Vector3 waterScale = Vector3(10.0f, 1.0f, 10.0f);
 
-	//ImGui::SliderFloat3("waterPos", waterPos, -500, 1000);
-	//ImGui::SliderFloat3("waterScale", waterScale, -500, 1000);
-	//ImGui::InputFloat("waterPos.x", &waterPos.x);
-	//ImGui::InputFloat("waterPos.y", &waterPos.y);
-	//ImGui::InputFloat("waterPos.z", &waterPos.z);
-
-	//water->GetTransform()->Position(waterPos);
-	//water->GetTransform()->Scale(waterScale);
-
-	//water->Update();
-
 	player->playerGetHeight(terrain);
-
-	////ImGui::Begin("TerrainLod");
-	////ImGui::Text("TerrainHeight : %f", terrain->GetHeight(player->GetModel()->GetTransform(0)->Position()));
-	////ImGui::End();
 }
 
 void GameScene::PreRender()
 {
-	////Reflaction
+	//Reflaction
 	//player->bRenderHP = false;
 	//{
 	//	water->PreRender_Reflection();

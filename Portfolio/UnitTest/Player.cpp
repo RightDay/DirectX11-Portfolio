@@ -191,10 +191,7 @@ void Player::AttachCollider()
 {
 	Matrix attachPlayer = model->GetTransform(0)->World();
 	playerCollider->Collider->GetTransform()->World(attachPlayer);
-	
-	//ImGui::Begin("Collider");
-	//ImGui::Text("Collider position %f", playerCollider->Collider->GetTransform()->Position().x);
-	//ImGui::End();
+
 	playerCollider->Collider->Update();
 }
 
@@ -208,14 +205,10 @@ void Player::AttachSwordCollider()
 		static Vector3 colliderRotationDegree = Vector3(0.0f, 0.0f, 0.0f);
 		static Vector3 colliderPosition = Vector3(-10.0f, -5.0f, -38.0f);
 
-		//ImGui::SliderFloat3("ColliderScale", colliderScale, 00.0f, 300.0f);
 		swordCollider->Init->Scale(colliderScale);
 
-		//ImGui::SliderFloat3("ColliderRotation", colliderRotationDegree, -180.0f, 180.0f);
 		swordCollider->Init->RotationDegree(colliderRotationDegree);
 
-
-		//ImGui::SliderFloat3("ColliderPosition", colliderPosition, -300.0f, 300.0f);
 		swordCollider->Init->Position(colliderPosition);
 
 		swordCollider->Collider = new Collider(swordCollider->Transform, swordCollider->Init);
@@ -229,7 +222,7 @@ void Player::ControlCollider(ColliderObjectDesc* collider)
 {
 	//Control playerColliderScale
 	static Vector3 colliderScale = Vector3(1.0f, 1.0f, 1.0f);
-	//ImGui::SliderFloat3("PlayerCollider", colliderScale, 0.0f, 600.0f);
+
 	collider->Init->Scale(colliderScale);
 
 	collider->Collider = new Collider(collider->Transform, collider->Init);
@@ -241,10 +234,7 @@ void Player::Move()
 
 	playerForward = model->GetTransform(0)->Forward();
 	playerRight = model->GetTransform(0)->Right();
-	//ImGui::Begin("Player dir");
-	//ImGui::Text("Forward : %f %f %f", playerForward.x, playerForward.y, playerForward.z);
-	//ImGui::Text("Right : %f %f %f", playerRight.x, playerRight.y, playerRight.z);
-	//ImGui::End();
+
 	moveVertical = playerForward * velocity * Time::Delta() * 2.0f;
 	moveHorizontal = playerRight * velocity * Time::Delta() * 2.0f;
 
@@ -255,23 +245,11 @@ void Player::Move()
 
 void Player::Rotation()
 {
-	//Quaternion targetR;
-	//Quaternion outR;
-	//D3DXQuaternionNormalize(&outR, &outR);
-	//D3DXQuaternionNormalize(&targetR, &targetR);
-	//D3DXQuaternionToAxisAngle(&targetR, &Vector3(0, 1, 0), &angle);
-	//D3DXQuaternionSlerp(&outR, &outR, &targetR, 10.0f * Time::Delta());
-	
-	//-------------------------------------------------------------------------------------------------
 	Vector3 outRot;
 	Vector3 targetRot;
 	targetRot = Vector3(0.0f, angle, 0.0f);
 	
 	model->GetTransform(0)->Rotation(targetRot);
-	//ImGui::Begin("Player Status");
-	//ImGui::Text("Player Angle : %f %f %f", model->GetTransform(0)->Rotation().y);
-	//ImGui::Text("Angle : %f", angle);
-	//ImGui::End();
 }
 
 void Player::PlayerControl()
@@ -362,10 +340,6 @@ void Player::controlHpBar()
 	if (hp < 0)
 		return;
 
-	//ImGui::Begin("hp");
-
-	//ImGui::SliderFloat3("HpGauge pos", pos, 0, 800);
-	//ImGui::SliderFloat3("HpGauge sca", sca, 0, 800);
 	static UINT prevHP = hp;
 	if (prevHP > hp)
 	{
@@ -373,8 +347,6 @@ void Player::controlHpBar()
 
 		prevHP = hp;
 	}
-	//ImGui::End();
-	//hpGauge->GetTransform()->Position(pos.x, pos.y, pos.z);
 	hpGauge->GetTransform()->Scale(hp * minusHpScale, sca.y, sca.z);
 }
 
@@ -382,7 +354,6 @@ void Player::AddPartcle()
 {
 	particleTexture = L"Slash5";
 	particle = new ParticleSystem(particleTexture);
-	//particle->SetTexture(particleTexture);
 }
 
 void Player::AddParticleTexture()
@@ -427,11 +398,8 @@ bool Player::IsIntersect(ColliderObjectDesc* other)
 
 	if (swordCollider->Collider->IsIntersect(other->Collider))
 	{
-		//bAttack = false;
-
 		return true;
 	}
-	//ImGui::Text("Player : bAttack : %d", bAttack);
 	return false;
 }
 

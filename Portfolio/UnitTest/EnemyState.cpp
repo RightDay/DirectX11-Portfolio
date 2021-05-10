@@ -81,11 +81,6 @@ void E_AttackState::Update(Enemy& enemy, UINT instance)
 		enemy.bMove[instance] = true;
 		enemy.bRotate[instance] = true;
 	}
-
-	//ImGui::Begin("AttackState");
-	//ImGui::Text("Attack : %d", attack);
-	//ImGui::Text("bAttack[%d] : %d", instance, enemy.bAttack[instance]);
-	//ImGui::End();
 }
 
 void E_DyingState::Enter(Enemy& enemy, UINT instance)

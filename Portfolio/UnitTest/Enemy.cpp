@@ -172,17 +172,6 @@ void Enemy::AttachAttackCollider(ColliderObjectDesc*& collider, UINT instance, U
 	{
 		Matrix attach = model->GetAttachTransform(instance, attachCollider);
 
-		////ImGui::SliderFloat3("ColliderScale", colliderScale, 0.0f, 300.0f);
-		//collider->Init->Scale(colliderScale);
-
-		////ImGui::SliderFloat3("ColliderRotation", colliderRotationDegree, -180.0f, 180.0f);
-		//collider->Init->RotationDegree(colliderRotationDegree);
-
-		////ImGui::SliderFloat3("ColliderPosition", colliderPosition, -300.0f, 300.0f);
-		//collider->Init->Position(colliderPosition);
-
-		//collider->Collider = new Collider(collider->Transform, collider->Init);
-
 		collider->Collider->GetTransform()->World(attach);
 		collider->Collider->Update();
 	}
@@ -233,7 +222,6 @@ void Enemy::rotateToPlayer(int instance, ModelAnimator* target)
 	target->GetTransform(0)->Position(&targetPos);
 
 	dis = Math::Distance(thisPos, targetPos);
-	//ImGui::Text("Distance : %f", dis);
 
 	if (dis < 30.0f)
 	{

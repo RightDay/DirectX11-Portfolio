@@ -114,11 +114,6 @@ PlayerState* MovingState::handleInput(Player& player, Input input)
 void MovingState::Update(Player& player)
 {
 	player.playerMovePos(player.moveVertical, false);
-
-	//ImGui::Begin("MovingState");
-	//ImGui::Text("bMove : %d", bMove);
-	//ImGui::Text("InputDir : %f, %f", inputDir.x, inputDir.y);
-	//ImGui::End();
 }
 
 void MovingState::CalcurateDirection()
