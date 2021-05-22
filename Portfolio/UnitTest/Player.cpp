@@ -22,7 +22,6 @@ Player::Player()
 	minusHpScale = hpGaugeScale / hp;
 	minusHpPosition = hpGaugeScale / hp / 2.0f;
 
-	//model->GetTransform(0)->Position(playerPos);
 	CreatePlayerCollider();
 	CreateHpBar();
 	AddPartcle();
@@ -50,8 +49,7 @@ void Player::Update()
 	model->Update();
 
 	AttachCollider();
-	//if (bAttack == true)
-		AttachSwordCollider();
+	AttachSwordCollider();
 
 	PlayerControl();
 	state->Update(*this);
@@ -59,8 +57,6 @@ void Player::Update()
 	Move();
 	Rotation();
 
-	//static Vector3 thisPos = Vector3(0.0f, 0.0f, 0.0f);
-	//model->GetTransform(0)->Position(&thisPos);
 	model->UpdateTransforms();
 
 	controlHpBar();
@@ -178,9 +174,6 @@ void Player::CreatePlayerCollider()
 	{
 		swordCollider = new ColliderObjectDesc();
 		swordCollider->Init = new Transform();
-
-		//swordCollider->Init->Position(-8.0f, 0.0f, -24.923f);
-		//swordCollider->Init->Scale(10.0f, 10.0f, 85.0f);
 
 		swordCollider->Transform = new Transform();
 		swordCollider->Collider = new Collider(swordCollider->Transform, swordCollider->Init);

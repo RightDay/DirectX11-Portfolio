@@ -10,11 +10,6 @@ void E_MovingState::Enter(Enemy& enemy, UINT instance)
 	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_RUNNING, 1.0f);
 }
 
-//void E_MovingState::Enter(ModelAnimator* model, UINT instance)
-//{
-//	model->PlayClip(instance, Enemy::E_STATE_RUNNING, 1.0f);
-//}
-
 EnemyState* E_MovingState::handleState(Enemy::eAnimState animState)
 {
 	if (animState == Enemy::E_STATE_ATTACK)
@@ -43,11 +38,6 @@ void E_AttackState::Enter(Enemy& enemy, UINT instance)
 	enemy.bAttack[instance] = false;
 	enemy.GetModel()->PlayClip(instance, Enemy::E_STATE_ATTACK, 1.0f);
 }
-
-//void E_AttackState::Enter(ModelAnimator* model, UINT instance)
-//{
-//	model->PlayClip(instance, Enemy::E_STATE_ATTACK, 1.0f);
-//}
 
 EnemyState* E_AttackState::handleState(Enemy::eAnimState animState)
 {

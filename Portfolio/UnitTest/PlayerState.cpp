@@ -48,11 +48,14 @@ void MovingState::Enter(Player& player)
 
 PlayerState* MovingState::handleInput(Player& player, Input input)
 {
+	//
+	//Down
+	// 	  
+
 	//Axis Vertical
 	if (input == DOWN_W)
 	{ 
 		inputDir.y = -1;
-		//bMove = false;
 	}
 
 	if (input == DOWN_S)
@@ -74,6 +77,8 @@ PlayerState* MovingState::handleInput(Player& player, Input input)
 	//
 	//Up
 	//
+
+	//Axis Vertical
 	if (input == UP_W)
 	{
 		inputDir.y = 0;
@@ -200,12 +205,6 @@ PlayerState* DashAttackState::handleInput(Player& player, Input input)
 
 void DashAttackState::Update(Player& player)
 {
-	//if (distance <= 300.0f)
-	//{
-	//	distance++;
-	//	player.playerMovePos(player.moveVertical * 2.0f, false);
-	//}
-
 	if (player.bAttack)
 	{
 		player.playerMovePos(player.moveVertical * 2.0f, false);

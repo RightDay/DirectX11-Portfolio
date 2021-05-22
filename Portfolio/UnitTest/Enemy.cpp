@@ -291,7 +291,6 @@ void Enemy::GetHeight(Terrain* terrain, UINT instance)
 	enemyPos.y = terrain->GetHeight(enemyPos);
 
 	model->GetTransform(instance)->Position(enemyPos);
-	///position.y = terrain->GetHeight(position) * 2.0f;
 }
 
 void Enemy::minusHP(UINT instance, UINT num)
